@@ -1,0 +1,22 @@
+Revision history for Perl extension File::HomeDir
+                                        Time-stamp: "2004-12-29 19:45:22 AST"
+
+
+2004-12-29  Sean M. Burke  sburke@cpan.org
+
+	* Release 0.06 -- just rebundling.  No code changes.
+	
+2000-12-09  Sean M. Burke  sburke@cpan.org
+
+        * Release 0.05 -- adding MSWin code to consult the registry,
+	as helpfully suggested by Richard Soderberg <rs@crystalflame.net>.
+	Tweaked MacPerl code a bit.
+	
+2000-12-09  Sean M. Burke  sburke@cpan.org
+
+	* Release 0.04 -- just fixing incidental typos in the POD.
+	
+2000-12-08  Sean M. Burke  sburke@cpan.org
+	
+	* Release 0.03 -- first public release.
+

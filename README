@@ -1,0 +1,145 @@
+README for File::HomeDir
+                                        Time-stamp: "2000-12-08 21:28:36 MST"
+
+[Excerpted from the POD...]
+
+NAME
+    File::HomeDir -- get home directory for self or other users
+
+SYNOPSIS
+      use File::HomeDir;
+      print "My dir is ", home(), " and root's is ", home('root'), "\n";
+      print "My dir is $~{''} and root's is $~{root}\n";
+       # These both print the same thing, something like:
+       #  "My dir is /home/user/mojo and root's is /"
+
+DESCRIPTION
+    This module provides a function, `home', and also ties the in-all-
+    packages variable `%~'.
+
+    home()
+        Returns a filespec to this user's home directory.
+
+    home($user)
+        Returns a filespec to the home directory of the given user, or undef
+        if no such user.
+
+        Note that the argument to this must be a defined value, and mustn't
+        be a zero-length string, or a fatal error will result.
+
+    `$~{$user}'
+    `$~{username}'
+    `"...$~{$user}..."'
+    `"...$~{username}..."'
+        This calls `home($user)' or `home('username')' -- except that if you
+        ask for `$~{same_user}' and there is no such user, a fatal error
+        results!
+
+        Note that this is especially useful in doublequotish strings, like:
+
+             print "Jojo's .newsrc is ", -s "$~{jojo}/.newsrc", "b long!\n";
+              # (helpfully dies if there is no user 'jojo')
+
+        If you want to avoid the fatal errors, first test the value of
+        `home('jojo')', which will return undef (instead of dying) in case
+        of there being no such user.
+
+        Note, however, that if the hash key is "" or undef (whether thru
+        being a literal "", or a scalar whose value is empty-string or
+        undef), then this returns zero-argument `home()', i.e., your home
+        directory.
+
+    `$~{""}'
+    `$~{undef}'
+    `"...$~{''}..."'
+        These all return `home()', i.e., your home directory.
+
+    If running under an OS that doesn't implement `getpwid', this library
+    tries to provide a sane return value for the no-argument `home()'. Under
+    MacOS, for example, it tries returning the pathspect to the desktop
+    folder. See source for full details.
+
+    Under OSs that don't implement `getpwnam' (as `home($user)' calls), you
+    will always get a failed lookup, just as if you'd tried to look up the
+    home dir for a nonexistent user on an OS that *does* support `getpwnam'.
+
+BUGS AND CAVEATS
+    * One-argument `home($username)' is memoized. Read the source if you
+    need it unmemoized.
+
+    * According to the fileio.c in one version of Emacs, MSWindows (NT?)
+    does have the concept of users having home directories, more or less.
+    But I don't know if MSWin ports of Perl allow accessing that with
+    `getpwnam'. I hear that it (currently) doesn't.
+
+    * This documentation gets garbled by some AIX manual formatters.
+    Consider `perldoc -t File::HomeDir' instead.
+
+COPYRIGHT
+    Copyright (c) 2000 Sean M. Burke. All rights reserved.
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
+AUTHOR
+    Sean M. Burke `sburke@cpan.org'
+
+
+
+PREREQUISITES
+
+This suite requires Perl 5; I've only used it under Perl 5.004, so for
+anything lower, you're on your own.
+
+
+INSTALLATION
+
+You install File::HomeDir, as you would install any Perl module
+library, by running these commands:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+If you want to install a private copy of File::HomeDir in your home
+directory, then you should try to produce the initial Makefile with
+something like this command:
+
+  perl Makefile.PL LIB=~/perl
+
+For further information, see perldoc perlmodinstall
+
+
+DOCUMENTATION
+
+POD-format documentation is included in HomeDir.pm.  POD is readable
+with the 'perldoc' utility.  See ChangeLog for recent changes.
+
+
+MACPERL INSTALLATION NOTES
+
+Don't bother with the makefiles.  Just make a File directory in your
+MacPerl site_lib or lib directory, and move HomeDir.pm into there.
+
+
+SUPPORT
+
+Questions, bug reports, useful code bits, and suggestions for
+File::HomeDir should just be sent to me at sburke@cpan.org
+
+
+AVAILABILITY
+
+The latest version of File::HomeDir is available from the
+Comprehensive Perl Archive Network (CPAN).  Visit
+<http://www.perl.com/CPAN/> to find a CPAN site near you.
+
+
+Copyright (c) 2000 Sean M. Burke.  All rights reserved.
+
+This library is free software; you can redistribute it
+and/or modify it under the same terms as Perl itself.
+
+AUTHOR
+     Sean M. Burke, sburke@cpan.org
