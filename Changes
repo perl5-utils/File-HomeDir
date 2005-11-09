@@ -1,22 +1,38 @@
 Revision history for Perl extension File::HomeDir
-                                        Time-stamp: "2004-12-29 19:45:22 AST"
 
+0.07 2005-11-09 Adam Kennedy  adamk@cpan.org
 
-2004-12-29  Sean M. Burke  sburke@cpan.org
+  * Near-complete rewrite to modernise and prepare to
+    start merging in File::HomeDir::Win32.
 
-	* Release 0.06 -- just rebundling.  No code changes.
-	
-2000-12-09  Sean M. Burke  sburke@cpan.org
+  * "Traded" module in exchange for Data::JavaScript::Anon :)
+  * Replaced Makefile.PL with Module::Install-based version that lists
+    its dependencies in a platform-sensitive way.
+    This also removes the need for evals.
+  * Replaced tests with Test::More-based ones and improved
+    coverage.
+  * Put the platform-specific code into if ( CONSTANT ) blocks
+    so they will compile out.
+  * Otherwise cleaned up and improved the layout of the code
+  * Added support for $ENV{HOMEDIR} and $ENV{HOMEPATH} on Win32
+  * More-explicit testing before we return a path
+  * Keep caching user home, but NOT "my" home in case the
+    process changes user.
 
-        * Release 0.05 -- adding MSWin code to consult the registry,
-	as helpfully suggested by Richard Soderberg <rs@crystalflame.net>.
-	Tweaked MacPerl code a bit.
-	
-2000-12-09  Sean M. Burke  sburke@cpan.org
+0.06 2004-12-29  Sean M. Burke  sburke@cpan.org
 
-	* Release 0.04 -- just fixing incidental typos in the POD.
-	
-2000-12-08  Sean M. Burke  sburke@cpan.org
-	
-	* Release 0.03 -- first public release.
+  * just rebundling.  No code changes.
 
+0.05 2000-12-09  Sean M. Burke  sburke@cpan.org
+
+  * adding MSWin code to consult the registry,
+    as helpfully suggested by Richard Soderberg <rs@crystalflame.net>.
+  * Tweaked MacPerl code a bit.
+
+0.04 2000-12-09  Sean M. Burke  sburke@cpan.org
+
+  * just fixing incidental typos in the POD.
+
+0.03 2000-12-08  Sean M. Burke  sburke@cpan.org
+
+  *  first public release.

@@ -9,7 +9,7 @@ use Carp       ();
 use File::Spec ();
 
 # Globals
-use vars qw{$VERSION @ISA @EXPORT %Cache}
+use vars qw{$VERSION @ISA @EXPORT %Cache};
 BEGIN {
 	$VERSION = '0.07';
 
@@ -154,7 +154,7 @@ sub home (;$) {
 		# On some platforms getpwnam dies if called at all
 		local $SIG{'__DIE__'} = '';
 		$Cache{$name} = (getpwnam($name))[7];
-		if ( $Cache{$name} and -f $Cache{$name} ) {
+		if ( $Cache{$name} and -d $Cache{$name} ) {
 			return $Cache{$name};
 		}
 	}
