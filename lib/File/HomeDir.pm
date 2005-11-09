@@ -1,150 +1,227 @@
- 
+package File::HomeDir;
+
+# See POD at end for docs
+
 require 5;
-package File::HomeDir;   #Time-stamp: "2004-12-29 19:46:02 AST"
+
 use strict;
-use vars qw($HOME @EXPORT $VERSION @ISA %Cache);
-$VERSION = '0.06';
-use Carp ();
-require Exporter;
-@ISA = ('Exporter');
-@EXPORT = ('home');
- # %~ doesn't need (and won't take) exporting, as it's a magic symbol name
- # that's always looked for in package 'main'.
+use Carp       ();
+use File::Spec ();
 
-# POD at end.
+# Globals
+use vars qw{$VERSION @ISA @EXPORT %Cache}
+BEGIN {
+	$VERSION = '0.07';
 
+	# Inherit manually
+	require Exporter;
+	@ISA    = ( 'Exporter' );
+	@EXPORT = ( 'home' );
+	# %~ doesn't need (and won't take) exporting, as it's a magic
+	# symbol name that's always looked for in package 'main'.
+
+	# Define the homedir cache
+	%Cache = ();
+}
+
+# Create constants for the platforms in advance
+# to improve the optimisation at compile-time.
+### Use some variables twice to prevent warnings.
+use constant MACPERL => $MacPerl::VERSION || $MacPerl::VERSION;
+use constant WIN32   => $^O eq 'MSWin32';
+
+
+
+
+
+#####################################################################
+# Main Functions
+
+# Process user may change, so don't cache
 sub my_home () {
-  return $HOME if defined $HOME;
+	# Try the obvious UNIX methods
+	return $ENV{HOME}   if $ENV{HOME};
+	return $ENV{LOGDIR} if $ENV{LOGDIR};
 
-  # try the obvious
-  $HOME = $ENV{'HOME'} || $ENV{'LOGDIR'};
-  return $HOME if $HOME;
-    
-  # Or try other ways...
-  if($MacPerl::Version and $MacPerl::Version
-    # avoid the "used only once" warning.
-    and defined do {
-      local $SIG{"__DIE__"} = "";
-      eval
-       'use Mac::Files; $HOME = FindFolder(kOnSystemDisk, kDesktopFolderType)'
-    }
-  ) {
-    return $HOME;
-  }
+	# Handle Windows Normally
+	if ( WIN32 ) {
+		# Some Windows use something like $ENV{HOME}
+		if ( $ENV{HOMEDRIVE} and $ENV{HOMEPATH} ) {
+			return File::Spec->catpath(
+				$ENV{HOMEDRIVE},
+				$ENV{HOMEPATH},
+				);
+		}
 
-  if(defined do {
-    # see if there's a W32 registry on this machine, and if so, look in it
-    local $SIG{"__DIE__"} = "";
-    eval '
-      use Win32::TieRegistry;
-      my $folders = Win32::TieRegistry->new(
-         "HKEY_CURRENT_USER/Software/Microsoft/Windows/CurrentVersion/Explorer/Shell Folders",
-         { Delimiter => "/" }
-      );
-      $HOME = $folders->GetValue("Desktop");
-    ' }
-  ) {
-    return $HOME;
-  }
+		### MORE SANE METHODS TO GO HERE
+	}
 
-  # Getting desperate now...
-  if( defined eval
-    {
-      local $SIG{'__DIE__'} = '';
-      $HOME = (getpwuid($<))[7];
-    }
-  ) {
-    return $HOME;
-  }
+	# Or try other ways...
+	# Use twice to avoid "only used once" warnings
+	if ( MACPERL ) {
+		local $SIG{"__DIE__"} = "";
+		require Mac::Files;
+		my $home = Mac::Files::FindFolder(
+			Mac::Files::kOnSystemDisk,
+			Mac::Files::kDesktopFolderType,
+			);
+		return $home if $home and -d $home;
+	}
 
-  # MSWindows sets WINDIR, MS WinNT sets USERPROFILE.
+	### DESPERATION SETS IN
 
-  if($ENV{'USERPROFILE'}) {   # helpfully suggested by crysflame
-    if(-e "$ENV{'USERPROFILE'}\\Desktop") {
-      $HOME = "$ENV{'USERPROFILE'}\\Desktop";
-      return $HOME;
-    }
-  } elsif($ENV{'WINDIR'}) {
-    if(-e "$ENV{'WINDIR'}\\Desktop") {
-      $HOME = "$ENV{'WINDIR'}\\Desktop";
-      return $HOME;
-    }
-  }
+	# Light desperation on any platform
+	{
+		# On some platforms getpwuid dies if called at all
+		local $SIG{'__DIE__'} = '';
+		my $home = (getpwuid($<))[7];
+		return $home if $home and -d $home;
+	}
 
-  # try even harder
-  if( -e 'C:/windows/desktop' ) {
-    $HOME = 'C:/windows/desktop';
-    return $HOME;
-  } elsif( -e 'C:/win95/desktop' ) {
-    $HOME = 'C:/win95/desktop';
-    return $HOME;
-  }
+	# Extra desperate things to do on Windows.
+	# Mostly, this just involves using the desktop,
+	# and trying to find it in a variety of ways.
+	# The desktop isn't a great place, but at least it is
+	# _somewhere_ inside this user's profile.
+	if ( WIN32 ) {
+		# The most correct way to find the desktop
+		SCOPE: {
+			local $SIG{"__DIE__"} = "";
+			require Win32::TieRegistry;
+			my $folders = Win32::TieRegistry->new(
+				'HKEY_CURRENT_USER/Software/Microsoft/Windows/CurrentVersion/Explorer/Shell Folders',
+				{ Delimiter => '/' }
+				);
+			if ( $folders ) {
+				my $home = $folders->GetValue("Desktop");
+				return $home if $home and -d $home;
+			}
+		}
 
-  # Ah well, if all else fails, fail...
-  die "Can't find ~/";
+		# MSWindows sets WINDIR, MS WinNT sets USERPROFILE.
+		foreach my $e ( 'USERPROFILE', 'WINDIR' ) {
+			next unless $ENV{$e};
+			my $home = File::Spec->catdir(
+				$ENV{$e}, 'Desktop',
+				);
+			return $home if $home and -d $home;
+		}
+
+		# As a last resort, try some hard-wired values
+		foreach my $home (
+		"C:\\windows\\desktop", "C:/windows/desktop",
+		"C:\\win95\\desktop",   "C:/win95/desktop",
+		) {
+			return $home if $home and -d $home;
+		}
+	}
+
+	# Now we are completely out of options
+	die "Can't find ~/";
 }
 
-
+# Find the home directory of an arbitrary user
 sub home (;$) {
-  if(@_ == 0) {
-    $HOME || my_home();
-  } elsif(!defined $_[0]) {
-    Carp::croak "Can't use undef as a username";
-  } elsif(!length $_[0]) {
-    Carp::croak "Can't use empty-string (\"\") as a username";
-  } elsif($_[0] eq '.') {
-    $HOME || my_home();
-  } else {
-    exists( $Cache{$_[0]} )  # Memoization
-     ? $Cache{$_[0]}
-     : do {
-       local $SIG{'__DIE__'} = '';
-       $Cache{$_[0]} = eval { (getpwnam($_[0]))[7] };
-        # ...so that on machines where getpwnam causes
-        # a fatal error when called at all, we avoid outright
-        # dying, and just return the undef that we'll get from
-        # a failed eval block.
-     }
-  }
+	# No params means my home
+	if ( @_ == 0 ) {
+		return my_home();
+	}
+
+	# Check the param
+	my $name = shift;
+	if ( ! defined $name ) {
+		Carp::croak("Can't use undef as a username");
+	}
+	if ( ! length $name ) {
+		Carp::croak("Can't use empty-string (\"\") as a username");
+	}
+
+	# A dot also means my home
+	### Is this meant to mean File::Spec->curdir?
+	if ( $name eq '.' ) {
+		return my_home();
+	}
+
+	# Although we are converned about changing user, we aren't
+	# concerned about users changing homedir WHILE the program is
+	# running, so lets cache the homedir for named users.
+	if ( $Cache{$name} ) {
+		# Returned the cached dir
+		return $Cache{$name};
+	}
+
+	SCOPE: {
+		# On some platforms getpwnam dies if called at all
+		local $SIG{'__DIE__'} = '';
+		$Cache{$name} = (getpwnam($name))[7];
+		if ( $Cache{$name} and -f $Cache{$name} ) {
+			return $Cache{$name};
+		}
+	}
+
+	# Out of options
+	die "Can't find home for $name";
 }
 
-# Okay, things below this point are all scary.
-#--------------------------------------------------------------------------
-{
-  # Make the class for the %~ tied hash:
 
-  package File::HomeDir::TIE;
-  use vars qw($o);
 
-  # Make the singleton object:
-  $o = bless {}; # We don't use the hash for anything, tho.
 
-  sub TIEHASH { $o }
-  sub FETCH   {
-    #print "Fetching $_[1]\n";
-    if(!defined($_[1]))   { &File::HomeDir::home()      }
-    elsif(!length($_[1])) { &File::HomeDir::home()      }
-    else                  {
-      my $x = &File::HomeDir::home($_[1]);
-      Carp::croak "No home dir found for user \"$_[1]\"" unless defined $x;
-      $x;
-    }
-  }
 
-  foreach my $m (qw(STORE EXISTS DELETE CLEAR FIRSTKEY NEXTKEY)) {
-    no strict 'refs';
-    *{$m} = sub { Carp::croak "You can't try ${m}ing with the %~ hash" }
-  }  
+#####################################################################
+# Tie-Based Interface
 
-  # For a more generic approach to this sort of thing, see Dominus's
-  # class "Interpolation" in CPAN.
+# Okay, things below this point get scary
+
+CLASS: {
+	# Make the class for the %~ tied hash:
+	package File::HomeDir::TIE;
+
+	use vars qw($singleton);
+	BEGIN {
+		# Make the singleton object.
+		# (We don't use the hash for anything, though)
+		$singleton = bless {};
+	}
+
+	sub TIEHASH { $singleton }
+
+	sub FETCH {
+		# Get our homedir
+		if ( ! defined $_[1] or ! length $_[1] ) {
+			return File::HomeDir::home();
+		}
+
+		# Get a named user's homedir
+		my $home = &File::HomeDir::home($_[1]);
+		unless ( defined $home ) {
+			Carp::croak("No home dir found for user \"$_[1]\"");
+		}
+		return $home;
+	}
+
+	sub bad ($) {
+		Carp::croak("You can't $_[0] with the %~ hash")
+	}
+
+	sub STORE    { bad('STORE')    }
+	sub EXISTS   { bad('EXISTS')   }
+	sub DELETE   { bad('DELETE')   }
+	sub CLEAR    { bad('CLEAR')    }
+	sub FIRSTKEY { bad('FIRSTKEY') }
+	sub NEXTKEY  { bad('NEXTKEY')  }
+
+	# For a more generic approach to this sort of thing, see Dominus's
+	# class "Interpolation" in CPAN.
 }
 
-#--------------------------------------------------------------------------
-tie %~, 'File::HomeDir::TIE';  # Finally.
+# Do the actual tie of the global %~ variable
+tie %~, 'File::HomeDir::TIE';
+
 1;
 
 __END__
+
+=pod
 
 =head1 NAME
 
