@@ -364,4 +364,3 @@ it under the same terms as Perl itself.
 Sean M. Burke C<sburke@cpan.org>
 
 =cut
-
