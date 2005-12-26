@@ -1,6 +1,7 @@
-package File::HomeDir::Win32;
+package File::HomeDir::Windows;
 
-# Window-specific functionality
+# Generalised implementation for the entire Windows family of operating
+# systems.
 
 use 5.005;
 use strict;
@@ -121,12 +122,24 @@ sub my_win32_folder {
 #####################################################################
 # General User Methods
 
-sub user_home {
+sub users_home {
 	my ($class, $name) = @_;
+	Carp::croak("users_home is not implemented on this platform");
+}
 
-	# Unimplemented
+sub users_documents {
+	my ($class, $name) = @_;
+	Carp::croak("users_documents is not implemented on this platform");
+}
 
-	Carp::croak("Failed to find home directory for user '$name'");
+sub users_data {
+	my ($class, $name) = @_;
+	Carp::croak("users_data is not implemented on this platform");
+}
+
+sub users_desktop {
+	my ($class, $name) = @_;
+	Carp::croak("users_desktop is not implemented on this platform");
 }
 
 1;

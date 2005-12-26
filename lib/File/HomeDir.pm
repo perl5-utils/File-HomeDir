@@ -17,10 +17,11 @@ BEGIN {
 	@ISA       = ( 'Exporter' );
 	@EXPORT    = ( 'home'     );
 	@EXPORT_OK = qw{
+		home
 		my_home
 		my_desktop
 		my_documents
-		my_local_data
+		my_data
 		};
 
 	# %~ doesn't need (and won't take) exporting, as it's a magic
@@ -29,11 +30,11 @@ BEGIN {
 
 # Don't do platform detection at compile-time
 if ( $^O eq 'MSWin32' ) {
-	$IMPLEMENTED_BY = 'File::HomeDir::Win32';
+	$IMPLEMENTED_BY = 'File::HomeDir::Windows';
 	require File::HomeDir::Win32;
 } elsif ( $MacPerl::VERSION || $MacPerl::VERSION ) {
-	$IMPLEMENTED_BY = 'File::HomeDir::Mac';
-	require File::HomeDir::Mac;
+	$IMPLEMENTED_BY = 'File::HomeDir::MacOS9';
+	require File::HomeDir::MacOS9;
 } else {
 	$IMPLEMENTED_BY = 'File::HomeDir::Unix';
 	require File::HomeDir::Unix;
@@ -313,19 +314,36 @@ Note, however, that if the hash key is "" or undef (whether thru being
 a literal "", or a scalar whose value is empty-string or undef), then
 this returns zero-argument C<home()>, i.e., your home directory:
 
-=head1 AUTHOR
+=head1 SUPPORT
+
+Bugs should be always be reported via the CPAN bug tracker at
+
+L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=File-HomeDir>
+
+For other issues, or commercial enhancement or support, contact the author.
+
+=head1 AUTHORS
 
 Adam Kennedy E<lt>cpan@ali.asE<gt>
 
-Original by Sean M. Burke C<sburke@cpan.org>
+Original by:
+
+Sean M. Burke C<sburke@cpan.org>
+
+=head1 SEE ALSO
+
+L<File::ShareDir>, L<File::HomeDir::Win32> (legacy)
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005 Adam Kennedy. All rights reserved.
+Copyright 2005 Adam Kennedy. All rights reserved.
 
-Some parts copyright (c) 2000 Sean M. Burke. All rights reserved.
+Some parts copyright 2000 Sean M. Burke. All rights reserved.
 
-This library is free software; you can redistribute it and/or modify
-it under the same terms as Perl itself.
+This program is free software; you can redistribute
+it and/or modify it under the same terms as Perl itself.
+
+The full text of the license can be found in the
+LICENSE file included with this module.
 
 =cut

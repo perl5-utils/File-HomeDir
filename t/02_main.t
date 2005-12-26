@@ -41,12 +41,12 @@ ok( $my_documents, 'Found our documents directory'     );
 ok( -d $my_documents, 'Our documents directory exists' );
 
 # Find this user's local data
-my $my_local_data = File::HomeDir->my_local_data;
-ok( $my_local_data, 'Found our local data directory'     );
-ok( -d $my_local_data, 'Our local data directory exists' );
-$my_local_data = File::HomeDir::my_local_data();
-ok( $my_local_data, 'Found our local data directory'     );
-ok( -d $my_local_data, 'Our local data directory exists' );
+my $my_data = File::HomeDir->my_data;
+ok( $my_data, 'Found our local data directory'     );
+ok( -d $my_data, 'Our local data directory exists' );
+$my_data = File::HomeDir::my_data();
+ok( $my_data, 'Found our local data directory'     );
+ok( -d $my_data, 'Our local data directory exists' );
 
 # On windows, we also implement my_desktop
 SKIP: {

@@ -47,7 +47,7 @@ sub my_documents {
 	shift->my_home;
 }
 
-sub my_local_data {
+sub my_data {
 	shift->my_home;
 }
 
@@ -71,15 +71,16 @@ sub users_home {
 }
 
 sub users_desktop {
+	my ($class, $name) = @_;
 	Carp::croak("Failed to find desktop for user '$name'");
 }
 
 sub users_documents {
-	shift->user_home(@_);
+	shift->users_home(@_);
 }
 
-sub users_local_data {
-	shift->user_local_data(@_);	
+sub users_data {
+	shift->users_home(@_);
 }
 
 1;
