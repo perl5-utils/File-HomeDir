@@ -6,22 +6,19 @@ use inc::Module::Install;
 # complex installer, as it needs to pull in different
 # dependencies on different platforms.
 
-name           ( 'File-HomeDir'                  );
-abstract       ( 'Get the home directory for ourself and other users' );
-author         ( 'Adam Kennedy <cpan@ali.as>'    );
-version_from   ( 'lib/File/HomeDir.pm'           );
-license        ( 'perl'                          );
-requires       ( 'perl'               => '5.004' );
-requires       ( 'File::Spec'         => '0.80'  );
-build_requires ( 'Test::More'         => '0.47'  );
+name           'File-HomeDir';
+all_from       'lib/File/HomeDir.pm';
+requires       'File::Spec' => '0.80';
+build_requires 'Test::More' => '0.47';
 
 # Dependencies for specific platforms
+### Use variable twice to avoid a warning.
 if ( $MacPerl::Version and $MacPerl::Version ) {
-    requires   ( 'Mac::Files'         => 0       );
+    requires   'Mac::Files' => 0;
 }
 if ( $^O eq 'MXWin32' ) {
-    requires   ( 'Win32::TieRegistry' => 0       );
+    requires   'Win32::TieRegistry' => 0;
 }
 
-auto_install ();
-&WriteAll;
+auto_install;
+WriteAll;

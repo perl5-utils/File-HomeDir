@@ -10,7 +10,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.10';
+	$VERSION = '0.50';
 }
 
 # If prefork is available, set Win32::TieRegistry
@@ -84,7 +84,7 @@ sub my_documents {
 	Carp::croak("Failed to find current user's documents");
 }
 
-sub my_local_data {
+sub my_data {
 	my $class = shift;
 
 	# The most correct way to find my documents

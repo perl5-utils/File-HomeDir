@@ -9,7 +9,7 @@ use Carp ();
 # Globals
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.10';
+	$VERSION = '0.50';
 }
 
 # If prefork is available, set Mac::Files

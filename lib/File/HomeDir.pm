@@ -10,7 +10,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.10';
+	$VERSION = '0.50';
 
 	# Inherit manually
 	require Exporter;
@@ -58,8 +58,8 @@ sub my_documents {
 	$IMPLEMENTED_BY->my_documents;
 }
 
-sub my_local_data {
-	$IMPLEMENTED_BY->my_local_data;
+sub my_data {
+	$IMPLEMENTED_BY->my_data;
 }
 
 
@@ -151,11 +151,23 @@ __END__
 
 =head1 NAME
 
-File::HomeDir - Get home directory for yourself or other users
+File::HomeDir - Get the home directory for yourself or other users
 
 =head1 SYNOPSIS
 
   use File::HomeDir;
+  
+  # Modern Interface (Current User)
+  $home = File::HomeDir->my_home;
+  $docs = File::HomeDir->my_documents;
+  $data = File::HomeDir->my_data;
+  
+  # Modern Interface (Other Users)
+  $home = File::HomeDir->users_home('foo');
+  $docs = File::HomeDir->users_home('foo');
+  $data = File::HomeDir->users_home('foo');
+  
+  # Legacy Interfaces
   print "My dir is ", home(), " and root's is ", home('root'), "\n";
   print "My dir is $~{''} and root's is $~{root}\n";
   # These both print the same thing, something like:
@@ -163,34 +175,130 @@ File::HomeDir - Get home directory for yourself or other users
 
 =head1 DESCRIPTION
 
-This module provides a function, C<home>, and also ties the
-in-all-packages variable C<%~>.
+File::HomeDir is a module for dealing with issues relating to the
+location of directories for various purposes that are "owned" by a user,
+and to solve these problems consistently across a wide variety of
+platforms.
 
-=over
+This module provides two main interfaces.
 
-=item home()
+A modern File::Spec-style interface with a consistent OO API and
+different implementation modules to support various platforms,
+and a legacy interface from version 0.07 that exported a home()
+function by default and tied the %~ variable.
 
-Returns a filespec to this user's home directory.
+=head2 Platform Neutrality
 
-=item home($user)
+In the Unix world, many different types of data can be mixed together
+in your home directory.  On some other platforms, seperate directories
+are allocated for different types of data.
 
-Returns a filespec to the home directory of the given user, or undef
-if no such user.
+When writing applications, you should try to use the most specific
+method you can. User documents should be saved in C<my_documents>,
+data to support an application should go in C<my_data>.
 
-Note that the argument to this must be a defined value, and mustn't be
-a zero-length string, or a fatal error will result.
+On platforms that do not make this distinction, all these methods will
+harmlessly degrade to the main home directory, but on platforms that
+care C<File::HomeDir> will Do The Right Thing(tm).
 
-=item C<$~{$user}>
+=head1 METHODS
 
-=item C<$~{username}>
+Two types of methods are provided. The C<my_method> series of methods for
+finding resources for the current user, and the C<users_method> (read as
+"user's method") series for finding resources for arbitrary users.
 
-=item C<"...$~{$user}...">
+This split is necesary, as on many platforms it is MUCH easier to find
+information about the current user compared to other users.
 
-=item C<"...$~{username}...">
+All methods via a C<-d> test that the directory actually exists before
+returning.
+
+=head2 my_home
+
+The C<my_home> takes no arguments and returns the main home/profile
+directory for the current user.
+
+Returns the directory path as a string, or dies if it cannot be found.
+
+=head2 my_documents
+
+The C<my_documents> takes no arguments and returns the directory for
+the current user where the user's documents are stored.
+
+Returns the directory path as a string, or dies if it cannot be found.
+
+=head2 my_data
+
+The C<my_data> takes no arguments and returns the directory where
+local applications should stored their internal data for the current
+user.
+
+Generally an application would create a subdirectory such as C<.foo>,
+beneath this directory, and store its data there. By creating your
+directory this way, you get an accurate result on the maximum number
+of platforms.
+
+For example, on Unix you get C<~/.foo> and on Win32 you get
+C<~/Local Settings/Application Data/.foo>
+
+Returns the directory path as a string, or dies if it cannot be found.
+
+=head2 users_home
+
+  $home = File::HomeDir->users_home('foo');
+
+The C<users_home> method takes a single param and is used to locate the
+parent home/profile directory for an identified user on the system.
+
+While most of the time this identifier would be some form of user name,
+it is permitted to vary per-platform to support user ids or UUIDs as
+applicable for that platform.
+
+Returns the directory path as a string, or dies if it cannot be found.
+
+=head2 users_documents
+
+  $docs = File::HomeDir->users_documents('foo');
+
+Returns the directory path as a string, or dies if it cannot be found.
+
+=head2 users_data
+
+Returns the directory path as a string, or dies if it cannot be found.
+
+=head1 FUNCTIONS
+
+=head2 home
+
+  use File::HomeDir;
+  $home = home();
+  $home = home('foo');
+  $home = File::HomeDir::home();
+  $home = File::HomeDir::home('foo');
+
+The C<home> function is exported by default and is provided for
+compatibility with legacy applications. In new applications, you should
+use the newer method-based interface above.
+
+Returns the directory path to a named user's home/profile directory.
+
+If provided no param, returns the directory path to the current user's
+home/profile directory.
+
+=head1 TIED INTERFACE
+
+=head2 %~
+
+  $home = $~{""};
+  $home = $~{undef};
+  $home = $~{$user};
+  $home = $~{username};
+  print "... $~{''} ...";
+  print "... $~{$user} ...";
+  print "... $~{username} ...";
 
 This calls C<home($user)> or C<home('username')> -- except that if you
-ask for C<$~{some_user}> and there is no such user, a fatal error
-results!
+ask for C<$~{some_user}> and there is no such user, it will die.
 
 Note that this is especially useful in double-quotish strings, like:
 
@@ -205,88 +313,19 @@ Note, however, that if the hash key is "" or undef (whether thru being
 a literal "", or a scalar whose value is empty-string or undef), then
 this returns zero-argument C<home()>, i.e., your home directory:
 
-=item C<$~{""}>
+=head1 AUTHOR
 
-=item C<$~{undef}>
+Adam Kennedy E<lt>cpan@ali.asE<gt>
 
-=item C<"...$~{''}...">
-
-These all return C<home()>, i.e., your home directory.
-
-=back
-
-If running under an OS that doesn't implement C<getpwid>, this library
-tries to provide a sane return value for the no-argument C<home()>.
-Under MacOS, for example, it tries returning the pathspec to the
-desktop folder.  See source for full details.
-
-Under OSs that don't implement C<getpwnam> (as C<home($user)> calls),
-you will always get a failed lookup, just as if you'd tried to look up
-the home dir for a nonexistent user on an OS that I<does> support
-C<getpwnam>.
-
-=head1 BUGS AND CAVEATS
-
-* One-argument C<home($username)> is memoized.  Read the source if you
-need it unmemoized.
-
-* According to the fileio.c in one version of Emacs, MSWindows (NT?)
-does have the concept of users having home directories, more or less.
-But I don't know if MSWin ports of Perl allow accessing that with
-C<getpwnam>.  I hear that it (currently) doesn't.
-
-=cut
-
-#What it says is, and I quote:
-#
-#|
-#|#ifdef  WINDOWSNT
-#|          /* DebPrint(("EMACS broken @-"__FILE__ ": %d\n", __LINE__)); */
-#|          /*
-#|           * Emacs wants to know the user's home directory...  This is set by
-#|           * the user-manager, but how do I get that information from the
-#|           * system?
-#|           *
-#|           * After a bit of hunting I discover that the user's home directroy
-#|           * is stored at:  "HKEY_LOCAL_MACHINE\\security\\sam\\"
-#|           * "domains\\account\\users\\<account-rid>\\v" in the registry...
-#|           * Now I could pull it out but this location only contains local
-#|           * accounts... so if you're logged on to some non-local domain this
-#|           * may run into a security problem... i.e. I may not always be able
-#|           * to read this information even for myself...
-#|           *
-#|           * What's here is a hack to make things work...
-#|           */
-#|
-#|          newdir = (unsigned char *) egetenv ("HOME");
-#|#else /* !WINDOWSNT */
-#|          pw = (struct passwd *) getpwnam (o + 1);
-#|          if (pw)
-#|            {
-#|              newdir = (unsigned char *) pw -> pw_dir;
-#|#ifdef VMS
-#|              nm = p + 1;       /* skip the terminator */
-#|#else
-#|              nm = p;
-#|#endif                          /* VMS */
-#|            }
-#|#endif /* !WINDOWSNT */
-#|
-
-=pod
-
-* This documentation gets garbled by some AIX manual formatters.
-Consider C<perldoc -t File::HomeDir> instead.
+Original by Sean M. Burke C<sburke@cpan.org>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2000 Sean M. Burke. All rights reserved.
+Copyright (c) 2005 Adam Kennedy. All rights reserved.
+
+Some parts copyright (c) 2000 Sean M. Burke. All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
-
-=head1 AUTHOR
-
-Sean M. Burke C<sburke@cpan.org>
 
 =cut

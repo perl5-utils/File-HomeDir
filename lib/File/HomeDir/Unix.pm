@@ -8,7 +8,7 @@ use strict;
 # Globals
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.10';
+	$VERSION = '0.50';
 }
 
 
@@ -64,7 +64,7 @@ sub users_home {
 	SCOPE: {
 		# On some platforms getpwnam dies if called at all
 		my $home = (getpwnam($name))[7];
-		return $home if defined $home and -d $home;
+		return $home if $home and -d $home;
 	}
 
 	Carp::croak("Failed to find home directory for user '$name'");
