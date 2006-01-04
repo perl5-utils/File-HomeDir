@@ -50,16 +50,16 @@ ok( -d $my_data, 'Our local data directory exists' );
 
 # On windows, we also implement my_desktop
 SKIP: {
-	unless ( $^O eq 'MSWin32' ) {
+	unless ( $^O eq 'MSWin32' or $^O eq 'darwin' ) {
 		skip("Skipping desktop on non-Windows", 4 );
 	}
 
 	# Find this user's local data
 	my $my_desktop = File::HomeDir->my_desktop;
-	ok( $my_desktop,    'Found our local data directory'  );
+	ok( $my_desktop,    'Found our desktop directory'  );
 	ok( -d $my_desktop, 'Our local data directory exists' );
 	$my_desktop = File::HomeDir::my_desktop();
-	ok( $my_desktop,    'Found our local data directory'  );
+	ok( $my_desktop,    'Found our desktop directory'  );
 	ok( -d $my_desktop, 'Our local data directory exists' );
 }
 
