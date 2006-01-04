@@ -16,12 +16,13 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 6;
+use Test::More tests => 7;
 
 ok( $] > 5.004, 'Perl version is 5.004 or newer' );
 
 use_ok( 'File::HomeDir'          );
 use_ok( 'File::HomeDir::Unix'    );
+use_ok( 'File::HomeDir::Darwin'  );
 use_ok( 'File::HomeDir::Windows' );
 use_ok( 'File::HomeDir::MacOS9'  );
 
