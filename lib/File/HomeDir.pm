@@ -10,7 +10,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.51';
+	$VERSION = '0.52';
 
 	# Inherit manually
 	require Exporter;
@@ -32,6 +32,9 @@ BEGIN {
 if ( $^O eq 'MSWin32' ) {
 	$IMPLEMENTED_BY = 'File::HomeDir::Windows';
 	require File::HomeDir::Windows;
+} elsif ( $^O eq 'darwin' ) {
+	$IMPLEMENTED_BY = 'File::HomeDir::Darwin';
+	require File::HomeDir::Darwin;
 } elsif ( $MacPerl::VERSION || $MacPerl::VERSION ) {
 	$IMPLEMENTED_BY = 'File::HomeDir::MacOS9';
 	require File::HomeDir::MacOS9;

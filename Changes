@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.52 2005-01-04 Adam Kennedy  adamk@cpan.org
+  * Added initial Darwin support.
+
 0.51 2005-12-30 Adam Kennedy  adamk@cpan.org
   * Fixed a typo where I left the require of the Windows module
     as Win32. (Randy Kobes)
