@@ -15,6 +15,7 @@ if ( $MacPerl::Version and $MacPerl::Version ) {
     requires   'Mac::Files' => 0;
 }
 if ( $^O eq 'MSWin32' ) {
+    requires   'Win32API::Registry' => 0;
     requires   'Win32::TieRegistry' => 0;
 }
 

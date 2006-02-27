@@ -1,5 +1,9 @@
 Revision history for Perl extension File::HomeDir
 
+0.54 2006-02-27 Adam Kennedy  adamk@cpan.org
+  * Adding a dependency of Win32::TieRegistry's, so this installs.
+  * Will remove it later when that bug is fixed in Win32::TieRegistry
+
 0.53 2006-02-27 Adam Kennedy  adamk@cpan.org
   * Typo caused Makefile.PL not to require Win32::TieRegistry on Win32
   * Upgraded to Module::Install 0.57

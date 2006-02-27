@@ -8,10 +8,9 @@ use strict;
 use Carp       ();
 use File::Spec ();
 
-# Globals
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.53';
+	$VERSION = '0.54';
 }
 
 # If prefork is available, set Win32::TieRegistry
