@@ -1,5 +1,9 @@
 Revision history for Perl extension File::HomeDir
 
+0.53 2006-02-27 Adam Kennedy  adamk@cpan.org
+  * Typo caused Makefile.PL not to require Win32::TieRegistry on Win32
+  * Upgraded to Module::Install 0.57
+
 0.52 2005-01-04 Adam Kennedy  adamk@cpan.org
   * Added initial Darwin support.
 

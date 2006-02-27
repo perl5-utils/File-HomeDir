@@ -1,5 +1,3 @@
-require 5;
-use strict;
 use inc::Module::Install;
 
 # For a Module::Install script, this is actually a quite
@@ -16,7 +14,7 @@ build_requires 'Test::More' => '0.47';
 if ( $MacPerl::Version and $MacPerl::Version ) {
     requires   'Mac::Files' => 0;
 }
-if ( $^O eq 'MXWin32' ) {
+if ( $^O eq 'MSWin32' ) {
     requires   'Win32::TieRegistry' => 0;
 }
 

@@ -11,7 +11,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.52';
+	$VERSION = '0.53';
 }
 
 # If prefork is available, set Win32::TieRegistry
