@@ -1,5 +1,11 @@
 Revision history for Perl extension File::HomeDir
 
+0.55 2006-03-05 Adam Kennedy  adamk@cpan.org
+  * No functional changes
+  * Documentation bug fix
+  * Documented the todo list
+  * Updated Module::Install to 0.58
+
 0.54 2006-02-27 Adam Kennedy  adamk@cpan.org
   * Adding a dependency of Win32::TieRegistry's, so this installs.
   * Will remove it later when that bug is fixed in Win32::TieRegistry

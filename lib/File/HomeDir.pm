@@ -10,7 +10,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.54';
+	$VERSION = '0.55';
 
 	# Inherit manually
 	require Exporter;
@@ -168,8 +168,8 @@ File::HomeDir - Get the home directory for yourself or other users
   
   # Modern Interface (Other Users)
   $home = File::HomeDir->users_home('foo');
-  $docs = File::HomeDir->users_home('foo');
-  $data = File::HomeDir->users_home('foo');
+  $docs = File::HomeDir->users_documents('foo');
+  $data = File::HomeDir->users_data('foo');
   
   # Legacy Interfaces
   print "My dir is ", home(), " and root's is ", home('root'), "\n";
@@ -316,6 +316,22 @@ there being no such user.
 Note, however, that if the hash key is "" or undef (whether thru being
 a literal "", or a scalar whose value is empty-string or undef), then
 this returns zero-argument C<home()>, i.e., your home directory:
+
+=head1 TO DO
+
+- Become generally clearer on situations in which a user might not
+have a particular resource.
+
+- Add support for the root Mac user (requested by JKEENAN).
+
+- Add support for my_desktop (requested by RRWO)
+
+- Add support for my_music (requested by MIYAGAWA)
+
+- Merge remaining edge case code in File::HomeDir::Win32
+
+- Add more granularity to Unix, and add support to VMS and other
+esoteric platforms, so we can consider going core.
 
 =head1 SUPPORT
 
