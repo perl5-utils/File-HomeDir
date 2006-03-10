@@ -1,5 +1,10 @@
 Revision history for Perl extension File::HomeDir
 
+0.56 2006-03-10 Adam Kennedy  adamk@cpan.org
+  # No functional changes
+  * I screwed up Module::Install 0.58
+  * Fixed that, then incremented version to fix this
+  
 0.55 2006-03-05 Adam Kennedy  adamk@cpan.org
   * No functional changes
   * Documentation bug fix
