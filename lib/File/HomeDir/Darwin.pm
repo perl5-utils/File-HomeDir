@@ -8,7 +8,6 @@ use strict;
 use base 'File::HomeDir::Unix';
 use Carp ();
 
-# Globals
 use vars qw{$VERSION};
 BEGIN {
 	$VERSION = '0.57';
