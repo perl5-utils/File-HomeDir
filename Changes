@@ -1,5 +1,13 @@
 Revision history for Perl extension File::HomeDir
 
+0.57 2006-03-10 Adam Kennedy  adamk@cpan.org
+  # No functional changes
+  * Upgraded Module::Install to 0.62
+   (M:I is relatively sane from 0.61)
+  * Removing all use of UNIVERSAL::isa (the function)
+  * Adding missing use Carp() in a couple of cases
+  * Minor POD changes
+
 0.56 2006-03-10 Adam Kennedy  adamk@cpan.org
   # No functional changes
   * I screwed up Module::Install 0.58

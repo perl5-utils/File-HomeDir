@@ -10,7 +10,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.56';
+	$VERSION = '0.57';
 
 	# Inherit manually
 	require Exporter;
@@ -333,6 +333,9 @@ have a particular resource.
 - Add more granularity to Unix, and add support to VMS and other
 esoteric platforms, so we can consider going core.
 
+Anyone wishing to add support for the above are welcome to get an account
+to my SVN and add it directly.
+
 =head1 SUPPORT
 
 Bugs should be always be reported via the CPAN bug tracker at
@@ -345,7 +348,7 @@ For other issues, or commercial enhancement or support, contact the author.
 
 Adam Kennedy E<lt>cpan@ali.asE<gt>
 
-Original by:
+Original implementation by:
 
 Sean M. Burke C<sburke@cpan.org>
 
@@ -355,7 +358,7 @@ L<File::ShareDir>, L<File::HomeDir::Win32> (legacy)
 
 =head1 COPYRIGHT
 
-Copyright 2005 Adam Kennedy. All rights reserved.
+Copyright 2005-2006 Adam Kennedy. All rights reserved.
 
 Some parts copyright 2000 Sean M. Burke. All rights reserved.
 

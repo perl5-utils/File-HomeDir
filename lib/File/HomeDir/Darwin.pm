@@ -6,11 +6,12 @@ package File::HomeDir::Darwin;
 use 5.005;
 use strict;
 use base 'File::HomeDir::Unix';
+use Carp ();
 
 # Globals
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.56';
+	$VERSION = '0.57';
 }
 
 

@@ -4,7 +4,6 @@
 
 use strict;
 use lib ();
-use UNIVERSAL 'isa';
 use File::Spec::Functions ':ALL';
 BEGIN {
 	$| = 1;
@@ -12,13 +11,17 @@ BEGIN {
 		require FindBin;
 		$FindBin::Bin = $FindBin::Bin; # Avoid a warning
 		chdir catdir( $FindBin::Bin, updir() );
-		lib->import('blib', 'lib');
+		lib->import(
+			catdir('blib', 'arch'),
+			catdir('blib', 'lib' ),
+			catdir('lib'),
+			);
 	}
 }
 
 use Test::More tests => 7;
 
-ok( $] > 5.004, 'Perl version is 5.004 or newer' );
+ok( $] > 5.005, 'Perl version is 5.005 or newer' );
 
 use_ok( 'File::HomeDir'          );
 use_ok( 'File::HomeDir::Unix'    );
@@ -26,6 +29,6 @@ use_ok( 'File::HomeDir::Darwin'  );
 use_ok( 'File::HomeDir::Windows' );
 use_ok( 'File::HomeDir::MacOS9'  );
 
-ok( defined &home, 'Using File::HomeDir exports home()'    );
+ok( defined &home, 'Using File::HomeDir exports home()' );
 
 exit(0);
