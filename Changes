@@ -1,78 +1,83 @@
 Revision history for Perl extension File::HomeDir
 
+0.58 Wed 10 May 2006
+	# This release contains only build-time changes
+	- Upgrade Module::Install to 0.62 final
+	- AutoInstall is only needed for options, so remove auto_install
+
 0.57 2006-03-10 Adam Kennedy  adamk@cpan.org
-  # No functional changes
-  * Upgraded Module::Install to 0.62
-   (M:I is relatively sane from 0.61)
-  * Removing all use of UNIVERSAL::isa (the function)
-  * Adding missing use Carp() in a couple of cases
-  * Minor POD changes
+	# No functional changes
+	- Upgraded Module::Install to 0.62
+	  (M:I is relatively sane from 0.61)
+	- Removing all use of UNIVERSAL::isa (the function)
+	- Adding missing use Carp() in a couple of cases
+	- Minor POD changes
 
 0.56 2006-03-10 Adam Kennedy  adamk@cpan.org
-  # No functional changes
-  * I screwed up Module::Install 0.58
-  * Fixed that, then incremented version to fix this
-  
+	# No functional changes
+	- I screwed up Module::Install 0.58
+	- Fixed that, then incremented version to fix this
+
 0.55 2006-03-05 Adam Kennedy  adamk@cpan.org
-  * No functional changes
-  * Documentation bug fix
-  * Documented the todo list
-  * Updated Module::Install to 0.58
+	- No functional changes
+	- Documentation bug fix
+	- Documented the todo list
+	- Updated Module::Install to 0.58
 
 0.54 2006-02-27 Adam Kennedy  adamk@cpan.org
-  * Adding a dependency of Win32::TieRegistry's, so this installs.
-  * Will remove it later when that bug is fixed in Win32::TieRegistry
+	- Adding a dependency of Win32::TieRegistry's, so this installs.
+	- Will remove it later when that bug is fixed in Win32::TieRegistry
 
 0.53 2006-02-27 Adam Kennedy  adamk@cpan.org
-  * Typo caused Makefile.PL not to require Win32::TieRegistry on Win32
-  * Upgraded to Module::Install 0.57
+	- Typo caused Makefile.PL not to require Win32::TieRegistry on Win32
+	- Upgraded to Module::Install 0.57
 
 0.52 2005-01-04 Adam Kennedy  adamk@cpan.org
-  * Added initial Darwin support.
+	- Added initial Darwin support.
 
 0.51 2005-12-30 Adam Kennedy  adamk@cpan.org
-  * Fixed a typo where I left the require of the Windows module
-    as Win32. (Randy Kobes)
+	- Fixed a typo where I left the require of the Windows module
+	  as Win32. (Randy Kobes)
 
 0.50 2005-12-26 Adam Kennedy  adamk@cpan.org
 
-  * Rewrote the guts entirely to split functionality out into
-    platform-specific submodules, and to add more specialised
-    code for Win32.
+	- Rewrote the guts entirely to split functionality out into
+	  platform-specific submodules, and to add more specialised
+	  code for Win32.
 
 0.07 2005-11-09 Adam Kennedy  adamk@cpan.org
 
-  * Near-complete rewrite to modernise and prepare to
-    start merging in File::HomeDir::Win32.
+	- Near-complete rewrite to modernise and prepare to
+	  start merging in File::HomeDir::Win32.
 
-  * "Traded" module in exchange for Data::JavaScript::Anon :)
-  * Replaced Makefile.PL with Module::Install-based version that lists
-    its dependencies in a platform-sensitive way.
-    This also removes the need for evals.
-  * Replaced tests with Test::More-based ones and improved
-    coverage.
-  * Put the platform-specific code into if ( CONSTANT ) blocks
-    so they will compile out.
-  * Otherwise cleaned up and improved the layout of the code
-  * Added support for $ENV{HOMEDIR} and $ENV{HOMEPATH} on Win32
-  * More-explicit testing before we return a path
-  * Keep caching user home, but NOT "my" home in case the
-    process changes user.
+	- "Traded" module in exchange for Data::JavaScript::Anon :)
+	- Replaced Makefile.PL with Module::Install-based version that lists
+	  its dependencies in a platform-sensitive way.
+	  This also removes the need for evals.
+	- Replaced tests with Test::More-based ones and improved
+	  coverage.
+	- Put the platform-specific code into if ( CONSTANT ) blocks
+	  so they will compile out.
+	- Otherwise cleaned up and improved the layout of the code
+	- Added support for $ENV{HOMEDIR} and $ENV{HOMEPATH} on Win32
+	- More-explicit testing before we return a path
+	- Keep caching user home, but NOT "my" home in case the
+	  process changes user.
 
 0.06 2004-12-29  Sean M. Burke  sburke@cpan.org
 
-  * just rebundling.  No code changes.
+	- just rebundling.  No code changes.
 
 0.05 2000-12-09  Sean M. Burke  sburke@cpan.org
 
-  * adding MSWin code to consult the registry,
-    as helpfully suggested by Richard Soderberg <rs@crystalflame.net>.
-  * Tweaked MacPerl code a bit.
+	- adding MSWin code to consult the registry,
+	  as helpfully suggested by Richard Soderberg <rs@crystalflame.net>.
+	- Tweaked MacPerl code a bit.
 
 0.04 2000-12-09  Sean M. Burke  sburke@cpan.org
 
-  * just fixing incidental typos in the POD.
+	- just fixing incidental typos in the POD.
 
 0.03 2000-12-08  Sean M. Burke  sburke@cpan.org
 
-  *  first public release.
+	-  first public release.
