@@ -19,5 +19,4 @@ if ( $^O eq 'MSWin32' ) {
     requires   'Win32::TieRegistry' => 0;
 }
 
-auto_install;
 WriteAll;
