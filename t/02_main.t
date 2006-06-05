@@ -19,7 +19,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 23;
+use Test::More tests => 28;
 use File::HomeDir;
 
 # Find this user's homedir
@@ -27,29 +27,50 @@ my $home = home();
 ok( $home, 'Found our home directory'     );
 ok( -d $home, 'Our home directory exists' );
 
+# this call is not tested:
+# File::HomeDir->home
+
+eval {
+    home(undef);
+};
+like $@, qr{Can't use undef as a username}, 'home(undef)';
+
+
+
 # Find this user's home explicitly
 my $my_home = File::HomeDir->my_home;
 ok( $my_home, 'Found our home directory'     );
 ok( -d $my_home, 'Our home directory exists' );
-$my_home = File::HomeDir::my_home();
-ok( $my_home, 'Found our home directory'     );
-ok( -d $my_home, 'Our home directory exists' );
+is( $home, $my_home, 'Different APIs give same results' );
+
+
+my $my_home2 = File::HomeDir::my_home();
+ok( $my_home2, 'Found our home directory'     );
+ok( -d $my_home2, 'Our home directory exists' );
+is( $home, $my_home2, 'Different APIs give same results' );
+
+# shall we test using -w if the home directory is writable ?
 
 # Find this user's documents
 my $my_documents = File::HomeDir->my_documents;
 ok( $my_documents, 'Found our documents directory'     );
 ok( -d $my_documents, 'Our documents directory exists' );
-$my_documents = File::HomeDir::my_documents();
-ok( $my_documents, 'Found our documents directory'     );
-ok( -d $my_documents, 'Our documents directory exists' );
+
+my $my_documents2 = File::HomeDir::my_documents();
+ok( $my_documents2, 'Found our documents directory'     );
+ok( -d $my_documents2, 'Our documents directory exists' );
+is( $my_documents, $my_documents2, 'Different APIs give the same results' );
 
 # Find this user's local data
 my $my_data = File::HomeDir->my_data;
 ok( $my_data, 'Found our local data directory'     );
 ok( -d $my_data, 'Our local data directory exists' );
-$my_data = File::HomeDir::my_data();
-ok( $my_data, 'Found our local data directory'     );
-ok( -d $my_data, 'Our local data directory exists' );
+
+my $my_data2 = File::HomeDir::my_data();
+ok( $my_data2, 'Found our local data directory'     );
+ok( -d $my_data2, 'Our local data directory exists' );
+is( $my_data, $my_data2, 'Different APIs give the same results' );
+
 
 # On windows, we also implement my_desktop
 SKIP: {
@@ -61,10 +82,14 @@ SKIP: {
 	my $my_desktop = File::HomeDir->my_desktop;
 	ok( $my_desktop,    'Found our desktop directory'  );
 	ok( -d $my_desktop, 'Our local data directory exists' );
-	$my_desktop = File::HomeDir::my_desktop();
-	ok( $my_desktop,    'Found our desktop directory'  );
-	ok( -d $my_desktop, 'Our local data directory exists' );
+	my $my_desktop2 = File::HomeDir::my_desktop();
+	ok( $my_desktop2,    'Found our desktop directory'  );
+	ok( -d $my_desktop2, 'Our local data directory exists' );
+    is( $my_desktop, $my_desktop2, 'Different APIs give the same results' );
 }
+
+# Shall we check name space pollution by testing functions in main before
+# and after calling use ?
 
 # On platforms other than windows, find root's homedir
 SKIP: {
