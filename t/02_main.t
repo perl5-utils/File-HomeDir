@@ -5,6 +5,7 @@
 use strict;
 use lib ();
 use File::Spec::Functions ':ALL';
+use English '-no_match_vars';
 BEGIN {
 	$| = 1;
 	unless ( $ENV{HARNESS_ACTIVE} ) {
@@ -19,7 +20,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 28;
+use Test::More tests => 38;
 use File::HomeDir;
 
 # Find this user's homedir
@@ -33,7 +34,52 @@ ok( -d $home, 'Our home directory exists' );
 eval {
     home(undef);
 };
-like $@, qr{Can't use undef as a username}, 'home(undef)';
+like( $@, qr{Can't use undef as a username}, 'home(undef)' );
+eval {
+    my $h = $~{undef};
+};
+like( $@, qr{Failed to find home directory for user 'undef'}, 'home(undef)' );
+
+
+# Check error messages for unavailable tie constructs
+eval {
+    $~{getpwuid($UID)} = "new_dir";
+};
+like( $@, qr{You can't STORE with the %~ hash}, 'Cannot store in %~ hash' );
+
+eval {
+    exists $~{getpwuid($UID)};
+};
+like( $@, qr{You can't EXISTS with the %~ hash}, 'Cannot store in %~ hash' );
+
+eval {
+    delete $~{getpwuid($UID)};
+};
+like( $@, qr{You can't DELETE with the %~ hash}, 'Cannot store in %~ hash' );
+
+eval {
+    %~ = ();
+};
+like( $@, qr{You can't CLEAR with the %~ hash}, 'Cannot store in %~ hash' );
+
+eval {
+    my ($k, $v) = each(%~);
+};
+like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
+
+
+# right now if you call keys in void context
+# keys(%~);
+# it does not throw an exception while if you call it in list context it
+# throws an exception.
+my @usernames;
+eval {
+    @usernames = keys(%~);
+};
+like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
+
+# How to test NEXTKEY error if FIRSTKEY already throws an exception?
+
 
 
 
@@ -42,6 +88,10 @@ my $my_home = File::HomeDir->my_home;
 ok( $my_home, 'Found our home directory'     );
 ok( -d $my_home, 'Our home directory exists' );
 is( $home, $my_home, 'Different APIs give same results' );
+is( home(getpwuid($UID)), $home, 'home(username) returns the same value' );
+
+is( $~{""}, $home, 'Legacy %~ tied interface' );
+is( $~{getpwuid($UID)}, $home, 'Legacy %~ tied interface' );
 
 
 my $my_home2 = File::HomeDir::my_home();
