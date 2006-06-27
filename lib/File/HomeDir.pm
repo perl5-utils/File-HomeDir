@@ -35,7 +35,7 @@ if ( $^O eq 'MSWin32' ) {
 } elsif ( $^O eq 'darwin' ) {
 	$IMPLEMENTED_BY = 'File::HomeDir::Darwin';
 	require File::HomeDir::Darwin;
-} elsif ( $MacPerl::VERSION || $MacPerl::VERSION ) {
+} elsif ( $^O eq 'MacOS' ) {
 	$IMPLEMENTED_BY = 'File::HomeDir::MacOS9';
 	require File::HomeDir::MacOS9;
 } else {

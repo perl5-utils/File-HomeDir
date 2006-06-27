@@ -13,115 +13,87 @@ BEGIN {
 	$VERSION = '0.58';
 }
 
-
+# whatever you do, don't use prefork ... most Macs won't have it, especially
+# on Mac OS 9/"Classic" Macs
+use Mac::Files;
 
 
 
 #####################################################################
 # Current User Methods
 
-# sub my_home (no change)
+sub my_home {
+	my($class) = @_;
+	$class->_find_folder( kCurrentUserFolderType );
+}
 
 sub my_desktop {
-	my $class = shift;
-
-	# On Darwin the desktop should live at ~/Desktop
-	SCOPE: {
-		my $dir = $class->_to_desktop( $class->my_home );
-		return $dir if $dir;
-	}
-
-	Carp::croak("Could not locate current user's desktop");
+	my($class) = @_;
+	$class->_find_folder( kDesktopFolderType );
 }
 
 sub my_documents {
-	my $class = shift;
-
-	# On Darwin the desktop should live at ~/Documents
-	SCOPE: {
-		my $dir = $class->_to_documents( $class->my_home );
-		return $dir if $dir;
-	}
-
-	Carp::croak("Could not locate current user's documents");
+	my($class) = @_;
+	$class->_find_folder( kDocumentsFolderType );
 }
 
 sub my_data {
-	my $class = shift;
-
-	# On Darwin the desktop should live at ~/Library/Application Support
-	SCOPE: {
-		my $dir = $class->_to_data( $class->my_home );
-		return $dir if $dir;
-	}
-
-	Carp::croak("Could not locate current user's application data");
+	my($class) = @_;
+	$class->_find_folder( kApplicationSupportFolderType );
 }
 
 
-
+sub _find_folder {
+	my($class, $constant) = @_;
+	return FindFolder(kUserDomain, $constant);
+}
 
 
 #####################################################################
 # Arbitrary User Methods
 
-# sub users_home (no change)
+# sub users_home, inherit
 
+# in theory this can be done, but for now, let's cheat, since the
+# rest is Hard
 sub users_desktop {
-	my $class = shift;
-
-	# On Darwin the desktop should live at ~/Documents
-	SCOPE: {
-		my $dir = $class->_to_desktop( $class->users_home(@_) );
-		return $dir if $dir;
-	}
-
-	Carp::croak("Could not locate user's desktop");	
+	my($class, $name) = @_;
+	$class->_to_user( $class->my_desktop, $name );
 }
 
 sub users_documents {
-	my $class = shift;
-
-	# On Darwin the desktop should live at ~/Documents
-	SCOPE: {
-		my $dir = $class->_to_documents( $class->users_home(@_) );
-		return $dir if $dir;
-	}
-
-	Carp::croak("Could not locate user's desktop");	
+	my($class, $name) = @_;
+	$class->_to_user( $class->my_documents, $name );
 }
 
 sub users_data {
-	my $class = shift;
-
-	# On Darwin the desktop should live at ~/Documents
-	SCOPE: {
-		my $dir = $class->_to_data( $class->users_home(@_) );
-		return $dir if $dir;
-	}
-
-	Carp::croak("Could not locate user's desktop");	
+	my($class, $name) = @_;
+	$class->_to_user( $class->my_data, $name ) || $class->users_home($name);
 }
 
 
+# cheap hack ... not entirely reliable, perhaps, but ... c'est la vie, since
+# there's really no other good way to do it at this time, that i know of -- pudge
+sub _to_user {
+	my($class, $path, $name) = @_;
 
+	my $my_home    = $class->my_home;
+	my $users_home = $class->users_home($name);
 
-
-#####################################################################
-# Support Methods
-
-# On Darwin you can find a resource from the home directory consistently.
-
-sub _to_documents {
-	File::Spec->catdir( $_[1], 'Documents' );
-}
-
-sub _to_desktop {
-	File::Spec->catdir( $_[1], 'Desktop' );
-}
-
-sub _to_data {
-	File::Spec->catdir( $_[1], 'Library', 'Application Support' );
+	$path =~ s/^Q$my_home/$users_home/;
+	return $path;
 }
 
 1;
+
+=head1 TODO
+
+=over 4
+
+=item * Fallback to Unix if no Mac::Carbon available
+
+=item * Test with Mac OS (versions 7, 8, 9)
+
+=item * Some better way for users_* ?
+
+=back
