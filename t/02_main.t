@@ -20,7 +20,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 38;
+use Test::More tests => 39;
 use File::HomeDir;
 
 # Find this user's homedir
@@ -35,10 +35,13 @@ eval {
     home(undef);
 };
 like( $@, qr{Can't use undef as a username}, 'home(undef)' );
+my $warned = 0;
 eval {
-    my $h = $~{undef};
+	local $SIG{__WARN__} = sub { $warned++ };
+	my $h = $~{undef()};
 };
-like( $@, qr{Failed to find home directory for user 'undef'}, 'home(undef)' );
+is( $warned, 1, 'Emitted a single warning' );
+like( $@, qr{Can't use undef as a username}, '%~(undef())' );
 
 
 # Check error messages for unavailable tie constructs

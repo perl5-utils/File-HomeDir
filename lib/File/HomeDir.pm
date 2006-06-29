@@ -124,8 +124,13 @@ CLASS: {
 	sub TIEHASH { $SINGLETON }
 
 	sub FETCH {
+		# Catch a bad username
+		unless ( defined $_[1] ) {
+			Carp::croak("Can't use undef as a username");
+		}
+
 		# Get our homedir
-		if ( ! defined $_[1] or ! length $_[1] ) {
+		unless ( length $_[1] ) {
 			return File::HomeDir::my_home();
 		}
 
