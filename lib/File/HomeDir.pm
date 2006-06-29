@@ -10,7 +10,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.58';
+	$VERSION = '0.60_01';
 
 	# Inherit manually
 	require Exporter;
@@ -39,6 +39,7 @@ if ( $^O eq 'MSWin32' ) {
 	$IMPLEMENTED_BY = 'File::HomeDir::MacOS9';
 	require File::HomeDir::MacOS9;
 } else {
+	# Default to Unix semantics
 	$IMPLEMENTED_BY = 'File::HomeDir::Unix';
 	require File::HomeDir::Unix;
 }
@@ -179,17 +180,17 @@ File::HomeDir - Get the home directory for yourself or other users
 
 =head1 DESCRIPTION
 
-File::HomeDir is a module for dealing with issues relating to the
+B<File::HomeDir> is a module for dealing with issues relating to the
 location of directories for various purposes that are "owned" by a user,
 and to solve these problems consistently across a wide variety of
 platforms.
 
 This module provides two main interfaces.
 
-A modern File::Spec-style interface with a consistent OO API and
-different implementation modules to support various platforms,
-and a legacy interface from version 0.07 that exported a home()
-function by default and tied the %~ variable.
+The first is a modern L<File::Spec>-style interface with a consistent
+OO API and different implementation modules to support various
+platforms, and the second is a legacy interface from version 0.07 that
+exported a home() function by default and tied the %~ variable.
 
 =head2 Platform Neutrality
 
@@ -203,7 +204,7 @@ data to support an application should go in C<my_data>.
 
 On platforms that do not make this distinction, all these methods will
 harmlessly degrade to the main home directory, but on platforms that
-care C<File::HomeDir> will Do The Right Thing(tm).
+care B<File::HomeDir> will Do The Right Thing(tm).
 
 =head1 METHODS
 
@@ -215,21 +216,27 @@ This split is necesary, as on many platforms it is MUCH easier to find
 information about the current user compared to other users.
 
 All methods via a C<-d> test that the directory actually exists before
-returning.
+returning. However, because in some cases, certain platforms may not
+support the concept of home directories at all, a method may return
+C<undef> (both in scalar and list context) to indicate that there is
+no matching directory on the system. But anything returned can be
+trusted to actually exist.
 
 =head2 my_home
 
 The C<my_home> takes no arguments and returns the main home/profile
 directory for the current user.
 
-Returns the directory path as a string, or dies if it cannot be found.
+Returns the directory path as a string, C<undef> if the current user
+does not have a home direcotry, or dies on error.
 
 =head2 my_documents
 
 The C<my_documents> takes no arguments and returns the directory for
 the current user where the user's documents are stored.
 
-Returns the directory path as a string, or dies if it cannot be found.
+Returns the directory path as a string, C<undef> if the current user
+does not have a documents directory, or dies on error.
 
 =head2 my_data
 
@@ -245,7 +252,8 @@ of platforms.
 For example, on Unix you get C<~/.foo> and on Win32 you get
 C<~/Local Settings/Application Data/.foo>
 
-Returns the directory path as a string, or dies if it cannot be found.
+Returns the directory path as a string, C<undef> if the current user
+does not have a data directory, or dies on error.
 
 =head2 users_home
 
@@ -258,17 +266,20 @@ While most of the time this identifier would be some form of user name,
 it is permitted to vary per-platform to support user ids or UUIDs as
 applicable for that platform.
 
-Returns the directory path as a string, or dies if it cannot be found.
+Returns the directory path as a string, C<undef> if that user
+does not have a home directory, or dies on error.
 
 =head2 users_documents
 
   $docs = File::HomeDir->users_documents('foo');
 
-Returns the directory path as a string, or dies if it cannot be found.
+Returns the directory path as a string, C<undef> if that user
+does not have a documents directory, or dies on error.
 
 =head2 users_data
 
-Returns the directory path as a string, or dies if it cannot be found.
+Returns the directory path as a string, C<undef> if that user
+does not have a data directory, or dies on error.
 
 =head1 FUNCTIONS
 
@@ -358,9 +369,11 @@ L<File::ShareDir>, L<File::HomeDir::Win32> (legacy)
 
 =head1 COPYRIGHT
 
-Copyright 2005-2006 Adam Kennedy. All rights reserved.
+Copyright 2005, 2006 Adam Kennedy. All rights reserved.
 
 Some parts copyright 2000 Sean M. Burke. All rights reserved.
+
+Some parts copyright 2006 Chris Nandor. All rights reserved.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

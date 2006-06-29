@@ -8,7 +8,7 @@ use Carp ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.58';
+	$VERSION = '0.60_01';
 }
 
 
@@ -35,11 +35,11 @@ sub my_home {
 		return $home if $home and -d $home;
 	}
 
-	Carp::croak("Could not locate current user's home directory");
+	return undef;
 }
 
 sub my_desktop {
-	Carp::croak("The my_desktop is not implemented on this platform");
+	Carp::croak("The my_desktop method is not implemented on this platform");
 }
 
 # On unix, we keep both data and documents under the same folder
@@ -67,12 +67,12 @@ sub users_home {
 		return $home if $home and -d $home;
 	}
 
-	Carp::croak("Failed to find home directory for user '$name'");
+	return undef;
 }
 
 sub users_desktop {
 	my ($class, $name) = @_;
-	Carp::croak("Failed to find desktop for user '$name'");
+	Carp::croak("The my_desktop method is not implemented on this platform");
 }
 
 sub users_documents {

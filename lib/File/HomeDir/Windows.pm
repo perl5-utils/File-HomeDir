@@ -10,7 +10,7 @@ use File::Spec ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.58';
+	$VERSION = '0.60_01';
 }
 
 # If prefork is available, set Win32::TieRegistry
@@ -39,7 +39,7 @@ sub my_home {
 			);
 	}
 
-	Carp::croak("Could not locate current user's home directory");
+	return undef;
 }
 
 sub my_desktop {
@@ -69,7 +69,7 @@ sub my_desktop {
 		return $fixed if $fixed and -d $fixed;
 	}
 
-	Carp::croak("Failed to find current user's desktop");
+	return undef;
 }
 
 sub my_documents {
@@ -81,7 +81,7 @@ sub my_documents {
 		return $home if $home and -d $home;
 	}
 
-	Carp::croak("Failed to find current user's documents");
+	return undef;
 }
 
 sub my_data {
@@ -93,7 +93,7 @@ sub my_data {
 		return $home if $home and -d $home;
 	}
 
-	Carp::croak("Failed to find current user's documents");
+	return undef;
 }
 
 # The explorer shell holds all sorts of folder information.

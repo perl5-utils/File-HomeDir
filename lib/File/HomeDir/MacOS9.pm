@@ -10,11 +10,11 @@ use Carp ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.58';
+	$VERSION = '0.60_01';
 }
 
-# If prefork is available, set Mac::Files
-# to be preloaded if needed.
+# Load early if in a forking environment and we have
+# prefork, or at run-time if not.
 eval "use prefork 'Mac::Files'";
 
 
