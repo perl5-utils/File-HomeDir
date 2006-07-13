@@ -23,6 +23,15 @@ BEGIN {
 use Test::More tests => 40;
 use File::HomeDir;
 
+# For what scenarios can we be sure that we have desktop/documents
+my $HAVETOYS = 0;
+if ( $^O eq 'MSWin32' ) {
+	$HAVETOYS = 1;
+}
+if ( $^O eq 'darwin' and $< ) {
+	$HAVETOYS = 1;
+}
+
 # Find this user's homedir
 my $home = home();
 ok( $home, 'Found our home directory'     );
@@ -106,29 +115,54 @@ is( $home, $my_home2, 'Different APIs give same results' );
 
 # Find this user's documents
 my $my_documents = File::HomeDir->my_documents;
-ok( $my_documents, 'Found our documents directory'     );
-ok( -d $my_documents, 'Our documents directory exists' );
+SKIP: {
+	skip("Cannot assume existing of directory", 1) unless $HAVETOYS;
+	ok( $my_documents, 'Found our documents directory' );
+}
+SKIP: {
+	skip("No directory to test", 1) unless $my_documents;
+	ok( -d $my_documents, 'Our documents directory exists' );
+}
 
 my $my_documents2 = File::HomeDir::my_documents();
-ok( $my_documents2, 'Found our documents directory'     );
-ok( -d $my_documents2, 'Our documents directory exists' );
-is( $my_documents, $my_documents2, 'Different APIs give the same results' );
+SKIP: {
+	skip("Cannot assume existing of directory", 1) unless $HAVETOYS;
+	ok( $my_documents2, 'Found our documents directory' );
+}
+SKIP: {
+	skip("No directory to test", 2) unless $my_documents2;
+	ok( -d $my_documents2, 'Our documents directory exists' );
+	is( $my_documents, $my_documents2, 'Different APIs give the same results' );
+}
 
 # Find this user's local data
 my $my_data = File::HomeDir->my_data;
-ok( $my_data, 'Found our local data directory'     );
-ok( -d $my_data, 'Our local data directory exists' );
+SKIP: {
+	skip("Cannot assume existing of directory", 1) unless $HAVETOYS;
+	ok( $my_data, 'Found our local data directory'     );
+}
+SKIP: {
+	skip("No directory to test", 1) unless $my_data;
+	ok( -d $my_data, 'Our local data directory exists' );
+}
 
 my $my_data2 = File::HomeDir::my_data();
-ok( $my_data2, 'Found our local data directory'     );
-ok( -d $my_data2, 'Our local data directory exists' );
-is( $my_data, $my_data2, 'Different APIs give the same results' );
+SKIP: {
+	skip("Cannot assume existing of directory", 1) unless $HAVETOYS;
+	ok( $my_data2, 'Found our local data directory'     );
+}
+SKIP: {
+	skip("No directory to test", 2) unless $my_data2;
+	ok( -d $my_data2, 'Our local data directory exists' );
+	is( $my_data, $my_data2, 'Different APIs give the same results' );
+}
+
 
 
 # On windows, we also implement my_desktop
 SKIP: {
-	unless ( $^O eq 'MSWin32' or $^O eq 'darwin' ) {
-		skip("Skipping desktop on non-Windows", 4 );
+	unless ( $HAVETOYS ) {
+		skip("Cannot assume existing of directory", 4 );
 	}
 
 	# Find this user's local data
@@ -138,7 +172,7 @@ SKIP: {
 	my $my_desktop2 = File::HomeDir::my_desktop();
 	ok( $my_desktop2,    'Found our desktop directory'  );
 	ok( -d $my_desktop2, 'Our local data directory exists' );
-    is( $my_desktop, $my_desktop2, 'Different APIs give the same results' );
+	is( $my_desktop, $my_desktop2, 'Different APIs give the same results' );
 }
 
 # Shall we check name space pollution by testing functions in main before
