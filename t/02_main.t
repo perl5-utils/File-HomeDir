@@ -162,7 +162,7 @@ SKIP: {
 # On windows, we also implement my_desktop
 SKIP: {
 	unless ( $HAVETOYS ) {
-		skip("Cannot assume existing of directory", 4 );
+		skip("Cannot assume existing of directory", 5 );
 	}
 
 	# Find this user's local data
