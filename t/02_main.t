@@ -116,7 +116,7 @@ is( $home, $my_home2, 'Different APIs give same results' );
 # Find this user's documents
 my $my_documents = File::HomeDir->my_documents;
 SKIP: {
-	skip("Cannot assume existing of directory", 1) unless $HAVETOYS;
+	skip("Cannot assume existance of certain directories", 1) unless $HAVETOYS;
 	ok( $my_documents, 'Found our documents directory' );
 }
 SKIP: {
@@ -126,7 +126,7 @@ SKIP: {
 
 my $my_documents2 = File::HomeDir::my_documents();
 SKIP: {
-	skip("Cannot assume existing of directory", 1) unless $HAVETOYS;
+	skip("Cannot assume existance of certain directories", 1) unless $HAVETOYS;
 	ok( $my_documents2, 'Found our documents directory' );
 }
 SKIP: {
@@ -138,7 +138,7 @@ SKIP: {
 # Find this user's local data
 my $my_data = File::HomeDir->my_data;
 SKIP: {
-	skip("Cannot assume existing of directory", 1) unless $HAVETOYS;
+	skip("Cannot assume existance of certain directories", 1) unless $HAVETOYS;
 	ok( $my_data, 'Found our local data directory'     );
 }
 SKIP: {
@@ -148,7 +148,7 @@ SKIP: {
 
 my $my_data2 = File::HomeDir::my_data();
 SKIP: {
-	skip("Cannot assume existing of directory", 1) unless $HAVETOYS;
+	skip("Cannot assume existance of certain directories", 1) unless $HAVETOYS;
 	ok( $my_data2, 'Found our local data directory'     );
 }
 SKIP: {
@@ -162,7 +162,7 @@ SKIP: {
 # On windows, we also implement my_desktop
 SKIP: {
 	unless ( $HAVETOYS ) {
-		skip("Cannot assume existing of directory", 5 );
+		skip("Cannot assume existance of certain directories", 5 );
 	}
 
 	# Find this user's local data
