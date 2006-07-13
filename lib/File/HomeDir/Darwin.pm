@@ -7,6 +7,7 @@ use 5.005;
 use strict;
 use base 'File::HomeDir::Unix';
 use Carp ();
+use Cwd  ();
 
 use vars qw{$VERSION};
 BEGIN {
@@ -58,13 +59,18 @@ sub my_data {
 
 
 sub _find_folder {
-	my ($class, $constant) = @_;
+	my ($class, $name) = @_;
 	require Mac::Files;
-	return Mac::Files::FindFolder(
+	my $folder = Mac::Files::FindFolder(
 		Mac::Files::kUserDomain(),
-		$constant,
+		$name,
 		);
+	return $folder unless defined $folder;
+	return Cwd::abs_path($folder);
 }
+
+
+
 
 
 #####################################################################
@@ -73,25 +79,20 @@ sub _find_folder {
 sub users_home {
 	my $class = shift;
 	my $home  = $class->SUPER::users_home(@_);
-
-	# Dodgy hack to deal with root's home dir
-	# actually being /private/var/root
-	if ( $home eq '/var/root' ) {
-		$home = '/private/var/root';
-	}
-
-	return $home;
+	return Cwd::abs_path($home);
 }
 
 # in theory this can be done, but for now, let's cheat, since the
 # rest is Hard
 sub users_desktop {
 	my ($class, $name) = @_;
+	return undef if $name eq 'root';
 	$class->_to_user( $class->my_desktop, $name );
 }
 
 sub users_documents {
 	my ($class, $name) = @_;
+	return undef if $name eq 'root';
 	$class->_to_user( $class->my_documents, $name );
 }
 
