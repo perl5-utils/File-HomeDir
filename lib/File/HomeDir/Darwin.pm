@@ -70,7 +70,18 @@ sub _find_folder {
 #####################################################################
 # Arbitrary User Methods
 
-# sub users_home, inherit
+sub users_home {
+	my $class = shift;
+	my $home  = $class->SUPER::users_home(@_);
+
+	# Dodgy hack to deal with root's home dir
+	# actually being /private/var/root
+	if ( $home eq '/var/root' ) {
+		$home = '/private/var/root';
+	}
+
+	return $home;
+}
 
 # in theory this can be done, but for now, let's cheat, since the
 # rest is Hard
