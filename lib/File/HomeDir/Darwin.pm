@@ -11,7 +11,7 @@ use Cwd  ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.60_01';
+	$VERSION = '0.60_02';
 }
 
 # Load early if in a forking environment and we have
