@@ -20,7 +20,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 39;
+use Test::More tests => 40;
 use File::HomeDir;
 
 # Find this user's homedir
