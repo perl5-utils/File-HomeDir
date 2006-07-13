@@ -26,6 +26,7 @@ eval "use prefork 'Mac::Files'";
 
 sub my_home {
 	my ($class) = @_;
+	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kCurrentUserFolderType(),
 		);
@@ -33,6 +34,7 @@ sub my_home {
 
 sub my_desktop {
 	my ($class) = @_;
+	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kDesktopFolderType(),
 		);
@@ -40,6 +42,7 @@ sub my_desktop {
 
 sub my_documents {
 	my ($class) = @_;
+	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kDocumentsFolderType(),
 		);
@@ -47,6 +50,7 @@ sub my_documents {
 
 sub my_data {
 	my ($class) = @_;
+	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kApplicationSupportFolderType(),
 		);
@@ -55,6 +59,7 @@ sub my_data {
 
 sub _find_folder {
 	my ($class, $constant) = @_;
+	require Mac::Files;
 	return Mac::Files::FindFolder(
 		Mac::Files::kUserDomain(),
 		$constant,
