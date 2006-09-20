@@ -21,7 +21,13 @@ BEGIN {
 		my_home
 		my_desktop
 		my_documents
+		my_music
 		my_data
+		users_home
+		users_desktop
+		users_documents
+		users_music
+		users_data
 		};
 
 	# %~ doesn't need (and won't take) exporting, as it's a magic
@@ -56,15 +62,27 @@ sub my_home {
 }
 
 sub my_desktop {
-	$IMPLEMENTED_BY->my_desktop;
+	$IMPLEMENTED_BY->can('my_desktop')
+		? $IMPLEMENTED_BY->my_desktop
+		: Carp::croak("The my_desktop method is not implemented on this platform");
 }
 
 sub my_documents {
-	$IMPLEMENTED_BY->my_documents;
+	$IMPLEMENTED_BY->can('my_documents')
+		? $IMPLEMENTED_BY->my_documents
+		: Carp::croak("The my_documents method is not implemented on this platform");
+}
+
+sub my_music {
+	$IMPLEMENTED_BY->can('my_music')
+		? $IMPLEMENTED_BY->my_music
+		: Carp::croak("The my_music method is not implemented on this platform");
 }
 
 sub my_data {
-	$IMPLEMENTED_BY->my_data;
+	$IMPLEMENTED_BY->can('my_data')
+		? $IMPLEMENTED_BY->my_data
+		: Carp::croak("The my_data method is not implemented on this platform");
 }
 
 
@@ -73,6 +91,44 @@ sub my_data {
 
 #####################################################################
 # General User Methods
+
+sub users_home {
+	$IMPLEMENTED_BY->can('users_home')
+		? $IMPLEMENTED_BY->users_home( $_[-1] )
+		: Carp::croak("The users_home method is not implemented on this platform");
+}
+
+sub users_desktop {
+	$IMPLEMENTED_BY->can('users_desktop')
+		? $IMPLEMENTED_BY->users_desktop( $_[-1] )
+		: Carp::croak("The users_desktop method is not implemented on this platform");
+}
+
+sub users_documents {
+	$IMPLEMENTED_BY->can('users_documents')
+		? $IMPLEMENTED_BY->users_documents( $_[-1] )
+		: Carp::croak("The users_documents method is not implemented on this platform");
+}
+
+sub users_music {
+	$IMPLEMENTED_BY->can('users_music')
+		? $IMPLEMENTED_BY->users_music( $_[-1] )
+		: Carp::croak("The users_music method is not implemented on this platform");
+}
+
+sub users_data {
+	$IMPLEMENTED_BY->can('users_data')
+		? $IMPLEMENTED_BY->users_data( $_[-1] )
+		: Carp::croak("The users_data method is not implemented on this platform");
+}
+
+
+
+
+
+
+#####################################################################
+# Legacy Methods
 
 # Find the home directory of an arbitrary user
 sub home (;$) {
@@ -161,21 +217,25 @@ __END__
 
 =head1 NAME
 
-File::HomeDir - Get the home directory for yourself or other users
+File::HomeDir - Find your home and other directories, on any platform
 
 =head1 SYNOPSIS
 
   use File::HomeDir;
   
   # Modern Interface (Current User)
-  $home = File::HomeDir->my_home;
-  $docs = File::HomeDir->my_documents;
-  $data = File::HomeDir->my_data;
+  $home    = File::HomeDir->my_home;
+  $desktop = File::HomeDir->my_desktop;
+  $docs    = File::HomeDir->my_documents;
+  $music   = File::HomeDir->my_music;
+  $data    = File::HomeDir->my_data;
   
   # Modern Interface (Other Users)
-  $home = File::HomeDir->users_home('foo');
-  $docs = File::HomeDir->users_documents('foo');
-  $data = File::HomeDir->users_data('foo');
+  $home    = File::HomeDir->users_home('foo');
+  $desktop = File::HomeDir->users_desktop('foo');
+  $docs    = File::HomeDir->users_documents('foo');
+  $music   = File::HomeDir->users_music('foo');
+  $data    = File::HomeDir->users_data('foo');
   
   # Legacy Interfaces
   print "My dir is ", home(), " and root's is ", home('root'), "\n";
@@ -186,30 +246,48 @@ File::HomeDir - Get the home directory for yourself or other users
 =head1 DESCRIPTION
 
 B<File::HomeDir> is a module for dealing with issues relating to the
-location of directories for various purposes that are "owned" by a user,
-and to solve these problems consistently across a wide variety of
+location of directories that are "owned" by a user, primarily your user,
+and to solve these issues consistently across a wide variety of
 platforms.
+
+Thus, a single API is presented that can find your resources on any
+platform.
 
 This module provides two main interfaces.
 
 The first is a modern L<File::Spec>-style interface with a consistent
 OO API and different implementation modules to support various
-platforms, and the second is a legacy interface from version 0.07 that
-exported a home() function by default and tied the %~ variable.
+platforms. You are B<strongly> recommended to use this interface.
+
+The second interface is for legacy support of the original 0.07 interface
+that exported a C<home()> function by default and tied the C<%~> variable.
+
+It is generally not recommended that you use this interface, but due to
+back-compatibility reasons they will remain supported until at least 2010.
+
+After this date, the home() function will remain, but we will consider
+deprecating the (namespace-polluting) C<%~> tied hash, to be removed by 2015
+(maintaining the general Perl convention of a 10 year support period
+for legacy APIs in common use).
 
 =head2 Platform Neutrality
 
 In the Unix world, many different types of data can be mixed together
-in your home directory.  On some other platforms, seperate directories
-are allocated for different types of data.
+in your home directory (although on some Unix platforms this is no longer
+the case, particularly for "desktop"-oriented platforms).
 
-When writing applications, you should try to use the most specific
-method you can. User documents should be saved in C<my_documents>,
-data to support an application should go in C<my_data>.
+On some non-Unix platforms, seperate directories are allocated for
+different types of data and have been for a long time.
 
-On platforms that do not make this distinction, all these methods will
-harmlessly degrade to the main home directory, but on platforms that
-care B<File::HomeDir> will Do The Right Thing(tm).
+When writing applications on top of B<File::HomeDir>, you should thus
+always try to use the most specific method you can. User documents should
+be saved in C<my_documents>, data that supports an application but isn't
+normally editing by the user directory should go into C<my_data>.
+
+On platforms that do not make any distinction, all these different
+methods will harmlessly degrade to the main home directory, but on
+platforms that care B<File::HomeDir> will always try to Do The Right
+Thing(tm).
 
 =head1 METHODS
 
@@ -217,28 +295,75 @@ Two types of methods are provided. The C<my_method> series of methods for
 finding resources for the current user, and the C<users_method> (read as
 "user's method") series for finding resources for arbitrary users.
 
-This split is necesary, as on many platforms it is MUCH easier to find
-information about the current user compared to other users.
+This split is necesary, as on most platforms it is B<much> easier to find
+information about the current user compared to other users, and indeed
+on a number you cannot find out information such as C<users_desktop> at
+all, due to security restrictions.
 
-All methods via a C<-d> test that the directory actually exists before
-returning. However, because in some cases, certain platforms may not
-support the concept of home directories at all, a method may return
-C<undef> (both in scalar and list context) to indicate that there is
-no matching directory on the system. But anything returned can be
-trusted to actually exist.
+All methods will double check (using a C<-d> test) that a directory
+actually exists before returning it, so you may trust in the values
+that are returned (subject to the usual caveats of race conditions of
+directories being deleted at the moment between a directory being returned
+and you using it).
+
+However, because in some cases platforms may not support the concept of home
+directories at all, any method may return C<undef> (both in scalar and list
+context) to indicate that there is no matching directory on the system.
+
+Please note that in the current version, B<all implementations support
+my_home>, however this is the only method that is universally supported, and
+B<all other methods may return undef>. The reliability of C<my_home> may be
+reduced in future if C<File::HomeDir> heads towards the core, so you should
+not trust that C<my_home> will always return a value in your own code.
 
 =head2 my_home
 
-The C<my_home> takes no arguments and returns the main home/profile
+The C<my_home> method takes no arguments and returns the main home/profile
 directory for the current user.
 
+If the distinction is important to you, the term "current" refers to the
+real user, and not the effective user.
+
+This is also the case for all of the other "my" methods.
+
 Returns the directory path as a string, C<undef> if the current user
-does not have a home direcotry, or dies on error.
+does not have a home directory, or dies on error.
+
+=head2 my_desktop
+
+The C<my_desktop> method takes no arguments and returns the "desktop"
+directory for the current user.
+
+Due to the diversity and complexity of implementions required to deal with
+implementing the required functionality fully and completely, for the moment
+C<my_desktop> is B<not> going to be implemented.
+
+That said, I am extremely interested in code to implement C<my_desktop> on
+Unix, as long as it is capable of dealing (as the Windows implementation
+does) with internationalisation. It should also avoid false positive
+results by making sure it only returns the appropriate directories for the
+appropriate platforms.
+
+Returns the directory path as a string, C<undef> if the current user
+does not have a desktop directory, or dies on error.
 
 =head2 my_documents
 
-The C<my_documents> takes no arguments and returns the directory for
-the current user where the user's documents are stored.
+The C<my_documents> method takes no arguments and returns the directory (for
+the current user) where the user's documents are stored.
+
+Returns the directory path as a string, C<undef> if the current user
+does not have a documents directory, or dies on error.
+
+=head2 my_music
+
+The C<my_music> method is initial made available only on Windows. It takes
+no arguments and returns the directory (for the current user) where the
+user's music is stored.
+
+No bias is made to any particular music type or music program, rather the
+concept of a directory to hold the user's music is made at the level of the
+underlying operating system or (at least) desktop environment.
 
 Returns the directory path as a string, C<undef> if the current user
 does not have a documents directory, or dies on error.
@@ -282,6 +407,8 @@ Returns the directory path as a string, C<undef> if that user
 does not have a documents directory, or dies on error.
 
 =head2 users_data
+
+  $data = File::HomeDir->users_data('foo');
 
 Returns the directory path as a string, C<undef> if that user
 does not have a data directory, or dies on error.
@@ -333,40 +460,66 @@ Note, however, that if the hash key is "" or undef (whether thru being
 a literal "", or a scalar whose value is empty-string or undef), then
 this returns zero-argument C<home()>, i.e., your home directory:
 
+Further, please note that because the %~ hash compulsorily modifies
+a hash outside of it's namespace, and presents an overly simplistic
+approach to home directories, it is likely to ultimately be removed.
+
+The interface is currently expected to be formally deprecated from 2010
+(but no earlier) and removed from 2015 (but no earlier). If very heavy
+use is found in the wild, these plans may be pushed back.
+
 =head1 TO DO
 
 - Become generally clearer on situations in which a user might not
 have a particular resource.
-
-- Add support for the root Mac user (requested by JKEENAN).
-
-- Add support for my_desktop (requested by RRWO)
-
-- Add support for my_music (requested by MIYAGAWA)
 
 - Merge remaining edge case code in File::HomeDir::Win32
 
 - Add more granularity to Unix, and add support to VMS and other
 esoteric platforms, so we can consider going core.
 
-Anyone wishing to add support for the above are welcome to get an account
-to my SVN and add it directly.
-
 =head1 SUPPORT
 
-Bugs should be always be reported via the CPAN bug tracker at
+This module is stored in an Open Repository at the following address.
+
+L<http://svn.phase-n.com/svn/cpan/trunk/File-HomeDir>
+
+Write access to the repository is made available automatically to any
+published CPAN author, and to most other volunteers on request.
+
+If you are able to submit your bug report in the form of new (failing)
+unit tests, or can apply your fix directly instead of submitting a patch,
+you are B<strongly> encouraged to do so as the author currently maintains
+over 100 modules and it can take some time to deal with non-Critcal bug
+reports or patches.
+
+This will guarentee that your issue will be addressed in the next
+release of the module.
+
+If you cannot provide a direct test or fix, or don't have time to do so,
+then regular bug reports are still accepted and appreciated via the CPAN
+bug tracker.
 
 L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=File-HomeDir>
 
-For other issues, or commercial enhancement or support, contact the author.
+For other issues, for commercial enhancement or support, or to have your
+write access enabled for the repository, contact the author at the email
+address above.
+
+=head1 ACKNOWLEDGEMENTS
+
+The biggest acknowledgement must go to Chris Nandor, who wielded his
+legendary Mac-fu and turned my initial fairly ordinary Darwin
+implementation into something that actually worked properly everywhere,
+and then donated a Mac OS X license to allow it to be maintained properly.
 
 =head1 AUTHORS
 
-Adam Kennedy E<lt>cpan@ali.asE<gt>
+Adam Kennedy E<lt>adamk@cpan.orgE<gt>
 
-Original implementation by:
+Sean M. Burke E<lt>sburke@cpan.orgE<gt>
 
-Sean M. Burke C<sburke@cpan.org>
+Chris Nandor E<lt>cnandor@cpan.orgE<gt>
 
 =head1 SEE ALSO
 
@@ -374,11 +527,11 @@ L<File::ShareDir>, L<File::HomeDir::Win32> (legacy)
 
 =head1 COPYRIGHT
 
-Copyright 2005, 2006 Adam Kennedy. All rights reserved.
+Copyright 2005, 2006 Adam Kennedy.
 
-Some parts copyright 2000 Sean M. Burke. All rights reserved.
+Some parts copyright 2000 Sean M. Burke.
 
-Some parts copyright 2006 Chris Nandor. All rights reserved.
+Some parts copyright 2006 Chris Nandor.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

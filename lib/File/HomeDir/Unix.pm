@@ -38,10 +38,6 @@ sub my_home {
 	return undef;
 }
 
-sub my_desktop {
-	Carp::croak("The my_desktop method is not implemented on this platform");
-}
-
 # On unix, we keep both data and documents under the same folder
 sub my_documents {
 	shift->my_home;
@@ -68,11 +64,6 @@ sub users_home {
 	}
 
 	return undef;
-}
-
-sub users_desktop {
-	my ($class, $name) = @_;
-	Carp::croak("The my_desktop method is not implemented on this platform");
 }
 
 sub users_documents {

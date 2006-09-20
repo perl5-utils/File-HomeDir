@@ -47,8 +47,8 @@ sub my_desktop {
 
 	# The most correct way to find the desktop
 	SCOPE: {
-		my $home = $class->my_win32_folder('Desktop');
-		return $home if $home and -d $home;
+		my $dir = $class->my_win32_folder('Desktop');
+		return $dir if $dir and -d $dir;
 	}
 
 	# MSWindows sets WINDIR, MS WinNT sets USERPROFILE.
@@ -60,13 +60,16 @@ sub my_desktop {
 
 	# As a last resort, try some hard-wired values
 	foreach my $fixed (
+		# The reason there are both types of slash here is because
+		# this set of paths has been kept from thethe original version
+		# of File::HomeDir::Win32 (before it was rewritten).
+		# I can only assume this is Cygwin-related stuff.
 		"C:\\windows\\desktop",
 		"C:\\win95\\desktop",
-		# In the original, I can only assume this is Cygwin stuff
 		"C:/win95/desktop",
 		"C:/windows/desktop",
 	) {
-		return $fixed if $fixed and -d $fixed;
+		return $fixed if -d $fixed;
 	}
 
 	return undef;
@@ -77,8 +80,8 @@ sub my_documents {
 
 	# The most correct way to find my documents
 	SCOPE: {
-		my $home = $class->my_win32_folder('Personal');
-		return $home if $home and -d $home;
+		my $dir = $class->my_win32_folder('Personal');
+		return $dir if $dir and -d $dir;
 	}
 
 	return undef;
@@ -89,8 +92,20 @@ sub my_data {
 
 	# The most correct way to find my documents
 	SCOPE: {
-		my $home = $class->my_win32_folder('Local AppData');
-		return $home if $home and -d $home;
+		my $dir = $class->my_win32_folder('Local AppData');
+		return $dir if $dir and -d $dir;
+	}
+
+	return undef;
+}
+
+sub my_music {
+	my $class = shift;
+
+	# The most correct way to find my documents
+	SCOPE: {
+		my $dir = $class->my_win32_folder('My Music');
+		return $dir if $dir and -d $dir;
 	}
 
 	return undef;
@@ -112,33 +127,6 @@ sub my_win32_folder {
 	# Find the specific folder
 	my $folder = $folders->GetValue(shift);
 	return $folder;
-}
-
-
-
-
-
-#####################################################################
-# General User Methods
-
-sub users_home {
-	my ($class, $name) = @_;
-	Carp::croak("users_home is not implemented on this platform");
-}
-
-sub users_documents {
-	my ($class, $name) = @_;
-	Carp::croak("users_documents is not implemented on this platform");
-}
-
-sub users_data {
-	my ($class, $name) = @_;
-	Carp::croak("users_data is not implemented on this platform");
-}
-
-sub users_desktop {
-	my ($class, $name) = @_;
-	Carp::croak("users_desktop is not implemented on this platform");
 }
 
 1;

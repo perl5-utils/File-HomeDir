@@ -1,7 +1,6 @@
 Revision history for Perl extension File::HomeDir
 
 0.60_02 Fri 14 Jul 2006
-	# Cleaning up
         - Altered testing to allow cases where there are no "toys" directories
         - More cleanups for Darwin in the root case
         - Updating dependencies to something more modern
@@ -14,12 +13,12 @@ Revision history for Perl extension File::HomeDir
 	- Major upgrade to Darwin driver (CNANDOR)
 
 0.58 Wed 10 May 2006
-	# This release contains only build-time changes
+	# No functional changes, upgrading has no benefit.
 	- Upgrade Module::Install to 0.62 final
 	- AutoInstall is only needed for options, so remove auto_install
 
 0.57 2006-03-10 Adam Kennedy  adamk@cpan.org
-	# No functional changes
+	# No functional changes, upgrading has no benefit.
 	- Upgraded Module::Install to 0.62
 	  (M:I is relatively sane from 0.61)
 	- Removing all use of UNIVERSAL::isa (the function)
@@ -27,12 +26,12 @@ Revision history for Perl extension File::HomeDir
 	- Minor POD changes
 
 0.56 2006-03-10 Adam Kennedy  adamk@cpan.org
-	# No functional changes
+	# No functional changes, upgrading has no benefit.
 	- I screwed up Module::Install 0.58
 	- Fixed that, then incremented version to fix this
 
 0.55 2006-03-05 Adam Kennedy  adamk@cpan.org
-	- No functional changes
+	# No functional changes, upgrading has no benefit.
 	- Documentation bug fix
 	- Documented the todo list
 	- Updated Module::Install to 0.58
@@ -53,13 +52,11 @@ Revision history for Perl extension File::HomeDir
 	  as Win32. (Randy Kobes)
 
 0.50 2005-12-26 Adam Kennedy  adamk@cpan.org
-
 	- Rewrote the guts entirely to split functionality out into
 	  platform-specific submodules, and to add more specialised
 	  code for Win32.
 
 0.07 2005-11-09 Adam Kennedy  adamk@cpan.org
-
 	- Near-complete rewrite to modernise and prepare to
 	  start merging in File::HomeDir::Win32.
 
@@ -78,19 +75,16 @@ Revision history for Perl extension File::HomeDir
 	  process changes user.
 
 0.06 2004-12-29  Sean M. Burke  sburke@cpan.org
-
+	# No functional changes, upgrading has no benefit.
 	- just rebundling.  No code changes.
 
 0.05 2000-12-09  Sean M. Burke  sburke@cpan.org
-
 	- adding MSWin code to consult the registry,
 	  as helpfully suggested by Richard Soderberg <rs@crystalflame.net>.
 	- Tweaked MacPerl code a bit.
 
 0.04 2000-12-09  Sean M. Burke  sburke@cpan.org
-
 	- just fixing incidental typos in the POD.
 
 0.03 2000-12-08  Sean M. Burke  sburke@cpan.org
-
 	-  first public release.
