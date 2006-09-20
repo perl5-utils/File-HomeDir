@@ -1,5 +1,10 @@
 Revision history for Perl extension File::HomeDir
 
+0.60_03 Wed 20 Sep 2006
+	- Cleaned up the way unimplemented method exceptions are thrown.
+	- Fleshed out the docs a bit more.
+	- Added an initial implementation of my_music
+
 0.60_02 Fri 14 Jul 2006
         - Altered testing to allow cases where there are no "toys" directories
         - More cleanups for Darwin in the root case
