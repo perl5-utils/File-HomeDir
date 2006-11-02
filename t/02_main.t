@@ -20,7 +20,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 55;
+use Test::More;
 use File::HomeDir;
 
 # For what scenarios can we be sure that we have desktop/documents
@@ -31,6 +31,8 @@ if ( $^O eq 'MSWin32' ) {
 if ( $^O eq 'darwin' and $< ) {
 	$HAVETOYS = 1;
 }
+
+plan tests => ($HAVETOYS ? 55 : 40);
 
 # Find this user's homedir
 my $home = home();
