@@ -1,5 +1,11 @@
 Revision history for Perl extension File::HomeDir
 
+0.60_04 Thu 2 Nov 2006 Stephen Steneker  stennie@cpan.org
+	- win32: add support for my_pictures, my_videos
+	- darwin: add support for my_music, my_pictures, my_videos
+	- Skip "root" tests on darwin, not supported
+	- add POD docs with examples for o/s specific implementations
+
 0.60_03 Wed 20 Sep 2006
 	- Cleaned up the way unimplemented method exceptions are thrown.
 	- Fleshed out the docs a bit more.

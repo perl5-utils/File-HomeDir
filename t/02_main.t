@@ -20,7 +20,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 40;
+use Test::More tests => 55;
 use File::HomeDir;
 
 # For what scenarios can we be sure that we have desktop/documents
@@ -157,15 +157,13 @@ SKIP: {
 	is( $my_data, $my_data2, 'Different APIs give the same results' );
 }
 
-
-
-# On windows, we also implement my_desktop
+# Desktop cannot be assumed in all environments
 SKIP: {
 	unless ( $HAVETOYS ) {
-		skip("Cannot assume existance of certain directories", 5 );
+		skip("Cannot assume existance of user Desktop directories", 5 );
 	}
 
-	# Find this user's local data
+	# Find this user's desktop data
 	my $my_desktop = File::HomeDir->my_desktop;
 	ok( $my_desktop,    'Found our desktop directory'  );
 	ok( -d $my_desktop, 'Our local data directory exists' );
@@ -173,6 +171,31 @@ SKIP: {
 	ok( $my_desktop2,    'Found our desktop directory'  );
 	ok( -d $my_desktop2, 'Our local data directory exists' );
 	is( $my_desktop, $my_desktop2, 'Different APIs give the same results' );
+
+	my $my_music = File::HomeDir->my_music;
+	ok( $my_music,    'Found our music directory'  );
+	ok( -d $my_music, 'Our local data directory exists' );
+	my $my_music2 = File::HomeDir::my_music();
+	ok( $my_music2,    'Found our music directory'  );
+	ok( -d $my_music2, 'Our local data directory exists' );
+	is( $my_music, $my_music2, 'Different APIs give the same results' );
+
+	my $my_pictures = File::HomeDir->my_pictures;
+	ok( $my_pictures,    'Found our pictures directory'  );
+	ok( -d $my_pictures, 'Our local data directory exists' );
+	my $my_pictures2 = File::HomeDir::my_pictures();
+	ok( $my_pictures2,    'Found our pictures directory'  );
+	ok( -d $my_pictures2, 'Our local data directory exists' );
+	is( $my_pictures, $my_pictures2, 'Different APIs give the same results' );
+	
+	my $my_videos = File::HomeDir->my_videos;
+	ok( $my_videos,    'Found our videos directory'  );
+	ok( -d $my_videos, 'Our local data directory exists' );
+	my $my_videos2 = File::HomeDir::my_videos();
+	ok( $my_videos2,    'Found our videos directory'  );
+	ok( -d $my_videos2, 'Our local data directory exists' );
+	is( $my_videos, $my_videos2, 'Different APIs give the same results' );
+
 }
 
 # Shall we check name space pollution by testing functions in main before
@@ -180,8 +203,8 @@ SKIP: {
 
 # On platforms other than windows, find root's homedir
 SKIP: {
-	if ( $^O eq 'MSWin32' ) {
-		skip("Skipping root test on Windows", 5 );
+	if ( $^O eq 'MSWin32' or $^O eq 'darwin') {
+		skip("Skipping root test on $^O", 5 );
 	}
 
 	# Determine root
@@ -192,13 +215,13 @@ SKIP: {
 
 	# Get root's homedir
 	my $root_home1 = home($root);
-	ok( $root_home1,    "Got root's home direcotry"   );
-	ok( -d $root_home1, "Found root's home direcotry" );
+	ok( $root_home1,    "Got root's home directory"   );
+	ok( -d $root_home1, "Found root's home directory" );
 
 	# Confirm against %~ hash
 	my $root_home2 = $~{$root};
-	ok( $root_home2,    "Got root's home direcotry"   );
-	ok( -d $root_home2, "Found root's home direcotry" );
+	ok( $root_home2,    "Got root's home directory"   );
+	ok( -d $root_home2, "Found root's home directory" );
 
 	# Root account via different methods match
 	is( $root_home1, $root_home2, 'Home dirs match' );

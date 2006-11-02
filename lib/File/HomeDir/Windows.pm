@@ -10,7 +10,7 @@ use File::Spec ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.60_03';
+	$VERSION = '0.60_04';
 }
 
 # If prefork is available, set Win32::TieRegistry
@@ -102,9 +102,33 @@ sub my_data {
 sub my_music {
 	my $class = shift;
 
-	# The most correct way to find my documents
+	# The most correct way to find my music
 	SCOPE: {
 		my $dir = $class->my_win32_folder('My Music');
+		return $dir if $dir and -d $dir;
+	}
+
+	return undef;
+}
+
+sub my_pictures {
+	my $class = shift;
+
+	# The most correct way to find my pictures
+	SCOPE: {
+		my $dir = $class->my_win32_folder('My Pictures');
+		return $dir if $dir and -d $dir;
+	}
+
+	return undef;
+}
+
+sub my_videos {
+	my $class = shift;
+
+	# The most correct way to find my videos
+	SCOPE: {
+		my $dir = $class->my_win32_folder('My Video');
 		return $dir if $dir and -d $dir;
 	}
 
@@ -130,3 +154,37 @@ sub my_win32_folder {
 }
 
 1;
+
+=pod
+
+=head1 NAME
+
+File::HomeDir::Windows - find your home and other directories, on Windows
+
+=head1 DESCRIPTION
+
+This module provides Windows-specific implementations for determining
+common user directories.  In normal usage this module will always be
+used via L<File::HomeDir>.
+
+=head1 SYNOPSIS
+
+  use File::HomeDir;
+  
+  # Find directories for the current user (eg. using Windows XP Professional)
+  $home    = File::HomeDir->my_home;        # C:\Documents and Settings\mylogin
+  $desktop = File::HomeDir->my_desktop;     # C:\Documents and Settings\mylogin\Desktop
+  $docs    = File::HomeDir->my_documents;   # C:\Documents and Settings\mylogin\My Documents
+  $music   = File::HomeDir->my_music;       # C:\Documents and Settings\mylogin\My Documents\My Music
+  $pics    = File::HomeDir->my_pictures;    # C:\Documents and Settings\mylogin\My Documents\My Pictures
+  $videos  = File::HomeDir->my_videos;      # C:\Documents and Settings\mylogin\My Documents\My Video
+  $data    = File::HomeDir->my_data;        # C:\Documents and Settings\mylogin\Local Settings\Application Data
+   
+
+=head1 TODO
+
+=over 4
+
+=item * Merge remaining edge case code in L<File::HomeDir::Win32>
+
+=back

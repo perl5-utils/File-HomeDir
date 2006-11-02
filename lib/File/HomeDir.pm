@@ -10,7 +10,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.60_03';
+	$VERSION = '0.60_04';
 
 	# Inherit manually
 	require Exporter;
@@ -22,11 +22,15 @@ BEGIN {
 		my_desktop
 		my_documents
 		my_music
+		my_pictures
+		my_videos
 		my_data
 		users_home
 		users_desktop
 		users_documents
 		users_music
+		users_pictures
+		users_videos
 		users_data
 		};
 
@@ -77,6 +81,18 @@ sub my_music {
 	$IMPLEMENTED_BY->can('my_music')
 		? $IMPLEMENTED_BY->my_music
 		: Carp::croak("The my_music method is not implemented on this platform");
+}
+
+sub my_pictures {
+	$IMPLEMENTED_BY->can('my_pictures')
+		? $IMPLEMENTED_BY->my_pictures
+		: Carp::croak("The my_pictures method is not implemented on this platform");
+}
+
+sub my_videos {
+	$IMPLEMENTED_BY->can('my_videos')
+		? $IMPLEMENTED_BY->my_videos
+		: Carp::croak("The my_videos method is not implemented on this platform");
 }
 
 sub my_data {
@@ -228,6 +244,8 @@ File::HomeDir - Find your home and other directories, on any platform
   $desktop = File::HomeDir->my_desktop;
   $docs    = File::HomeDir->my_documents;
   $music   = File::HomeDir->my_music;
+  $pics    = File::HomeDir->my_pictures;
+  $videos  = File::HomeDir->my_videos;
   $data    = File::HomeDir->my_data;
   
   # Modern Interface (Other Users)
@@ -235,6 +253,8 @@ File::HomeDir - Find your home and other directories, on any platform
   $desktop = File::HomeDir->users_desktop('foo');
   $docs    = File::HomeDir->users_documents('foo');
   $music   = File::HomeDir->users_music('foo');
+  $pics    = File::HomeDir->users_pictures('foo');
+  $video   = File::HomeDir->users_videos('foo');
   $data    = File::HomeDir->users_data('foo');
   
   # Legacy Interfaces
@@ -357,16 +377,39 @@ does not have a documents directory, or dies on error.
 
 =head2 my_music
 
-The C<my_music> method is initial made available only on Windows. It takes
-no arguments and returns the directory (for the current user) where the
-user's music is stored.
+The C<my_music> method takes no arguments and returns the directory
+where the current user's music is stored.
 
 No bias is made to any particular music type or music program, rather the
 concept of a directory to hold the user's music is made at the level of the
 underlying operating system or (at least) desktop environment.
 
 Returns the directory path as a string, C<undef> if the current user
-does not have a documents directory, or dies on error.
+does not have a suitable directory, or dies on error.
+
+=head2 my_pictures
+
+The C<my_pictures> method takes no arguments and returns the directory
+where the current user's pictures are stored.
+
+No bias is made to any particular picture type or picture program, rather the
+concept of a directory to hold the user's pictures is made at the level of the
+underlying operating system or (at least) desktop environment.
+
+Returns the directory path as a string, C<undef> if the current user
+does not have a suitable directory, or dies on error.
+
+=head2 my_videos
+
+The C<my_videos> method takes no arguments and returns the directory
+where the current user's videos are stored.
+
+No bias is made to any particular video type or video program, rather the
+concept of a directory to hold the user's videos is made at the level of the
+underlying operating system or (at least) desktop environment.
+
+Returns the directory path as a string, C<undef> if the current user
+does not have a suitable directory, or dies on error.
 
 =head2 my_data
 
@@ -470,13 +513,19 @@ use is found in the wild, these plans may be pushed back.
 
 =head1 TO DO
 
-- Become generally clearer on situations in which a user might not
+=over 4
+
+=item * Become generally clearer on situations in which a user might not
 have a particular resource.
 
-- Merge remaining edge case code in File::HomeDir::Win32
+=item * Merge remaining edge case code in File::HomeDir::Win32
 
-- Add more granularity to Unix, and add support to VMS and other
+=item * Add more granularity to Unix, and add support to VMS and other
 esoteric platforms, so we can consider going core.
+
+=item * Add consistent support for users_* methods 
+
+=back
 
 =head1 SUPPORT
 
@@ -490,7 +539,7 @@ published CPAN author, and to most other volunteers on request.
 If you are able to submit your bug report in the form of new (failing)
 unit tests, or can apply your fix directly instead of submitting a patch,
 you are B<strongly> encouraged to do so as the author currently maintains
-over 100 modules and it can take some time to deal with non-Critcal bug
+over 100 modules and it can take some time to deal with non-Critical bug
 reports or patches.
 
 This will guarentee that your issue will be addressed in the next
@@ -521,6 +570,8 @@ Sean M. Burke E<lt>sburke@cpan.orgE<gt>
 
 Chris Nandor E<lt>cnandor@cpan.orgE<gt>
 
+Stephen Steneker E<lt>stennie@cpan.orgE<gt>
+
 =head1 SEE ALSO
 
 L<File::ShareDir>, L<File::HomeDir::Win32> (legacy)
@@ -532,6 +583,8 @@ Copyright 2005, 2006 Adam Kennedy.
 Some parts copyright 2000 Sean M. Burke.
 
 Some parts copyright 2006 Chris Nandor.
+
+Some parts copyright 2006 Stephen Steneker.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
