@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.60_05 Tue 12 Dec 2006
+	- Removed a build-time dependency on getpwuid
+
 0.60_04 Thu 2 Nov 2006 Stephen Steneker  stennie@cpan.org
 	- win32: add support for my_pictures, my_videos
 	- darwin: add support for my_music, my_pictures, my_videos

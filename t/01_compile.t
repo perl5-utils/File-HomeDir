@@ -1,25 +1,19 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 # Compile-testing for File::HomeDir
 
 use strict;
-use lib ();
-use File::Spec::Functions ':ALL';
 BEGIN {
-	$| = 1;
-	unless ( $ENV{HARNESS_ACTIVE} ) {
-		require FindBin;
-		$FindBin::Bin = $FindBin::Bin; # Avoid a warning
-		chdir catdir( $FindBin::Bin, updir() );
-		lib->import(
-			catdir('blib', 'arch'),
-			catdir('blib', 'lib' ),
-			catdir('lib'),
-			);
-	}
+	$|  = 1;
+	$^W = 1;
 }
+use File::Spec::Functions ':ALL';
 
 use Test::More tests => 7;
+
+# This module is destined for the core.
+# Please do NOT use convenience modules
+# use English; <-- don't do this
 
 ok( $] > 5.005, 'Perl version is 5.005 or newer' );
 

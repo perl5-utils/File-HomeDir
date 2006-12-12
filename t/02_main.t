@@ -3,25 +3,24 @@
 # Main testing for File::HomeDir
 
 use strict;
-use lib ();
-use File::Spec::Functions ':ALL';
-use English '-no_match_vars';
 BEGIN {
-	$| = 1;
-	unless ( $ENV{HARNESS_ACTIVE} ) {
-		require FindBin;
-		$FindBin::Bin = $FindBin::Bin; # Avoid a warning
-		chdir catdir( $FindBin::Bin, updir() );
-		lib->import(
-			catdir('blib', 'arch'),
-			catdir('blib', 'lib' ),
-			catdir('lib'),
-			);
-	}
+	$|  = 1;
+	$^W = 1;
 }
-
+use File::Spec::Functions ':ALL';
 use Test::More;
 use File::HomeDir;
+
+# This module is destined for the core.
+# Please do NOT use convenience modules
+# use English; <-- don't do this
+
+
+
+
+
+#####################################################################
+# Environment Detection and Plan
 
 # For what scenarios can we be sure that we have desktop/documents
 my $HAVETOYS = 0;
@@ -32,7 +31,18 @@ if ( $^O eq 'darwin' and $< ) {
 	$HAVETOYS = 1;
 }
 
+# Does the user have an implementation of getpwuid
+my $this_variable_avoids_a_warning = eval { getpwuid($<) };
+my $HAS_GETPWUID = !! $@;
+
 plan tests => ($HAVETOYS ? 55 : 40);
+
+
+
+
+
+#####################################################################
+# Main Tests
 
 # Find this user's homedir
 my $home = home();
@@ -56,20 +66,24 @@ like( $@, qr{Can't use undef as a username}, '%~(undef())' );
 
 
 # Check error messages for unavailable tie constructs
-eval {
-    $~{getpwuid($UID)} = "new_dir";
-};
-like( $@, qr{You can't STORE with the %~ hash}, 'Cannot store in %~ hash' );
+SKIP: {
+	skip("getpwuid not available", 3) unless $HAS_GETPWUID;
 
-eval {
-    exists $~{getpwuid($UID)};
-};
-like( $@, qr{You can't EXISTS with the %~ hash}, 'Cannot store in %~ hash' );
+	eval {
+    	$~{getpwuid($<)} = "new_dir";
+	};
+	like( $@, qr{You can't STORE with the %~ hash}, 'Cannot store in %~ hash' );
 
-eval {
-    delete $~{getpwuid($UID)};
-};
-like( $@, qr{You can't DELETE with the %~ hash}, 'Cannot store in %~ hash' );
+	eval {
+	    exists $~{getpwuid($<)};
+	};
+	like( $@, qr{You can't EXISTS with the %~ hash}, 'Cannot store in %~ hash' );
+
+	eval {
+	    delete $~{getpwuid($<)};
+	};
+	like( $@, qr{You can't DELETE with the %~ hash}, 'Cannot store in %~ hash' );
+}
 
 eval {
     %~ = ();
@@ -102,10 +116,16 @@ my $my_home = File::HomeDir->my_home;
 ok( $my_home, 'Found our home directory'     );
 ok( -d $my_home, 'Our home directory exists' );
 is( $home, $my_home, 'Different APIs give same results' );
-is( home(getpwuid($UID)), $home, 'home(username) returns the same value' );
+SKIP: {
+	skip("getpwuid not available", 1) unless $HAS_GETPWUID;
+	is( home(getpwuid($<)), $home, 'home(username) returns the same value' );
+}
 
 is( $~{""}, $home, 'Legacy %~ tied interface' );
-is( $~{getpwuid($UID)}, $home, 'Legacy %~ tied interface' );
+SKIP: {
+	skip("getpwuid not available", 1) unless $HAS_GETPWUID;
+	is( $~{getpwuid($<)}, $home, 'Legacy %~ tied interface' );
+}
 
 
 my $my_home2 = File::HomeDir::my_home();

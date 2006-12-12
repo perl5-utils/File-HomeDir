@@ -5,7 +5,6 @@ all_from       'lib/File/HomeDir.pm';
 requires       'Carp'              => 0;
 requires       'Cwd'               => '3.12';
 requires       'File::Spec'        => '3.12';	
-build_requires 'English'           => 0;
 build_requires 'Test::More'        => '0.47';
 
 # Dependencies for specific platforms
