@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.60_06 Fri 15 Dec 2006
+	- Another attempt to fix the getpwuid problem
+
 0.60_05 Tue 12 Dec 2006
 	- Removed a build-time dependency on getpwuid
 
