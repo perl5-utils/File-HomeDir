@@ -23,17 +23,15 @@ use File::HomeDir;
 # Environment Detection and Plan
 
 # For what scenarios can we be sure that we have desktop/documents
-my $HAVETOYS = 0;
+my $HAVETOYS    = 0;
+my $NO_GETPWUID = 0;
 if ( $^O eq 'MSWin32' ) {
-	$HAVETOYS = 1;
+	$HAVETOYS    = 1;
+	$NO_GETPWUID = 1;
 }
 if ( $^O eq 'darwin' and $< ) {
-	$HAVETOYS = 1;
+	$HAVETOYS    = 1;
 }
-
-# Does the user have an implementation of getpwuid
-my $this_variable_avoids_a_warning = eval { getpwuid($<) };
-my $HAS_GETPWUID = !! $@;
 
 plan tests => ($HAVETOYS ? 55 : 40);
 
@@ -67,7 +65,7 @@ like( $@, qr{Can't use undef as a username}, '%~(undef())' );
 
 # Check error messages for unavailable tie constructs
 SKIP: {
-	skip("getpwuid not available", 3) unless $HAS_GETPWUID;
+	skip("getpwuid not available", 3) if $NO_GETPWUID;
 
 	eval {
     	$~{getpwuid($<)} = "new_dir";
@@ -117,13 +115,13 @@ ok( $my_home, 'Found our home directory'     );
 ok( -d $my_home, 'Our home directory exists' );
 is( $home, $my_home, 'Different APIs give same results' );
 SKIP: {
-	skip("getpwuid not available", 1) unless $HAS_GETPWUID;
+	skip("getpwuid not available", 1) if $NO_GETPWUID;
 	is( home(getpwuid($<)), $home, 'home(username) returns the same value' );
 }
 
 is( $~{""}, $home, 'Legacy %~ tied interface' );
 SKIP: {
-	skip("getpwuid not available", 1) unless $HAS_GETPWUID;
+	skip("getpwuid not available", 1) if $NO_GETPWUID;
 	is( $~{getpwuid($<)}, $home, 'Legacy %~ tied interface' );
 }
 
