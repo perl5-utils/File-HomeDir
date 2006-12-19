@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.60_07 Tue 19 Dec 2006
+	- Problems with testing continue to plague the module...
+
 0.60_06 Fri 15 Dec 2006
 	- Another attempt to fix the getpwuid problem
 

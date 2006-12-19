@@ -33,7 +33,7 @@ if ( $^O eq 'darwin' and $< ) {
 	$HAVETOYS    = 1;
 }
 
-plan tests => ($HAVETOYS ? 55 : 40);
+plan tests => 41;
 
 
 
@@ -137,85 +137,60 @@ is( $home, $my_home2, 'Different APIs give same results' );
 my $my_documents = File::HomeDir->my_documents;
 SKIP: {
 	skip("Cannot assume existance of certain directories", 1) unless $HAVETOYS;
-	ok( $my_documents, 'Found our documents directory' );
-}
-SKIP: {
-	skip("No directory to test", 1) unless $my_documents;
-	ok( -d $my_documents, 'Our documents directory exists' );
+	ok( !!($my_documents and -d $my_documents), 'Found our documents directory' );
 }
 
 my $my_documents2 = File::HomeDir::my_documents();
 SKIP: {
 	skip("Cannot assume existance of certain directories", 1) unless $HAVETOYS;
-	ok( $my_documents2, 'Found our documents directory' );
+	ok( !!($my_documents2 and $my_documents2), 'Found our documents directory' );
 }
-SKIP: {
-	skip("No directory to test", 2) unless $my_documents2;
-	ok( -d $my_documents2, 'Our documents directory exists' );
-	is( $my_documents, $my_documents2, 'Different APIs give the same results' );
-}
+is( $my_documents, $my_documents2, 'Different APIs give the same results' );
 
 # Find this user's local data
 my $my_data = File::HomeDir->my_data;
 SKIP: {
 	skip("Cannot assume existance of certain directories", 1) unless $HAVETOYS;
-	ok( $my_data, 'Found our local data directory'     );
-}
-SKIP: {
-	skip("No directory to test", 1) unless $my_data;
-	ok( -d $my_data, 'Our local data directory exists' );
+	ok( !!($my_data and -d $my_data), 'Found our local data directory'     );
 }
 
 my $my_data2 = File::HomeDir::my_data();
 SKIP: {
 	skip("Cannot assume existance of certain directories", 1) unless $HAVETOYS;
-	ok( $my_data2, 'Found our local data directory'     );
+	ok( !!($my_data2 and -d $my_data2), 'Found our local data directory'     );
 }
-SKIP: {
-	skip("No directory to test", 2) unless $my_data2;
-	ok( -d $my_data2, 'Our local data directory exists' );
-	is( $my_data, $my_data2, 'Different APIs give the same results' );
-}
+is( $my_data, $my_data2, 'Different APIs give the same results' );
 
 # Desktop cannot be assumed in all environments
 SKIP: {
 	unless ( $HAVETOYS ) {
-		skip("Cannot assume existance of user Desktop directories", 5 );
+		skip("Cannot assume existance of user Desktop directories", 12 );
 	}
 
 	# Find this user's desktop data
 	my $my_desktop = File::HomeDir->my_desktop;
-	ok( $my_desktop,    'Found our desktop directory'  );
-	ok( -d $my_desktop, 'Our local data directory exists' );
+	ok( !!($my_desktop and -d $my_desktop),    'Our desktop directory exists'  );
 	my $my_desktop2 = File::HomeDir::my_desktop();
-	ok( $my_desktop2,    'Found our desktop directory'  );
-	ok( -d $my_desktop2, 'Our local data directory exists' );
+	ok( !!($my_desktop2 and -d $my_desktop2), 'Our local data directory exists' );
 	is( $my_desktop, $my_desktop2, 'Different APIs give the same results' );
 
 	my $my_music = File::HomeDir->my_music;
-	ok( $my_music,    'Found our music directory'  );
-	ok( -d $my_music, 'Our local data directory exists' );
+	ok( !!($my_music and -d $my_music), 'Our local data directory exists' );
 	my $my_music2 = File::HomeDir::my_music();
-	ok( $my_music2,    'Found our music directory'  );
-	ok( -d $my_music2, 'Our local data directory exists' );
+	ok( !!($my_music2 and -d $my_music2), 'Our local data directory exists' );
 	is( $my_music, $my_music2, 'Different APIs give the same results' );
 
 	my $my_pictures = File::HomeDir->my_pictures;
-	ok( $my_pictures,    'Found our pictures directory'  );
-	ok( -d $my_pictures, 'Our local data directory exists' );
+	ok( !!($my_pictures and -d $my_pictures), 'Our local data directory exists' );
 	my $my_pictures2 = File::HomeDir::my_pictures();
-	ok( $my_pictures2,    'Found our pictures directory'  );
-	ok( -d $my_pictures2, 'Our local data directory exists' );
+	ok( !!($my_pictures2 and -d $my_pictures2), 'Our local data directory exists' );
 	is( $my_pictures, $my_pictures2, 'Different APIs give the same results' );
 	
 	my $my_videos = File::HomeDir->my_videos;
-	ok( $my_videos,    'Found our videos directory'  );
-	ok( -d $my_videos, 'Our local data directory exists' );
+	ok( !!($my_videos and -d $my_videos), 'Our local data directory exists' );
 	my $my_videos2 = File::HomeDir::my_videos();
-	ok( $my_videos2,    'Found our videos directory'  );
-	ok( -d $my_videos2, 'Our local data directory exists' );
+	ok( !!($my_videos2 and -d $my_videos2), 'Our local data directory exists' );
 	is( $my_videos, $my_videos2, 'Different APIs give the same results' );
-
 }
 
 # Shall we check name space pollution by testing functions in main before
@@ -224,24 +199,22 @@ SKIP: {
 # On platforms other than windows, find root's homedir
 SKIP: {
 	if ( $^O eq 'MSWin32' or $^O eq 'darwin') {
-		skip("Skipping root test on $^O", 5 );
+		skip("Skipping root test on $^O", 3 );
 	}
 
 	# Determine root
 	my $root = getpwuid(0);
 	unless ( $root ) {
-		skip("Skipping, can't determine root", 5 );
+		skip("Skipping, can't determine root", 3 );
 	}
 
 	# Get root's homedir
 	my $root_home1 = home($root);
-	ok( $root_home1,    "Got root's home directory"   );
-	ok( -d $root_home1, "Found root's home directory" );
+	ok( !!($root_home1 and -d $root_home1), "Found root's home directory" );
 
 	# Confirm against %~ hash
 	my $root_home2 = $~{$root};
-	ok( $root_home2,    "Got root's home directory"   );
-	ok( -d $root_home2, "Found root's home directory" );
+	ok( !!($root_home2 and -d $root_home2), "Found root's home directory" );
 
 	# Root account via different methods match
 	is( $root_home1, $root_home2, 'Home dirs match' );
