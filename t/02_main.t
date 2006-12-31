@@ -23,32 +23,33 @@ use File::HomeDir;
 # Environment Detection and Plan
 
 # For what scenarios can we be sure that we have desktop/documents
+my $HAVEHOME    = 1;
 my $HAVETOYS    = 0;
 my $NO_GETPWUID = 0;
 if ( $^O eq 'MSWin32' ) {
 	$HAVETOYS    = 1;
 	$NO_GETPWUID = 1;
 }
-if ( $^O eq 'darwin' and $< ) {
-	$HAVETOYS    = 1;
+if ( $^O eq 'darwin' ) {
+	if ( ! $< ) {
+		# Root only has a home, nothing else
+		$HAVETOYS = 0;
+
+	} elsif ( getpwuid($<) eq 'nobody' ) {
+		# The nobody user does not have home at all
+		$HAVEHOME = 0;
+		$HAVETOYS = 0;
+	}
 }
 
-plan tests => 41;
+plan tests => 40;
 
 
 
 
 
 #####################################################################
-# Main Tests
-
-# Find this user's homedir
-my $home = home();
-ok( $home, 'Found our home directory'     );
-ok( -d $home, 'Our home directory exists' );
-
-# this call is not tested:
-# File::HomeDir->home
+# Test invalid uses
 
 eval {
     home(undef);
@@ -62,6 +63,23 @@ eval {
 is( $warned, 1, 'Emitted a single warning' );
 like( $@, qr{Can't use undef as a username}, '%~(undef())' );
 
+
+
+
+
+#####################################################################
+# Main Tests
+
+# Find this user's homedir
+my $home = home();
+if ( $HAVEHOME ) {
+	ok( !!($home and -d $home), 'Found our home directory' );
+} else {
+	is( $home, undef, 'Confirmed no home directory' );
+}
+
+# this call is not tested:
+# File::HomeDir->home
 
 # Check error messages for unavailable tie constructs
 SKIP: {
