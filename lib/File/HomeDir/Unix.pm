@@ -8,7 +8,7 @@ use Carp ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.60_08';
+	$VERSION = '0.60_09';
 }
 
 
@@ -18,17 +18,29 @@ BEGIN {
 
 sub my_home {
 	my $class = shift;
+	my $home  = $class->_my_home(@_);
+
+	# On Unix in general, a non-existant home means "no home"
+	# For example, "nobody"-like users might use /nonexistant
+	if ( defined $home and ! -d $home ) {
+		$home = undef;
+	}
+
+	return $home;
+}
+
+sub _my_home {
+	my $class = shift;
 	return $ENV{HOME} if defined $ENV{HOME};
 
 	# This is from the original code, but I'm guessing
-	# it means "login directory".
+	# it means "login directory" and exists on some Unixes.
 	return $ENV{LOGDIR} if $ENV{LOGDIR};
 
 	### More-desperate methods
 
-	# Light desperation on any platform
+	# Light desperation on any (Unixish) platform
 	SCOPE: {
-		# On some platforms getpwuid dies if called at all
 		my $home = (getpwuid($<))[7];
 		return $home if $home and -d $home;
 	}
@@ -36,7 +48,11 @@ sub my_home {
 	return undef;
 }
 
-# On unix, we usually keep both data and documents under the same folder
+# On unix by default, everything is under the same folder
+sub my_desktop {
+	shift->my_home;
+}
+
 sub my_documents {
 	shift->my_home;
 }
@@ -66,12 +82,15 @@ sub users_home {
 	my ($class, $name) = @_;
 
 	SCOPE: {
-		# On some platforms getpwnam dies if called at all
 		my $home = (getpwnam($name))[7];
 		return $home if $home and -d $home;
 	}
 
 	return undef;
+}
+
+sub users_desktop {
+	shift->users_home(@_);
 }
 
 sub users_documents {

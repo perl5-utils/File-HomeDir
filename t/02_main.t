@@ -63,8 +63,9 @@ if ( $^O eq 'MSWin32' ) {
 
 } else {
 	# Default to traditional Unix
-	$HAVEHOME = 1;
-	$HAVETOYS = 1;
+	$HAVEHOME    = 1;
+	$HAVETOYS    = 1;
+	$HAVEDESKTOP = 1;
 }
 
 plan tests => 38;
