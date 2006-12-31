@@ -143,7 +143,7 @@ like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
 # API Test
 
 # Check the methods all exist
-foreach ( qw{ home desktop documents music pictures video data } ) {
+foreach ( qw{ home desktop documents music pictures videos data } ) {
 	can_ok( 'File::HomeDir', "my_$_" );
 	can_ok( 'File::HomeDir', "users_$_" );
 }
