@@ -23,26 +23,36 @@ use File::HomeDir;
 # Environment Detection and Plan
 
 # For what scenarios can we be sure that we have desktop/documents
-my $HAVEHOME    = 1;
+my $HAVEHOME    = 0;
 my $HAVETOYS    = 0;
 my $NO_GETPWUID = 0;
+
+# Various cases of things we should try to test for
+# Top level is entire classes of operating system.
+# Below that are more general things.
 if ( $^O eq 'MSWin32' ) {
 	$HAVETOYS    = 1;
 	$NO_GETPWUID = 1;
-}
-if ( $^O eq 'darwin' ) {
-	if ( ! $< ) {
-		# Root only has a home, nothing else
+
+# elsif ( other major things? )
+
+} else {
+	# By default, assume unix'y
+	if ( $^O eq 'darwin' and ! $< ) {
+		# Darwin root only has a home, nothing else
 		$HAVETOYS = 0;
 
 	} elsif ( getpwuid($<) eq 'nobody' ) {
 		# The nobody user does not have home at all
 		$HAVEHOME = 0;
 		$HAVETOYS = 0;
+	} else {
+		$HAVEHOME = 1;
+		$HAVETOYS = 1;
 	}
 }
 
-plan tests => 40;
+plan tests => 39;
 
 
 
@@ -62,24 +72,6 @@ eval {
 };
 is( $warned, 1, 'Emitted a single warning' );
 like( $@, qr{Can't use undef as a username}, '%~(undef())' );
-
-
-
-
-
-#####################################################################
-# Main Tests
-
-# Find this user's homedir
-my $home = home();
-if ( $HAVEHOME ) {
-	ok( !!($home and -d $home), 'Found our home directory' );
-} else {
-	is( $home, undef, 'Confirmed no home directory' );
-}
-
-# this call is not tested:
-# File::HomeDir->home
 
 # Check error messages for unavailable tie constructs
 SKIP: {
@@ -111,7 +103,6 @@ eval {
 };
 like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
 
-
 # right now if you call keys in void context
 # keys(%~);
 # it does not throw an exception while if you call it in list context it
@@ -127,10 +118,29 @@ like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
 
 
 
+
+#####################################################################
+# Main Tests
+
+# Find this user's homedir
+my $home = home();
+if ( $HAVEHOME ) {
+	ok( !!($home and -d $home), 'Found our home directory' );
+} else {
+	is( $home, undef, 'Confirmed no home directory' );
+}
+
+# this call is not tested:
+# File::HomeDir->home
+
 # Find this user's home explicitly
 my $my_home = File::HomeDir->my_home;
-ok( $my_home, 'Found our home directory'     );
-ok( -d $my_home, 'Our home directory exists' );
+if ( $HAVEHOME ) {
+	ok( !!($home and -d $home), 'Found our home directory' );
+} else {
+	is( $home, undef, 'Confirmed no home directory' );
+}
+
 is( $home, $my_home, 'Different APIs give same results' );
 SKIP: {
 	skip("getpwuid not available", 1) if $NO_GETPWUID;
