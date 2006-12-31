@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.60_08 Mon  1 Jan 2007
+	- Problems with Win2k hopefully finally resolved
+
 0.60_07 Tue 19 Dec 2006
 	- Problems with testing continue to plague the module...
 
