@@ -25,8 +25,9 @@ use File::HomeDir;
 # For what scenarios can we be sure that we have desktop/documents
 my $NO_GETPWUID = 0;
 my $HAVEHOME    = 0;
-my $HAVETOYS    = 0;
 my $HAVEDESKTOP = 0;
+my $HAVEMUSIC   = 0;
+my $HAVEOTHERS  = 0;
 
 # Various cases of things we should try to test for
 # Top level is entire classes of operating system.
@@ -34,8 +35,11 @@ my $HAVEDESKTOP = 0;
 if ( $^O eq 'MSWin32' ) {
 	$NO_GETPWUID = 1;
 	$HAVEHOME    = 1;
-	$HAVETOYS    = 1;
 	$HAVEDESKTOP = 1;
+	$HAVEOTHERS  = 1;
+
+	# My Music does not exist on Win2000
+	require Win32;
 
 # elsif ( other major different things? )
 
@@ -44,7 +48,7 @@ if ( $^O eq 'MSWin32' ) {
 # Nobody users on all unix systems generally don't have home directories
 } elsif ( getpwuid($<) eq 'nobody' ) {
 	$HAVEHOME    = 0;
-	$HAVETOYS    = 0;
+	$HAVEOTHERS  = 0;
 	$HAVEDESKTOP = 0;
 
 } elsif ( $^O eq 'darwin' ) {
@@ -52,23 +56,23 @@ if ( $^O eq 'MSWin32' ) {
 	if ( $< ) {
 		# Normal user
 		$HAVEHOME    = 1;
-		$HAVETOYS    = 1;
+		$HAVEOTHERS  = 1;
 		$HAVEDESKTOP = 1;
 	} else {
 		# Darwin root only has a home, nothing else
 		$HAVEHOME    = 1;
-		$HAVETOYS    = 0;
+		$HAVEOTHERS  = 0;
 		$HAVEDESKTOP = 0;
 	}
 
 } else {
 	# Default to traditional Unix
 	$HAVEHOME    = 1;
-	$HAVETOYS    = 1;
+	$HAVEOTHERS  = 1;
 	$HAVEDESKTOP = 1;
 }
 
-plan tests => 38;
+plan tests => 52;
 
 
 
@@ -136,6 +140,19 @@ like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
 
 
 #####################################################################
+# API Test
+
+# Check the methods all exist
+foreach ( qw{ home desktop documents music pictures video data } ) {
+	can_ok( 'File::HomeDir', "my_$_" );
+	can_ok( 'File::HomeDir', "users_$_" );
+}
+
+
+
+
+
+#####################################################################
 # Main Tests
 
 # Find this user's homedir
@@ -181,7 +198,7 @@ is( $home, $my_home2, 'Different APIs give same results' );
 
 # Find this user's documents
 SKIP: {
-	skip("Cannot assume existance of documents", 3) unless $HAVETOYS;
+	skip("Cannot assume existance of documents", 3) unless $HAVEOTHERS;
 	my $my_documents  = File::HomeDir->my_documents;
 	my $my_documents2 = File::HomeDir::my_documents();
 	is( $my_documents, $my_documents2, 'Different APIs give the same results' );
@@ -191,7 +208,7 @@ SKIP: {
 
 # Find this user's local data
 SKIP: {
-	skip("Cannot assume existance of application data", 3) unless $HAVETOYS;
+	skip("Cannot assume existance of application data", 3) unless $HAVEOTHERS;
 	my $my_data  = File::HomeDir->my_data;
 	my $my_data2 = File::HomeDir::my_data();
 	is( $my_data, $my_data2, 'Different APIs give the same results' );
@@ -201,7 +218,7 @@ SKIP: {
 
 # Find this user's music directory
 SKIP: {
-	skip("Cannot assume existance of music", 3) unless $HAVETOYS;
+	skip("Cannot assume existance of music", 3) unless $HAVEOTHERS;
 	my $my_music  = File::HomeDir->my_music;
 	my $my_music2 = File::HomeDir::my_music();
 	is( $my_music, $my_music2, 'Different APIs give the same results' );
@@ -211,7 +228,7 @@ SKIP: {
 
 # Find this user's pictures directory
 SKIP: {
-	skip("Cannot assume existance of pictures", 3) unless $HAVETOYS;
+	skip("Cannot assume existance of pictures", 3) unless $HAVEOTHERS;
 	my $my_pictures  = File::HomeDir->my_pictures;
 	my $my_pictures2 = File::HomeDir::my_pictures();
 	is( $my_pictures, $my_pictures2, 'Different APIs give the same results' );
@@ -221,7 +238,7 @@ SKIP: {
 
 # Find this user's video directory
 SKIP: {
-	skip("Cannot assume existance of videos", 3) unless $HAVETOYS;
+	skip("Cannot assume existance of videos", 3) unless $HAVEOTHERS;
 	my $my_videos  = File::HomeDir->my_videos;
 	my $my_videos2 = File::HomeDir::my_videos();
 	is( $my_videos, $my_videos2, 'Different APIs give the same results' );

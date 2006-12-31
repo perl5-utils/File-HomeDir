@@ -11,12 +11,13 @@ build_requires 'Test::More'        => '0.47';
 ### Use variable twice to avoid a warning
 if ( $MacPerl::Version and $MacPerl::Version ) {
 	# Old Mac OS 9
-	requires 'Mac::Files'         => 0;
+	requires 'Mac::Files'               => 0;
 
 } elsif ( $^O eq 'darwin' ) {
-	requires 'Mac::Files'         => '1.09';
+	requires 'Mac::Files'               => '1.09';
 
 } elsif ( $^O eq 'MSWin32' ) {
+	requires       'Win32'              => 0;
 	requires       'Win32API::Registry' => '0.27';
 	requires       'Win32::TieRegistry' => '0.25';
 	build_requires 'ExtUtils::Install'  => '1.39';

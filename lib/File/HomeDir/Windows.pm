@@ -10,7 +10,7 @@ use File::Spec ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.60_09';
+	$VERSION = '0.60_10';
 }
 
 # If prefork is available, set Win32::TieRegistry
@@ -179,7 +179,6 @@ used via L<File::HomeDir>.
   $pics    = File::HomeDir->my_pictures;    # C:\Documents and Settings\mylogin\My Documents\My Pictures
   $videos  = File::HomeDir->my_videos;      # C:\Documents and Settings\mylogin\My Documents\My Video
   $data    = File::HomeDir->my_data;        # C:\Documents and Settings\mylogin\Local Settings\Application Data
-   
 
 =head1 TODO
 

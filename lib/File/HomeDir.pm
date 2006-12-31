@@ -10,12 +10,12 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.60_09';
+	$VERSION = '0.60_10';
 
 	# Inherit manually
 	require Exporter;
-	@ISA       = ( 'Exporter' );
-	@EXPORT    = ( 'home'     );
+	@ISA       = qw{ Exporter };
+	@EXPORT    = qw{ home     };
 	@EXPORT_OK = qw{
 		home
 		my_home
@@ -130,6 +130,18 @@ sub users_music {
 	$IMPLEMENTED_BY->can('users_music')
 		? $IMPLEMENTED_BY->users_music( $_[-1] )
 		: Carp::croak("The users_music method is not implemented on this platform");
+}
+
+sub users_pictures {
+	$IMPLEMENTED_BY->can('users_pictures')
+		? $IMPLEMENTED_BY->users_pictures( $_[-1] )
+		: Carp::croak("The users_pictures method is not implemented on this platform");
+}
+
+sub users_videos {
+	$IMPLEMENTED_BY->can('users_videos')
+		? $IMPLEMENTED_BY->users_videos( $_[-1] )
+		: Carp::croak("The users_videos method is not implemented on this platform");
 }
 
 sub users_data {
@@ -286,9 +298,9 @@ It is generally not recommended that you use this interface, but due to
 back-compatibility reasons they will remain supported until at least 2010.
 
 After this date, the home() function will remain, but we will consider
-deprecating the (namespace-polluting) C<%~> tied hash, to be removed by 2015
-(maintaining the general Perl convention of a 10 year support period
-for legacy APIs in common use).
+deprecating the (namespace-polluting) C<%~> tied hash, to be removed by
+2015 (maintaining the general Perl convention of a 10 year support period
+for legacy APIs potentially or actually in common use).
 
 =head2 Platform Neutrality
 
@@ -330,11 +342,10 @@ However, because in some cases platforms may not support the concept of home
 directories at all, any method may return C<undef> (both in scalar and list
 context) to indicate that there is no matching directory on the system.
 
-Please note that in the current version, B<all implementations support
-my_home>, however this is the only method that is universally supported, and
-B<all other methods may return undef>. The reliability of C<my_home> may be
-reduced in future if C<File::HomeDir> heads towards the core, so you should
-not trust that C<my_home> will always return a value in your own code.
+For example, most untrusted 'nobody'-type users do not have a home
+directory. So any modules that are used in a CGI application that
+at some level of recursion use your code, will result in calls to
+File::HomeDir returning undef, even for a basic home() call.
 
 =head2 my_home
 

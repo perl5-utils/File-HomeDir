@@ -1,5 +1,11 @@
 Revision history for Perl extension File::HomeDir
 
+0.60_10 Mon  1 Jan 2007
+	- More testing problems on Win2K
+	- Adding a dependency on Win32 to access Win32::GetOSName
+	  (Dependency issues could make this backfire, so maybe will
+	   need another test cycle or two to make sure it works)
+
 0.60_09 Mon  1 Jan 2007
 	- Sigh... cases are now known to exist where users
 	  do not have home directories. Tests refactored
