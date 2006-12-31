@@ -171,26 +171,35 @@ SKIP: {
 	my $my_desktop = File::HomeDir->my_desktop;
 	ok( !!($my_desktop and -d $my_desktop),    'Our desktop directory exists'  );
 	my $my_desktop2 = File::HomeDir::my_desktop();
-	ok( !!($my_desktop2 and -d $my_desktop2), 'Our local data directory exists' );
+	ok( !!($my_desktop2 and -d $my_desktop2), 'Our desktop directory exists' );
 	is( $my_desktop, $my_desktop2, 'Different APIs give the same results' );
 
 	my $my_music = File::HomeDir->my_music;
-	ok( !!($my_music and -d $my_music), 'Our local data directory exists' );
 	my $my_music2 = File::HomeDir::my_music();
-	ok( !!($my_music2 and -d $my_music2), 'Our local data directory exists' );
 	is( $my_music, $my_music2, 'Different APIs give the same results' );
+	SKIP: {
+		skip("No music directory on this system", 2) unless defined $my_music;
+		ok( !!($my_music and -d $my_music), 'Our music directory exists' );
+		ok( !!($my_music2 and -d $my_music2), 'Our music directory exists' );
+	}
 
 	my $my_pictures = File::HomeDir->my_pictures;
-	ok( !!($my_pictures and -d $my_pictures), 'Our local data directory exists' );
 	my $my_pictures2 = File::HomeDir::my_pictures();
-	ok( !!($my_pictures2 and -d $my_pictures2), 'Our local data directory exists' );
 	is( $my_pictures, $my_pictures2, 'Different APIs give the same results' );
-	
+	SKIP: {
+		skip("No pictures directory on this system", 2) unless defined $my_pictures;
+		ok( !!($my_pictures and -d $my_pictures), 'Our pictures directory exists' );
+		ok( !!($my_pictures2 and -d $my_pictures2), 'Our pictures directory exists' );
+	}
+
 	my $my_videos = File::HomeDir->my_videos;
-	ok( !!($my_videos and -d $my_videos), 'Our local data directory exists' );
 	my $my_videos2 = File::HomeDir::my_videos();
-	ok( !!($my_videos2 and -d $my_videos2), 'Our local data directory exists' );
 	is( $my_videos, $my_videos2, 'Different APIs give the same results' );
+	SKIP: {
+		skip("No video directory on this system", 2) unless defined $my_videos;
+		ok( !!($my_videos and -d $my_videos), 'Our local data directory exists' );
+		ok( !!($my_videos2 and -d $my_videos2), 'Our local data directory exists' );
+	}
 }
 
 # Shall we check name space pollution by testing functions in main before
