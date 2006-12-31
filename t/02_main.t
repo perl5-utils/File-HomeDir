@@ -27,6 +27,7 @@ my $NO_GETPWUID = 0;
 my $HAVEHOME    = 0;
 my $HAVEDESKTOP = 0;
 my $HAVEMUSIC   = 0;
+my $HAVEVIDEOS  = 0;
 my $HAVEOTHERS  = 0;
 
 # Various cases of things we should try to test for
@@ -40,6 +41,14 @@ if ( $^O eq 'MSWin32' ) {
 
 	# My Music does not exist on Win2000
 	require Win32;
+	my $name = Win32::GetOSName();
+	if ( $name eq 'Win2000' ) {
+		$HAVEMUSIC  = 0;
+		$HAVEVIDEOS = 0;
+	} else {
+		$HAVEMUSIC  = 1;
+		$HAVEVIDEOS = 1;
+	}
 
 # elsif ( other major different things? )
 
@@ -48,28 +57,36 @@ if ( $^O eq 'MSWin32' ) {
 # Nobody users on all unix systems generally don't have home directories
 } elsif ( getpwuid($<) eq 'nobody' ) {
 	$HAVEHOME    = 0;
-	$HAVEOTHERS  = 0;
 	$HAVEDESKTOP = 0;
+	$HAVEMUSIC   = 0;
+	$HAVEVIDEOS  = 0;
+	$HAVEOTHERS  = 0;
 
 } elsif ( $^O eq 'darwin' ) {
 	# Darwin special cases
 	if ( $< ) {
 		# Normal user
 		$HAVEHOME    = 1;
-		$HAVEOTHERS  = 1;
 		$HAVEDESKTOP = 1;
+		$HAVEMUSIC   = 1;
+		$HAVEVIDEOS  = 1;
+		$HAVEOTHERS  = 1;
 	} else {
 		# Darwin root only has a home, nothing else
 		$HAVEHOME    = 1;
-		$HAVEOTHERS  = 0;
 		$HAVEDESKTOP = 0;
+		$HAVEMUSIC   = 0;
+		$HAVEVIDEOS  = 0;
+		$HAVEOTHERS  = 0;
 	}
 
 } else {
 	# Default to traditional Unix
 	$HAVEHOME    = 1;
-	$HAVEOTHERS  = 1;
 	$HAVEDESKTOP = 1;
+	$HAVEMUSIC   = 1;
+	$HAVEVIDEOS  = 1;
+	$HAVEOTHERS  = 1;
 }
 
 plan tests => 52;
@@ -206,19 +223,9 @@ SKIP: {
 	ok( !!($my_documents2 and $my_documents2),   'Found our documents directory' );
 }
 
-# Find this user's local data
-SKIP: {
-	skip("Cannot assume existance of application data", 3) unless $HAVEOTHERS;
-	my $my_data  = File::HomeDir->my_data;
-	my $my_data2 = File::HomeDir::my_data();
-	is( $my_data, $my_data2, 'Different APIs give the same results' );
-	ok( !!($my_data  and -d $my_data),  'Found our local data directory' );
-	ok( !!($my_data2 and -d $my_data2), 'Found our local data directory' );
-}
-
 # Find this user's music directory
 SKIP: {
-	skip("Cannot assume existance of music", 3) unless $HAVEOTHERS;
+	skip("Cannot assume existance of music", 3) unless $HAVEMUSIC;
 	my $my_music  = File::HomeDir->my_music;
 	my $my_music2 = File::HomeDir::my_music();
 	is( $my_music, $my_music2, 'Different APIs give the same results' );
@@ -238,12 +245,12 @@ SKIP: {
 
 # Find this user's video directory
 SKIP: {
-	skip("Cannot assume existance of videos", 3) unless $HAVEOTHERS;
+	skip("Cannot assume existance of videos", 3) unless $HAVEVIDEOS;
 	my $my_videos  = File::HomeDir->my_videos;
 	my $my_videos2 = File::HomeDir::my_videos();
 	is( $my_videos, $my_videos2, 'Different APIs give the same results' );
-	ok( !!($my_videos  and -d $my_videos),  'Our local data directory exists' );
-	ok( !!($my_videos2 and -d $my_videos2), 'Our local data directory exists' );
+	ok( !!($my_videos  and -d $my_videos),  'Our videos directory exists' );
+	ok( !!($my_videos2 and -d $my_videos2), 'Our videos directory exists' );
 }
 
 # Desktop cannot be assumed in all environments
@@ -256,6 +263,16 @@ SKIP: {
 	is( $my_desktop, $my_desktop2, 'Different APIs give the same results' );
 	ok( !!($my_desktop  and -d $my_desktop),  'Our desktop directory exists' );
 	ok( !!($my_desktop2 and -d $my_desktop2), 'Our desktop directory exists' );
+}
+
+# Find this user's local data
+SKIP: {
+	skip("Cannot assume existance of application data", 3) unless $HAVEOTHERS;
+	my $my_data  = File::HomeDir->my_data;
+	my $my_data2 = File::HomeDir::my_data();
+	is( $my_data, $my_data2, 'Different APIs give the same results' );
+	ok( !!($my_data  and -d $my_data),  'Found our local data directory' );
+	ok( !!($my_data2 and -d $my_data2), 'Found our local data directory' );
 }
 
 # Shall we check name space pollution by testing functions in main before
