@@ -41,8 +41,11 @@ if ( $^O eq 'MSWin32' ) {
 
 	# My Music does not exist on Win2000
 	require Win32;
-	my $name = Win32::GetOSName();
-	if ( $name eq 'Win2000' ) {
+	my @version = Win32::GetOSVersion();
+	my $v       = ($version[4]||0)
+	            + ($version[1]||0) * 0.001
+	            + ($version[2]||0) * 0.000001;
+	if ( $v <= 2.005000 ) {
 		$HAVEMUSIC  = 0;
 		$HAVEVIDEOS = 0;
 	} else {
