@@ -1,5 +1,10 @@
 Revision history for Perl extension File::HomeDir
 
+0.61    Tue  2 Jan 2007
+	- Verified the previous version on Win2K, WinXP, Linux and Mac OS X.
+	- Verified as a normal user, root and nobody on most of these.
+	- No change other than converting the version to a release version.
+
 0.60_13 Tue  1 Jan 2007
 	- Lets try that again
 
