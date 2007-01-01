@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.60_13 Tue  1 Jan 2007
+	- Lets try that again
+
 0.60_12 Mon  1 Jan 2007
 	- Skip an unreliable test on older Perls
 
