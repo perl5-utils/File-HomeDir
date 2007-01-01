@@ -105,13 +105,18 @@ eval {
     home(undef);
 };
 like( $@, qr{Can't use undef as a username}, 'home(undef)' );
-my $warned = 0;
-eval {
-	local $SIG{__WARN__} = sub { $warned++ };
-	my $h = $~{undef()};
-};
-is( $warned, 1, 'Emitted a single warning' );
-like( $@, qr{Can't use undef as a username}, '%~(undef())' );
+
+# Warning is not reliably thrown on older Perls
+SKIP: {
+	skip("Skipping unreliable warning test", 2) if $] < 5.007;
+	my $warned = 0;
+	eval {
+		local $SIG{__WARN__} = sub { $warned++ };
+		my $h = $~{undef()};
+	};
+	is( $warned, 1, 'Emitted a single warning' );
+	like( $@, qr{Can't use undef as a username}, '%~(undef())' );
+}
 
 # Check error messages for unavailable tie constructs
 SKIP: {
