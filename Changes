@@ -1,5 +1,10 @@
 Revision history for Perl extension File::HomeDir
 
+0.60_11 Mon  1 Jan 2007
+	- Reduced the basic version dependencies on Mac OS because they
+	  were unnecesary on that platform, and now Mac users don't need
+	  to upgrade PathTools.
+
 0.60_10 Mon  1 Jan 2007
 	- More testing problems on Win2K
 	- Adding a dependency on Win32 to access Win32::GetOSName
