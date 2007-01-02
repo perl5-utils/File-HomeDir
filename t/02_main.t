@@ -50,7 +50,7 @@ if ( $^O eq 'MSWin32' ) {
 		$HAVEVIDEOS = 0;
 	} else {
 		$HAVEMUSIC  = 1;
-		$HAVEVIDEOS = 1;
+		$HAVEVIDEOS = 0; # If we ever support "maybe" this is a maybe
 	}
 
 # elsif ( other major different things? )
