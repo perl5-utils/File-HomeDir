@@ -1,5 +1,10 @@
 Revision history for Perl extension File::HomeDir
 
+0.63    Tue  9 Jan 2007
+	- The ability to overload HOME on any platform, even Win32, is
+	  apparently desirable. So now we support the use of HOME on Win32
+	  for that specific case.
+
 0.62    Thu  2 Jan 2007
 	- On WinXP, the My Videos directory (and registry entry) does not
 	  exist by default. It is created the first time Windows Movie Maker

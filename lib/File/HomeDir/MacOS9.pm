@@ -10,7 +10,7 @@ use Carp ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.62';
+	$VERSION = '0.63';
 }
 
 # Load early if in a forking environment and we have
