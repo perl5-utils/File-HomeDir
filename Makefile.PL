@@ -14,6 +14,7 @@ if ( $MacPerl::Version and $MacPerl::Version ) {
 	requires 'Mac::Files'               => 0;
 
 } elsif ( $^O eq 'darwin' ) {
+	requires 'Mac::Carbon'              => '0.77';
 	requires 'Mac::Files'               => '1.09';
 
 } elsif ( $^O eq 'MSWin32' ) {
