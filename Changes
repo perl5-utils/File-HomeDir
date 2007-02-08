@@ -1,5 +1,9 @@
 Revision history for Perl extension File::HomeDir
 
+0.64    Thu  8 Feb 2007
+	- Add Makefile prequisite for a version of Mac::Carbon that properly supports Intel macs .. default Tiger install includes a buggy version [RT#24222]
+	- No other changes from 0.63
+
 0.63    Tue  9 Jan 2007
 	- The ability to overload HOME on any platform, even Win32, is
 	  apparently desirable. So now we support the use of HOME on Win32

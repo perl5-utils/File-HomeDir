@@ -10,7 +10,7 @@ use File::Spec ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.63';
+	$VERSION = '0.64';
 }
 
 # If prefork is available, set Win32::TieRegistry
