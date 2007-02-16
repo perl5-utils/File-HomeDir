@@ -553,7 +553,7 @@ you are B<strongly> encouraged to do so as the author currently maintains
 over 100 modules and it can take some time to deal with non-Critical bug
 reports or patches.
 
-This will guarentee that your issue will be addressed in the next
+This will guarantee that your issue will be addressed in the next
 release of the module.
 
 If you cannot provide a direct test or fix, or don't have time to do so,
