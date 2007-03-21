@@ -1,5 +1,12 @@
 Revision history for Perl extension File::HomeDir
 
+0.65    Wed 21 Mar 2007
+	- Add a special case to pass users_home(current user) on to my_home
+	  (This prevents tests failing when you manually set HOME to lie
+	   about your home directory. This was mostly preventing installation
+	   with "sudo cpan -i File::HomeDir".
+	- Upgraded to Module::Install 0.65
+
 0.64    Thu  8 Feb 2007 (Stephen Steneker)
 	- Add Makefile prequisite for a version of Mac::Carbon that properly supports Intel macs .. default Tiger install includes a buggy version [RT#24222]
 	- No other changes from 0.63

@@ -85,6 +85,13 @@ sub my_videos {
 sub users_home {
 	my ($class, $name) = @_;
 
+	# IF and only if we have getpwuid support, and the
+	# name of the user is our own, shortcut to my_home.
+	# This is needed to handle HOME environment settings.
+	if ( $name eq getpwuid($<) ) {
+		return $class->my_home;
+	}
+
 	SCOPE: {
 		my $home = (getpwnam($name))[7];
 		return $home if $home and -d $home;

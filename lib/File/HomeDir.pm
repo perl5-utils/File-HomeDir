@@ -40,14 +40,20 @@ BEGIN {
 
 # Don't do platform detection at compile-time
 if ( $^O eq 'MSWin32' ) {
+	# All versions of Windows
 	$IMPLEMENTED_BY = 'File::HomeDir::Windows';
 	require File::HomeDir::Windows;
+
 } elsif ( $^O eq 'darwin' ) {
+	# Modern Max OS X
 	$IMPLEMENTED_BY = 'File::HomeDir::Darwin';
 	require File::HomeDir::Darwin;
+
 } elsif ( $^O eq 'MacOS' ) {
+	# Legacy Mac OS
 	$IMPLEMENTED_BY = 'File::HomeDir::MacOS9';
 	require File::HomeDir::MacOS9;
+
 } else {
 	# Default to Unix semantics
 	$IMPLEMENTED_BY = 'File::HomeDir::Unix';
