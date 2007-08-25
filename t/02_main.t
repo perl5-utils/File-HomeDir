@@ -1,4 +1,4 @@
-#!/usr/bin/perl -w
+#!/usr/bin/perl
 
 # Main testing for File::HomeDir
 
@@ -106,9 +106,11 @@ eval {
 };
 like( $@, qr{Can't use undef as a username}, 'home(undef)' );
 
-# Warning is not reliably thrown on older Perls
+# Warning is not reliably thrown on older Perls,
+# as well as on some old 5.9 series releases (5.9.0)
 SKIP: {
 	skip("Skipping unreliable warning test", 2) if $] < 5.008007;
+	skip("Skipping unreliable warning test", 2) if $] == 5.009;
 	my $warned = 0;
 	eval {
 		local $SIG{__WARN__} = sub { $warned++ };

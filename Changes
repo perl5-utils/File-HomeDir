@@ -1,5 +1,12 @@
 Revision history for Perl extension File::HomeDir
 
+0.66    Sat 25 Aug 2007
+	- No functional changes, no need to upgrade.
+	  (This release attempts to regain 100% CPAN Testers results)
+	- Spurious failures on some path-levels of 5.9.0 due to a warnings
+	  bug regression. Skip the relevant test on Perl 5.9.0.
+	- Remove a -w flag in 02_main.t so test run under tainting
+
 0.65    Wed 21 Mar 2007
 	- Add a special case to pass users_home(current user) on to my_home
 	  (This prevents tests failing when you manually set HOME to lie

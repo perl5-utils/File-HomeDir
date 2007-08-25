@@ -1,3 +1,4 @@
+use strict;
 use inc::Module::Install;
 
 name           'File-HomeDir';
@@ -19,10 +20,15 @@ if ( $MacPerl::Version and $MacPerl::Version ) {
 
 } elsif ( $^O eq 'MSWin32' ) {
 	requires       'Win32'              => 0;
+	# Not entirely sure why this should be explicitly
+	# listed, as it's also a dep of Win32::TieRegistry,
+	# but apparently someone had a problem with it at
+	# some point in history, plus by specifying it here
+	# it prevents a CPAN client recursion, which is
+	# generally a Good Thing if you can prevent it.
 	requires       'Win32API::Registry' => '0.27';
 	requires       'Win32::TieRegistry' => '0.25';
 	build_requires 'ExtUtils::Install'  => '1.39';
-
 }
 
 WriteAll;
