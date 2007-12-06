@@ -1,5 +1,10 @@
 Revision history for Perl extension File::HomeDir
 
+0.67    Thu  6 Dec 2007
+	- No functional changes, no need to upgrade.
+	- Upgrading to Module::Install 0.68
+	- Updating bundled author tests
+
 0.66    Sat 25 Aug 2007
 	- No functional changes, no need to upgrade.
 	  (This release attempts to regain 100% CPAN Testers results)
