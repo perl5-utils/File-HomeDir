@@ -15,7 +15,13 @@ use File::HomeDir;
 # Please do NOT use convenience modules
 # use English; <-- don't do this
 
-
+sub is_dir($) {
+    my $dir = shift or return;
+    return 1 if -d $dir;
+    return unless -l $dir;
+    $dir = readlink $dir or return;
+    return -d $dir;
+}
 
 
 
@@ -185,7 +191,7 @@ foreach ( qw{ home desktop documents music pictures videos data } ) {
 # Find this user's homedir
 my $home = home();
 if ( $HAVEHOME ) {
-	ok( !!($home and -d $home), 'Found our home directory' );
+	ok( !!($home and is_dir $home), 'Found our home directory' );
 } else {
 	is( $home, undef, 'Confirmed no home directory' );
 }
@@ -196,7 +202,7 @@ if ( $HAVEHOME ) {
 # Find this user's home explicitly
 my $my_home = File::HomeDir->my_home;
 if ( $HAVEHOME ) {
-	ok( !!($home and -d $home), 'Found our home directory' );
+	ok( !!($home and is_dir $home), 'Found our home directory' );
 } else {
 	is( $home, undef, 'Confirmed no home directory' );
 }
@@ -215,7 +221,7 @@ SKIP: {
 
 my $my_home2 = File::HomeDir::my_home();
 if ( $HAVEHOME ) {
-	ok( !!($my_home2 and -d $my_home2), 'Found our home directory' );
+	ok( !!($my_home2 and is_dir $my_home2), 'Found our home directory' );
 } else {
 	is( $home, undef, 'No home directory, as expected' );
 }
@@ -229,7 +235,7 @@ SKIP: {
 	my $my_documents  = File::HomeDir->my_documents;
 	my $my_documents2 = File::HomeDir::my_documents();
 	is( $my_documents, $my_documents2, 'Different APIs give the same results' );
-	ok( !!($my_documents  and -d $my_documents), 'Found our documents directory' );
+	ok( !!($my_documents  and is_dir $my_documents), 'Found our documents directory' );
 	ok( !!($my_documents2 and $my_documents2),   'Found our documents directory' );
 }
 
@@ -239,8 +245,8 @@ SKIP: {
 	my $my_music  = File::HomeDir->my_music;
 	my $my_music2 = File::HomeDir::my_music();
 	is( $my_music, $my_music2, 'Different APIs give the same results' );
-	ok( !!($my_music  and -d $my_music),  'Our music directory exists' );
-	ok( !!($my_music2 and -d $my_music2), 'Our music directory exists' );
+	ok( !!($my_music  and is_dir $my_music),  'Our music directory exists' );
+	ok( !!($my_music2 and is_dir $my_music2), 'Our music directory exists' );
 }
 
 # Find this user's pictures directory
@@ -249,8 +255,8 @@ SKIP: {
 	my $my_pictures  = File::HomeDir->my_pictures;
 	my $my_pictures2 = File::HomeDir::my_pictures();
 	is( $my_pictures, $my_pictures2, 'Different APIs give the same results' );
-	ok( !!($my_pictures  and -d $my_pictures),  'Our pictures directory exists' );
-	ok( !!($my_pictures2 and -d $my_pictures2), 'Our pictures directory exists' );
+	ok( !!($my_pictures  and is_dir $my_pictures),  'Our pictures directory exists' );
+	ok( !!($my_pictures2 and is_dir $my_pictures2), 'Our pictures directory exists' );
 }
 
 # Find this user's video directory
@@ -259,8 +265,8 @@ SKIP: {
 	my $my_videos  = File::HomeDir->my_videos;
 	my $my_videos2 = File::HomeDir::my_videos();
 	is( $my_videos, $my_videos2, 'Different APIs give the same results' );
-	ok( !!($my_videos  and -d $my_videos),  'Our videos directory exists' );
-	ok( !!($my_videos2 and -d $my_videos2), 'Our videos directory exists' );
+	ok( !!($my_videos  and is_dir $my_videos),  'Our videos directory exists' );
+	ok( !!($my_videos2 and is_dir $my_videos2), 'Our videos directory exists' );
 }
 
 # Desktop cannot be assumed in all environments
@@ -271,8 +277,8 @@ SKIP: {
 	my $my_desktop  = File::HomeDir->my_desktop;
 	my $my_desktop2 = File::HomeDir::my_desktop();
 	is( $my_desktop, $my_desktop2, 'Different APIs give the same results' );
-	ok( !!($my_desktop  and -d $my_desktop),  'Our desktop directory exists' );
-	ok( !!($my_desktop2 and -d $my_desktop2), 'Our desktop directory exists' );
+	ok( !!($my_desktop  and is_dir $my_desktop),  'Our desktop directory exists' );
+	ok( !!($my_desktop2 and is_dir $my_desktop2), 'Our desktop directory exists' );
 }
 
 # Find this user's local data
@@ -281,8 +287,8 @@ SKIP: {
 	my $my_data  = File::HomeDir->my_data;
 	my $my_data2 = File::HomeDir::my_data();
 	is( $my_data, $my_data2, 'Different APIs give the same results' );
-	ok( !!($my_data  and -d $my_data),  'Found our local data directory' );
-	ok( !!($my_data2 and -d $my_data2), 'Found our local data directory' );
+	ok( !!($my_data  and is_dir $my_data),  'Found our local data directory' );
+	ok( !!($my_data2 and is_dir $my_data2), 'Found our local data directory' );
 }
 
 # Shall we check name space pollution by testing functions in main before
@@ -302,11 +308,11 @@ SKIP: {
 
 	# Get root's homedir
 	my $root_home1 = home($root);
-	ok( !!($root_home1 and -d $root_home1), "Found root's home directory" );
+	ok( !!($root_home1 and is_dir $root_home1), "Found root's home directory" );
 
 	# Confirm against %~ hash
 	my $root_home2 = $~{$root};
-	ok( !!($root_home2 and -d $root_home2), "Found root's home directory" );
+	ok( !!($root_home2 and is_dir $root_home2), "Found root's home directory" );
 
 	# Root account via different methods match
 	is( $root_home1, $root_home2, 'Home dirs match' );

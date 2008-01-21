@@ -1,5 +1,9 @@
 Revision history for Perl extension File::HomeDir
 
+0.68
+    - Fixed folder detection on Darwin so that symlinks that resolve to
+      directories are considered valid folders. Patch from David Wheeler.
+
 0.67    Thu  6 Dec 2007
 	- No functional changes, no need to upgrade.
 	- Upgrading to Module::Install 0.68

@@ -88,7 +88,13 @@ sub _find_folder {
 		Mac::Files::kUserDomain(),
 		$name,
 		);
-	return $folder unless defined $folder;
+	return unless defined $folder;
+    unless (-d $folder) {
+        # Make sure that symlinks resolve to directories.
+        return unless -l $folder;
+        my $dir = readlink $folder or return;
+        return unless -d $dir;
+    }
 	return Cwd::abs_path($folder);
 }
 
