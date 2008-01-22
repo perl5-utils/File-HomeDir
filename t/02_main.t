@@ -16,11 +16,11 @@ use File::HomeDir;
 # use English; <-- don't do this
 
 sub is_dir($) {
-    my $dir = shift or return;
-    return 1 if -d $dir;
-    return unless -l $dir;
-    $dir = readlink $dir or return;
-    return -d $dir;
+	my $dir = shift or return;
+	return 1 if -d $dir;
+	return unless -l $dir;
+	$dir = readlink $dir or return;
+	return -d $dir;
 }
 
 
@@ -108,7 +108,7 @@ plan tests => 52;
 # Test invalid uses
 
 eval {
-    home(undef);
+	home(undef);
 };
 like( $@, qr{Can't use undef as a username}, 'home(undef)' );
 
@@ -147,12 +147,12 @@ SKIP: {
 }
 
 eval {
-    %~ = ();
+	%~ = ();
 };
 like( $@, qr{You can't CLEAR with the %~ hash}, 'Cannot store in %~ hash' );
 
 eval {
-    my ($k, $v) = each(%~);
+	my ($k, $v) = each(%~);
 };
 like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
 
@@ -162,7 +162,7 @@ like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
 # throws an exception.
 my @usernames;
 eval {
-    @usernames = keys(%~);
+	@usernames = keys(%~);
 };
 like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
 
@@ -317,5 +317,3 @@ SKIP: {
 	# Root account via different methods match
 	is( $root_home1, $root_home2, 'Home dirs match' );
 }
-
-exit(0);

@@ -24,5 +24,3 @@ use_ok( 'File::HomeDir::Windows' );
 use_ok( 'File::HomeDir::MacOS9'  );
 
 ok( defined &home, 'Using File::HomeDir exports home()' );
-
-exit(0);
