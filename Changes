@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.69    Sun  3 Feb 2008
+	- No changes, incrementing for production release
+
 0.68_01 Tue 22 Jan 2008
 	- Fixed folder detection on Darwin so that symlinks that resolve to
 	  directories are considered valid folders. Patch from David Wheeler.
