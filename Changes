@@ -1,5 +1,10 @@
 Revision history for Perl extension File::HomeDir
 
+0.70    Fri 28 Feb 2008
+	- Windows Server 2003 does not have Music/Pictures/etc directories
+	  (correct the test to not expect them to exist)
+	- Make the same assumption about Windows Server 2008
+
 0.69    Sun  3 Feb 2008
 	- No changes, incrementing for production release
 

@@ -59,6 +59,20 @@ if ( $^O eq 'MSWin32' ) {
 		$HAVEVIDEOS = 0; # If we ever support "maybe" this is a maybe
 	}
 
+	# Windows Server 2003 probably also doesn't have the user directories
+	if ( Win32::GetOSName() eq 'Win2003' ) {
+		$HAVEMUSIC  = 0;
+		$HAVEVIDEOS = 0;
+		$HAVEOTHERS = 0;
+	}
+
+	# Windows Server 2008 probably also doesn't have the user directories
+	if ( Win32::GetOSName() eq 'Win2008' ) {
+		$HAVEMUSIC  = 0;
+		$HAVEVIDEOS = 0;
+		$HAVEOTHERS = 0;
+	}
+
 # elsif ( other major different things? )
 
 # System is unix-like
