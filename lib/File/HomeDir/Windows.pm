@@ -6,7 +6,6 @@ package File::HomeDir::Windows;
 use 5.005;
 use strict;
 use Carp       ();
-use Win32      ();
 use File::Spec ();
 
 use vars qw{$VERSION};
@@ -53,7 +52,8 @@ sub my_desktop {
 
 	# The most correct way to find the desktop
 	SCOPE: {
-		my $dir = Win32::GetFolderPath(Win32::CSIDL_DESKTOP, CREATE);
+		require Win32;
+		my $dir = Win32::GetFolderPath(Win32::CSIDL_DESKTOP(), CREATE);
 		return $dir if $dir and -d $dir;
 	}
 
@@ -86,7 +86,8 @@ sub my_documents {
 
 	# The most correct way to find my documents
 	SCOPE: {
-		my $dir = Win32::GetFolderPath(Win32::CSIDL_PERSONAL, CREATE);
+		require Win32;
+		my $dir = Win32::GetFolderPath(Win32::CSIDL_PERSONAL(), CREATE);
 		return $dir if $dir and -d $dir;
 	}
 
@@ -98,7 +99,8 @@ sub my_data {
 
 	# The most correct way to find my documents
 	SCOPE: {
-		my $dir = Win32::GetFolderPath(Win32::CSIDL_LOCAL_APPDATA, CREATE);
+		require Win32;
+		my $dir = Win32::GetFolderPath(Win32::CSIDL_LOCAL_APPDATA(), CREATE);
 		return $dir if $dir and -d $dir;
 	}
 
@@ -110,7 +112,8 @@ sub my_music {
 
 	# The most correct way to find my music
 	SCOPE: {
-		my $dir = Win32::GetFolderPath(Win32::CSIDL_MYMUSIC, CREATE);
+		require Win32;
+		my $dir = Win32::GetFolderPath(Win32::CSIDL_MYMUSIC(), CREATE);
 		return $dir if $dir and -d $dir;
 	}
 
@@ -122,7 +125,8 @@ sub my_pictures {
 
 	# The most correct way to find my pictures
 	SCOPE: {
-		my $dir = Win32::GetFolderPath(Win32::CSIDL_MYPICTURES, CREATE);
+		require Win32;
+		my $dir = Win32::GetFolderPath(Win32::CSIDL_MYPICTURES(), CREATE);
 		return $dir if $dir and -d $dir;
 	}
 
@@ -134,7 +138,8 @@ sub my_videos {
 
 	# The most correct way to find my videos
 	SCOPE: {
-		my $dir = Win32::GetFolderPath(Win32::CSIDL_MYVIDEO, CREATE);
+		require Win32;
+		my $dir = Win32::GetFolderPath(Win32::CSIDL_MYVIDEO(), CREATE);
 		return $dir if $dir and -d $dir;
 	}
 

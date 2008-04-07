@@ -1,5 +1,6 @@
 use inc::Module::Install;
 
+name           'File-HomeDir';
 all_from       'lib/File/HomeDir.pm';
 requires       'Carp'       => 0;
 requires       'Cwd'        => $^O eq 'darwin' ? '3' : '3.12';
