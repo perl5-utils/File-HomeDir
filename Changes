@@ -1,5 +1,10 @@
 Revision history for Perl extension File::HomeDir
 
+0.71_01 Fri  4 Apr 2008
+	- Converted from Registry checks to Win32 calls.
+	  This includes giving it the "create directory" call.
+	- Removing the dependency on the registry modules.
+
 0.70    Fri 28 Feb 2008
 	- Windows Server 2003 does not have Music/Pictures/etc directories
 	  (correct the test to not expect them to exist)
