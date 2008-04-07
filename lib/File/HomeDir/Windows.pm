@@ -11,7 +11,7 @@ use File::Spec ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.70';
+	$VERSION = '0.71_01';
 }
 
 sub CREATE () { 1 }
