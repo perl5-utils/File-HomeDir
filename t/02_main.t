@@ -221,7 +221,8 @@ if ( $HAVEHOME ) {
 	is( $home, undef, 'Confirmed no home directory' );
 }
 
-is( $home, $my_home, 'Different APIs give same results' );
+my $my_dot_config = File::HomeDir->my_dot_config;
+is( $home, $my_dot_config, 'Different APIs give same results for my_dot_config' );
 SKIP: {
 	skip("getpwuid not available", 1) if $NO_GETPWUID;
 	is( home(getpwuid($<)), $home, 'home(username) returns the same value' );

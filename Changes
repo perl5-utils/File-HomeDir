@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.71_02
+	- Added `my_dot_config`.
+
 0.71_01 Fri  4 Apr 2008
 	- Converted from Registry checks to Win32 calls.
 	  This includes giving it the "create directory" call.

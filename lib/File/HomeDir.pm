@@ -25,6 +25,7 @@ BEGIN {
 		my_pictures
 		my_videos
 		my_data
+		my_dot_config
 		users_home
 		users_desktop
 		users_documents
@@ -107,6 +108,11 @@ sub my_data {
 		: Carp::croak("The my_data method is not implemented on this platform");
 }
 
+sub my_dot_config {
+	$IMPLEMENTED_BY->can('my_dot_config')
+		? $IMPLEMENTED_BY->my_dot_config
+		: $IMPLEMENTED_BY->my_home;
+}
 
 
 
@@ -430,7 +436,7 @@ does not have a suitable directory, or dies on error.
 
 =head2 my_data
 
-The C<my_data> takes no arguments and returns the directory where
+The C<my_data> method takes no arguments and returns the directory where
 local applications should stored their internal data for the current
 user.
 
@@ -444,6 +450,15 @@ C<~/Local Settings/Application Data/.foo>
 
 Returns the directory path as a string, C<undef> if the current user
 does not have a data directory, or dies on error.
+
+=head2 my_dot_config
+
+The C<my_dot_config> method takes no arguments and returns the directory
+where Unix-style applications should store their internal configuration
+data for the current user. This is the same as C<my_data> on most platforms,
+but whereas C<my_data> is F<~/Library/Application Support> on Mac OS X,
+C<my_dot_config> will instead return the same value as C<my_home>, namely
+F<~/>.
 
 =head2 users_home
 
