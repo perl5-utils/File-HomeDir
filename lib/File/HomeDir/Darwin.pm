@@ -162,14 +162,13 @@ used via L<File::HomeDir>.
   use File::HomeDir;
   
   # Find directories for the current user
-  $home    = File::HomeDir->my_home;        # /Users/mylogin
-  $desktop = File::HomeDir->my_desktop;     # /Users/mylogin/Desktop
-  $docs    = File::HomeDir->my_documents;   # /Users/mylogin/Documents
-  $music   = File::HomeDir->my_music;       # /Users/mylogin/Music
-  $pics    = File::HomeDir->my_pictures;    # /Users/mylogin/Pictures
-  $videos  = File::HomeDir->my_videos;      # /Users/mylogin/Movies
-  $data    = File::HomeDir->my_data;        # /Users/mylogin/Library/Application Support
-   
+  $home    = File::HomeDir->my_home;      # /Users/mylogin
+  $desktop = File::HomeDir->my_desktop;   # /Users/mylogin/Desktop
+  $docs    = File::HomeDir->my_documents; # /Users/mylogin/Documents
+  $music   = File::HomeDir->my_music;     # /Users/mylogin/Music
+  $pics    = File::HomeDir->my_pictures;  # /Users/mylogin/Pictures
+  $videos  = File::HomeDir->my_videos;    # /Users/mylogin/Movies
+  $data    = File::HomeDir->my_data;      # /Users/mylogin/Library/Application Support
 
 =head1 TODO
 
