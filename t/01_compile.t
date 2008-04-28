@@ -9,7 +9,7 @@ BEGIN {
 }
 use File::Spec::Functions ':ALL';
 
-use Test::More tests => 7;
+use Test::More tests => 8;
 
 # This module is destined for the core.
 # Please do NOT use convenience modules
@@ -17,6 +17,7 @@ use Test::More tests => 7;
 
 ok( $] > 5.005, 'Perl version is 5.005 or newer' );
 
+use_ok( 'File::HomeDir::Driver'  );
 use_ok( 'File::HomeDir'          );
 use_ok( 'File::HomeDir::Unix'    );
 use_ok( 'File::HomeDir::Darwin'  );

@@ -64,7 +64,7 @@ if ( $IMPLEMENTED_BY ) {
 	$IMPLEMENTED_BY = 'File::HomeDir::Unix';
 }
 unless ( _DRIVER($IMPLEMENTED_BY, 'File::HomeDir::Driver') ) {
-	croak("Missing or invalid File::HomeDir driver $IMPLEMENTED_BY");
+	Carp::croak("Missing or invalid File::HomeDir driver $IMPLEMENTED_BY");
 }
 
 
