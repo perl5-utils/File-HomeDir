@@ -6,11 +6,12 @@ package File::HomeDir::MacOS9;
 
 use 5.005;
 use strict;
+use base 'File::HomeDir::Driver';
 use Carp ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.71_01';
+	$VERSION = '0.71_02';
 }
 
 # Load early if in a forking environment and we have

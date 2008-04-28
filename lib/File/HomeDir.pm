@@ -1,6 +1,6 @@
 package File::HomeDir;
 
-# See POD at end for docs
+# See POD at end for documentation
 
 use 5.005;
 use strict;
@@ -10,7 +10,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.71_01';
+	$VERSION = '0.71_02';
 
 	# Inherit manually
 	require Exporter;
@@ -39,26 +39,32 @@ BEGIN {
 	# symbol name that's always looked for in package 'main'.
 }
 
-# Don't do platform detection at compile-time
-if ( $^O eq 'MSWin32' ) {
+# Inlined Params::Util functions
+sub _CLASS ($) {
+	(defined $_[0] and ! ref $_[0] and $_[0] =~ m/^[^\W\d]\w*(?:::\w+)*$/s) ? $_[0] : undef;
+}
+sub _DRIVER ($$) {
+	(defined _CLASS($_[0]) and eval "require $_[0];" and ! $@ and $_[0]->isa($_[1]) and $_[0] ne $_[1]) ? $_[0] : undef;
+}
+
+# Platform detection
+if ( $IMPLEMENTED_BY ) {
+	# Allow for custom HomeDir classes
+} elsif ( $^O eq 'MSWin32' ) {
 	# All versions of Windows
 	$IMPLEMENTED_BY = 'File::HomeDir::Windows';
-	require File::HomeDir::Windows;
-
 } elsif ( $^O eq 'darwin' ) {
 	# Modern Max OS X
 	$IMPLEMENTED_BY = 'File::HomeDir::Darwin';
-	require File::HomeDir::Darwin;
-
 } elsif ( $^O eq 'MacOS' ) {
 	# Legacy Mac OS
 	$IMPLEMENTED_BY = 'File::HomeDir::MacOS9';
-	require File::HomeDir::MacOS9;
-
 } else {
 	# Default to Unix semantics
 	$IMPLEMENTED_BY = 'File::HomeDir::Unix';
-	require File::HomeDir::Unix;
+}
+unless ( _DRIVER($IMPLEMENTED_BY, 'File::HomeDir::Driver') ) {
+	croak("Missing or invalid File::HomeDir driver $IMPLEMENTED_BY");
 }
 
 
@@ -535,7 +541,7 @@ Note, however, that if the hash key is "" or undef (whether thru being
 a literal "", or a scalar whose value is empty-string or undef), then
 this returns zero-argument C<home()>, i.e., your home directory:
 
-Further, please note that because the %~ hash compulsorily modifies
+Further, please note that because the C<%~> hash compulsorily modifies
 a hash outside of it's namespace, and presents an overly simplistic
 approach to home directories, it is likely to ultimately be removed.
 
@@ -550,7 +556,7 @@ use is found in the wild, these plans may be pushed back.
 =item * Become generally clearer on situations in which a user might not
 have a particular resource.
 
-=item * Merge remaining edge case code in File::HomeDir::Win32
+=item * Merge remaining edge case code in L<File::HomeDir::Win32>
 
 =item * Add more granularity to Unix, and add support to VMS and other
 esoteric platforms, so we can consider going core.
