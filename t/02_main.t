@@ -112,7 +112,7 @@ if ( $^O eq 'MSWin32' ) {
 	$HAVEOTHERS  = 1;
 }
 
-plan tests => 52;
+plan tests => 50;
 
 
 
@@ -219,13 +219,6 @@ if ( $HAVEHOME ) {
 	ok( !!($home and is_dir $home), 'Found our home directory' );
 } else {
 	is( $home, undef, 'Confirmed no home directory' );
-}
-
-my $my_dot_config = File::HomeDir->my_dot_config;
-is( $home, $my_dot_config, 'Different APIs give same results for my_dot_config' );
-SKIP: {
-	skip("getpwuid not available", 1) if $NO_GETPWUID;
-	is( home(getpwuid($<)), $home, 'home(username) returns the same value' );
 }
 
 is( $~{""}, $home, 'Legacy %~ tied interface' );
