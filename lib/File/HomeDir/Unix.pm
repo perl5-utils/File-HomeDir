@@ -4,12 +4,13 @@ package File::HomeDir::Unix;
 
 use 5.005;
 use strict;
-use base 'File::HomeDir::Driver';
+use File::HomeDir::Driver ();
 use Carp ();
 
-use vars qw{$VERSION};
+use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.71_02';
+	$VERSION = '0.71_03';
+	@ISA     = 'File::HomeDir::Driver';
 }
 
 
@@ -150,10 +151,10 @@ used via L<File::HomeDir>.
   # Find directories for the current user
   $home    = File::HomeDir->my_home;        # /home/mylogin
 
-  $desktop = File::HomeDir->my_desktop;     # .. all of these will default to home directory at the moment ..
-  $docs    = File::HomeDir->my_documents;   #
-  $music   = File::HomeDir->my_music;       #
-  $pics    = File::HomeDir->my_pictures;    #
+  $desktop = File::HomeDir->my_desktop;     # All of these will... 
+  $docs    = File::HomeDir->my_documents;   # ...default to home...
+  $music   = File::HomeDir->my_music;       # ...directory at the...
+  $pics    = File::HomeDir->my_pictures;    # ...moment.
   $videos  = File::HomeDir->my_videos;      #
   $data    = File::HomeDir->my_data;        # 
 

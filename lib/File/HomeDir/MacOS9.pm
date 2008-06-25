@@ -6,17 +6,21 @@ package File::HomeDir::MacOS9;
 
 use 5.005;
 use strict;
-use base 'File::HomeDir::Driver';
+use File::HomeDir::Driver ();
 use Carp ();
 
-use vars qw{$VERSION};
+use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.71_02';
+	$VERSION = '0.71_03';
+	@ISA     = 'File::HomeDir::Driver';
 }
 
 # Load early if in a forking environment and we have
 # prefork, or at run-time if not.
-eval "use prefork 'Mac::Files'";
+SCOPE: {
+	local $@;
+	eval "use prefork 'Mac::Files'";
+}
 
 
 

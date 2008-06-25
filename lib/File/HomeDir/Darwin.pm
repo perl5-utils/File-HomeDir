@@ -5,18 +5,22 @@ package File::HomeDir::Darwin;
 
 use 5.005;
 use strict;
-use base 'File::HomeDir::Unix';
+use File::HomeDir::Unix ();
 use Carp ();
-use Cwd  ();
+use Cwd ();
 
-use vars qw{$VERSION};
+use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.71_02';
+	$VERSION = '0.71_03';
+	@ISA     = 'File::HomeDir::Unix';
 }
 
 # Load early if in a forking environment and we have
 # prefork, or at run-time if not.
-eval "use prefork 'Mac::Files'";
+SCOPE: {
+	local $@;
+	eval "use prefork 'Mac::Files'";
+}
 
 
 
@@ -135,10 +139,8 @@ sub users_data {
 # there's really no other good way to do it at this time, that i know of -- pudge
 sub _to_user {
 	my ($class, $path, $name) = @_;
-
 	my $my_home    = $class->my_home;
 	my $users_home = $class->users_home($name);
-
 	$path =~ s/^Q$my_home/$users_home/;
 	return $path;
 }
