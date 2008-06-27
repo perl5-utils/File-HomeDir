@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.80 Fri 27 Jun 2008
+	- All clear on the CPAN Testers front, flipping to production
+
 0.71_03 Wed 25 Jun 2008
 	- Removing the Server 2003 and 2008 skips that should work
 	  now that we create directories on demand.

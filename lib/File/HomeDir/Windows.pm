@@ -11,7 +11,7 @@ use File::Spec ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.71_03';
+	$VERSION = '0.80';
 	@ISA     = 'File::HomeDir::Driver';
 }
 
