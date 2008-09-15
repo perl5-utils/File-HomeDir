@@ -1,5 +1,9 @@
 Revision history for Perl extension File::HomeDir
 
+0.81 Thu  3 Jul 2008
+	- Updating to Module::Install 0.76
+	- Localising $@ during evals
+
 0.80 Fri 27 Jun 2008
 	- All clear on the CPAN Testers front, flipping to production
 

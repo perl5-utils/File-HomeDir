@@ -11,7 +11,7 @@ use Carp ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.80';
+	$VERSION = '0.81';
 	@ISA     = 'File::HomeDir::Driver';
 }
 
@@ -40,10 +40,13 @@ sub my_home {
 	### DESPERATION SETS IN
 
 	# We could use the desktop
-	eval {
-		my $home = $class->my_desktop;
-		return $home if $home and -d $home;
-	};
+	SCOPE: {
+		local $@;
+		eval {
+			my $home = $class->my_desktop;
+			return $home if $home and -d $home;
+		};
+	}
 
 	# Desperation on any platform
 	SCOPE: {
