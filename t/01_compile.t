@@ -15,7 +15,7 @@ use Test::More tests => 8;
 # Please do NOT use convenience modules
 # use English; <-- don't do this
 
-ok( $] > 5.005, 'Perl version is 5.005 or newer' );
+ok( $] > 5.00503, 'Perl version is 5.005 or newer' );
 
 use_ok( 'File::HomeDir::Driver'  );
 use_ok( 'File::HomeDir::Unix'    );

@@ -2,7 +2,7 @@ package File::HomeDir::Unix;
 
 # Unix-specific functionality
 
-use 5.005;
+use 5.00503;
 use strict;
 use File::HomeDir::Driver ();
 use Carp ();

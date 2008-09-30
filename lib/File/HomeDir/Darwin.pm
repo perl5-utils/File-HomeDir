@@ -3,7 +3,7 @@ package File::HomeDir::Darwin;
 # Basic implementation for the Dawin family of operating systems.
 # This includes (most prominently) Mac OS X.
 
-use 5.005;
+use 5.00503;
 use strict;
 use File::HomeDir::Unix ();
 use Carp ();

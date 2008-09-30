@@ -3,7 +3,7 @@ package File::HomeDir::Windows;
 # Generalised implementation for the entire Windows family of operating
 # systems.
 
-use 5.005;
+use 5.00503;
 use strict;
 use File::HomeDir::Driver ();
 use Carp ();

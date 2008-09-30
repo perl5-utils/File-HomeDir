@@ -2,6 +2,10 @@
 
 # Main testing for File::HomeDir
 
+# Testing "home directory" concepts is blood difficult, be delicate in
+# your changes and don't forget to test on every OS at multiple versions
+# (WinXP vs Win2003 etc) as both root and non-root users.
+
 use strict;
 BEGIN {
 	$|  = 1;
