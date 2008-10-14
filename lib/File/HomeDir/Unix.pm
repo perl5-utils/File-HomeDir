@@ -4,12 +4,12 @@ package File::HomeDir::Unix;
 
 use 5.00503;
 use strict;
+use Carp                  ();
 use File::HomeDir::Driver ();
-use Carp ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.81';
+	$VERSION = '0.82';
 	@ISA     = 'File::HomeDir::Driver';
 }
 

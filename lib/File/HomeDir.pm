@@ -10,7 +10,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.81';
+	$VERSION = '0.82';
 
 	# Inherit manually
 	require Exporter;
@@ -32,7 +32,7 @@ BEGIN {
 		users_pictures
 		users_videos
 		users_data
-		};
+	};
 
 	# %~ doesn't need (and won't take) exporting, as it's a magic
 	# symbol name that's always looked for in package 'main'.

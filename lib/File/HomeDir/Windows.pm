@@ -5,13 +5,13 @@ package File::HomeDir::Windows;
 
 use 5.00503;
 use strict;
+use Carp                  ();
+use File::Spec            ();
 use File::HomeDir::Driver ();
-use Carp ();
-use File::Spec ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.81';
+	$VERSION = '0.82';
 	@ISA     = 'File::HomeDir::Driver';
 }
 

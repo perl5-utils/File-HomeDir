@@ -63,22 +63,6 @@ if ( $^O eq 'MSWin32' ) {
 		$HAVEVIDEOS = 0; # If we ever support "maybe" this is a maybe
 	}
 
-	# Windows Server 2003 probably also doesn't have the user directories
-	#if ( Win32::GetOSName() eq 'Win2003' ) {
-	#	$HAVEMUSIC  = 0;
-	#	$HAVEVIDEOS = 0;
-	#	$HAVEOTHERS = 0;
-	#}
-
-	# Windows Server 2008 probably also doesn't have the user directories
-	#if ( Win32::GetOSName() eq 'Win2008' ) {
-	#	$HAVEMUSIC  = 0;
-	#	$HAVEVIDEOS = 0;
-	#	$HAVEOTHERS = 0;
-	#}
-
-# elsif ( other major different things? )
-
 # System is unix-like
 
 # Nobody users on all unix systems generally don't have home directories
@@ -128,19 +112,26 @@ plan tests => 50;
 eval {
 	home(undef);
 };
-like( $@, qr{Can't use undef as a username}, 'home(undef)' );
+like( $@, qr{Can\'t use undef as a username}, 'home(undef)' );
 
 # Warning is not reliably thrown on older Perls,
 # as well as on some old 5.9 series releases (5.9.0)
 SKIP: {
 	skip("Skipping unreliable warning test", 2) if $] < 5.008007;
 	skip("Skipping unreliable warning test", 2) if $] == 5.009;
-	my $warned = 0;
+	my @warned = ();
 	eval {
-		local $SIG{__WARN__} = sub { $warned++ };
+		local $SIG{__WARN__} = sub {
+			push @warned, $_[0];
+		};
 		my $h = $~{undef()};
 	};
-	is( $warned, 1, 'Emitted a single warning' );
+	is( scalar(@warned), 1, 'Emitted a single warning' );
+	unless ( scalar(@warned) ) {
+		foreach ( @warned ) {
+			diag( $_ );
+		}
+	}
 	like( $@, qr{Can't use undef as a username}, '%~(undef())' );
 }
 

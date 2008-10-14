@@ -1,5 +1,10 @@
 Revision history for Perl extension File::HomeDir
 
+0.82 Tue 14 Oct 2008
+	- When we get more than one warning, diag the warnings 
+	  so that we have actually have a chance to get rid of
+	  the extra warnings.
+
 0.81 Thu  3 Jul 2008
 	- Updating to Module::Install 0.77
 	- Localising $@ during evals

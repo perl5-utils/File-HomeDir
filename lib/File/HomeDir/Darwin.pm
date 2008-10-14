@@ -5,13 +5,13 @@ package File::HomeDir::Darwin;
 
 use 5.00503;
 use strict;
+use Cwd                 ();
+use Carp                ();
 use File::HomeDir::Unix ();
-use Carp ();
-use Cwd ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.81';
+	$VERSION = '0.82';
 	@ISA     = 'File::HomeDir::Unix';
 }
 
