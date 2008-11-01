@@ -1,5 +1,8 @@
 Revision history for Perl extension File::HomeDir
 
+0.83_01 Sat  1 Nov 2008
+	- Patch from Darin McBride to fix user_home on Darwin.
+
 0.82 Tue 14 Oct 2008
 	- When we get more than one warning, diag the warnings 
 	  so that we have actually have a chance to get rid of

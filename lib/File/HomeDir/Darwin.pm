@@ -11,7 +11,7 @@ use File::HomeDir::Unix ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.82_01';
+	$VERSION = '0.83_01';
 	@ISA     = 'File::HomeDir::Unix';
 }
 
