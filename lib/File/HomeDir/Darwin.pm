@@ -31,7 +31,15 @@ SCOPE: {
 
 sub my_home {
 	my ($class) = @_;
-	require Mac::Files;
+
+	# A lot of unix people and unix-derived tools rely on
+	# the ability to overload HOME. We will support it too
+	# so that they can replace raw HOME calls with File::HomeDir.
+	if ( exists $ENV{HOME} and defined $ENV{HOME} ) {
+		return $ENV{HOME};
+	}
+	
+  require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kCurrentUserFolderType(),
 		);

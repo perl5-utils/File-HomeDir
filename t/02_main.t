@@ -100,7 +100,7 @@ if ( $^O eq 'MSWin32' ) {
 	$HAVEOTHERS  = 1;
 }
 
-plan tests => 50;
+plan tests => 51;
 
 
 
@@ -214,6 +214,12 @@ if ( $HAVEHOME ) {
 	ok( !!($home and is_dir $home), 'Found our home directory' );
 } else {
 	is( $home, undef, 'Confirmed no home directory' );
+}
+
+# check that $ENV{HOME} is honored if set
+{
+  local $ENV{HOME} = rel2abs('.');
+  is( File::HomeDir->my_home(), $ENV{HOME}, "my_home() returns $ENV{HOME}" );
 }
 
 is( $~{""}, $home, 'Legacy %~ tied interface' );
