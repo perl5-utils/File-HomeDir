@@ -17,29 +17,29 @@ if ( $File::HomeDir::IMPLEMENTED_BY eq 'File::HomeDir::Darwin' ) {
 }
 
 SKIP: {
-    my $user;
-    foreach (0 .. 9) {
-	my $temp = sprintf 'fubar%04d', rand(10000);
-	getpwnam $temp and next;
-	$user = $temp;
-	last;
-    }
-    $user or skip("Unable to find non-existent user", 1);
-    $@ = undef;
-    my $home = eval {File::HomeDir->users_home($user)};
-    $@ and skip("Unable to execute File::HomeDir->users_home('$user')");
-    ok (!defined $home, "Home of non-existent user should be undef");
+	my $user;
+	foreach (0 .. 9) {
+		my $temp = sprintf 'fubar%04d', rand(10000);
+		getpwnam $temp and next;
+		$user = $temp;
+		last;
+	}
+	$user or skip("Unable to find non-existent user", 1);
+	$@ = undef;
+	my $home = eval {File::HomeDir->users_home($user)};
+	$@ and skip("Unable to execute File::HomeDir->users_home('$user')");
+	ok (!defined $home, "Home of non-existent user should be undef");
 }
 
 SKIP: {
-    my $user;
-    foreach my $uid (501 .. 540) {
-	$uid == $< and next;
-	$user = getpwuid $uid or next;
-	last;
-    }
-    $user or skip("Unable to find another user", 1);
-    my $me = getpwuid $<;
+	my $user;
+	foreach my $uid (501 .. 540) {
+		$uid == $< and next;
+		$user = getpwuid $uid or next;
+		last;
+	}
+	$user or skip("Unable to find another user", 1);
+	my $me = getpwuid $<;
 	my $my_home = eval { File::HomeDir->my_home() };
 	unless ( defined $my_home ) {
 		skip( "File::HomeDir->my_home() undefined", 1 );

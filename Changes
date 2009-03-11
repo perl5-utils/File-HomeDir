@@ -1,7 +1,8 @@
-Revision history for Perl extension File::HomeDir
+Changes for Perl extension File-HomeDir
 
-NEW
-  - Adds support for $ENV{HOME} on Darwin
+0.84 Wed 11 Mar 2009
+	- Adds support for $ENV{HOME} on Darwin
+	- Other bug fixes on Darwin (MIYAGAWA)
 
 0.83_01 Sat  1 Nov 2008
 	- Patch from Darin McBride to fix user_home on Darwin.
