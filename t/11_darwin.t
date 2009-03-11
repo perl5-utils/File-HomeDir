@@ -12,7 +12,7 @@ use File::HomeDir;
 if ( $File::HomeDir::IMPLEMENTED_BY eq 'File::HomeDir::Darwin' ) {
 	plan( tests => 2 );
 } else {
-	plan( skip_all => "File::HomeDir::Darwin not used under $^O" );
+	plan( skip_all => "Not running on Darwin" );
 	exit(0);
 }
 
