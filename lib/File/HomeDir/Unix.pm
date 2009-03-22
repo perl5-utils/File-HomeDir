@@ -9,7 +9,7 @@ use File::HomeDir::Driver ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.84';
+	$VERSION = '0.85_01';
 	@ISA     = 'File::HomeDir::Driver';
 }
 

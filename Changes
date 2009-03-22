@@ -1,5 +1,9 @@
 Changes for Perl extension File-HomeDir
 
+0.85_01
+	- For 64-bit perl on Darwin, fall back to File::HomeDir::Unix
+	  as Mac::Carbon is not available
+
 0.84 Wed 11 Mar 2009
 	- Adds support for $ENV{HOME} on Darwin
 	- Other bug fixes on Darwin (MIYAGAWA)

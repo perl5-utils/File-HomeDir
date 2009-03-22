@@ -11,7 +11,7 @@ use File::HomeDir::Unix ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.84';
+	$VERSION = '0.85_01';
 	@ISA     = 'File::HomeDir::Unix';
 }
 
@@ -167,6 +167,10 @@ File::HomeDir::Darwin - find your home and other directories, on Darwin (OS X)
 This module provides Darwin-specific implementations for determining
 common user directories.  In normal usage this module will always be
 used via L<File::HomeDir>.
+
+Note -- since this module requires Mac::Carbon and Mac::Carbon does not
+work with 64-bit perls, on such systems, File::HomeDir will fall back
+to File::HomeDir::Unix instead.
 
 =head1 SYNOPSIS
 

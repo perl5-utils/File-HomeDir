@@ -5,12 +5,13 @@ package File::HomeDir;
 use 5.00503;
 use strict;
 use Carp       ();
+use Config     ();
 use File::Spec ();
 
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.84';
+	$VERSION = '0.85_01';
 
 	# Inherit manually
 	require Exporter;
@@ -53,8 +54,8 @@ if ( $IMPLEMENTED_BY ) {
 } elsif ( $^O eq 'MSWin32' ) {
 	# All versions of Windows
 	$IMPLEMENTED_BY = 'File::HomeDir::Windows';
-} elsif ( $^O eq 'darwin' ) {
-	# Modern Max OS X
+} elsif ( $^O eq 'darwin' && $Config{ptrsize} != 8 ) {
+	# Modern Max OS X, but fallback to unix on 64 bit
 	$IMPLEMENTED_BY = 'File::HomeDir::Darwin';
 } elsif ( $^O eq 'MacOS' ) {
 	# Legacy Mac OS
