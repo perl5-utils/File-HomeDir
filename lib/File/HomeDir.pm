@@ -54,7 +54,7 @@ if ( $IMPLEMENTED_BY ) {
 } elsif ( $^O eq 'MSWin32' ) {
 	# All versions of Windows
 	$IMPLEMENTED_BY = 'File::HomeDir::Windows';
-} elsif ( $^O eq 'darwin' && $Config{ptrsize} != 8 ) {
+} elsif ( $^O eq 'darwin' && $Config::Config{ptrsize} != 8 ) {
 	# Modern Max OS X, but fallback to unix on 64 bit
 	$IMPLEMENTED_BY = 'File::HomeDir::Darwin';
 } elsif ( $^O eq 'MacOS' ) {

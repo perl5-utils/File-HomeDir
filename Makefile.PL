@@ -1,4 +1,5 @@
 use inc::Module::Install 0.79;
+use Config;
 
 all_from      'lib/File/HomeDir.pm';
 requires      'Carp'       => 0;
@@ -12,7 +13,8 @@ if ( $MacPerl::Version and $MacPerl::Version ) {
 	# Old Mac OS 9
 	requires 'Mac::Files'  => 0;
 
-} elsif ( $^O eq 'darwin' ) {
+} elsif ( $^O eq 'darwin' && $Config{ptrsize} != 8 ) {
+	# Modern Max OS X but only for 32-bit bit
 	requires 'Mac::Carbon' => '0.77';
 	requires 'Mac::Files'  => '1.09';
 
