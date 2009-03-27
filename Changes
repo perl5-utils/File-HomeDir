@@ -1,5 +1,8 @@
 Changes for Perl extension File-HomeDir
 
+0.86 Fri 27 Mar 2009
+	- Bug fix for the 64-bit implementation
+
 0.85_01
 	- For 64-bit perl on Darwin, fall back to File::HomeDir::Unix
 	  as Mac::Carbon is not available
