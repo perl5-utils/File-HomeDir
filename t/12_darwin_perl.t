@@ -13,7 +13,7 @@ if ( $File::HomeDir::IMPLEMENTED_BY =~ /^File::HomeDir::Darwin/ ) {
         # force pure perl since it should work everywhere
         require File::HomeDir::DarwinPerl;
         $File::HomeDir::IMPLEMENTED_BY = 'File::HomeDir::DarwinPerl';
-	plan( tests => 2 );
+	plan( tests => 6 );
 } else {
 	plan( skip_all => "Not running on Darwin" );
 	exit(0);
@@ -32,6 +32,14 @@ SKIP: {
 	my $home = eval {File::HomeDir->users_home($user)};
 	$@ and skip("Unable to execute File::HomeDir->users_home('$user')", 1);
 	ok (!defined $home, "Home of non-existent user should be undef");
+}
+
+{
+    # reality check:
+    like( File::HomeDir->my_music, qr/Music/ );
+    like( File::HomeDir->my_videos, qr/Movies/ );
+    like( File::HomeDir->my_pictures, qr/Pictures/ );
+    like( File::HomeDir->my_data, qr/Application Support/ );
 }
 
 SKIP: {

@@ -10,7 +10,7 @@ use Test::More;
 use File::HomeDir;
 
 if ( $File::HomeDir::IMPLEMENTED_BY eq 'File::HomeDir::Darwin' ) {
-	plan( tests => 2 );
+	plan( tests => 6 );
 } else {
 	plan( skip_all => "Not running on 32-bit Darwin" );
 	exit(0);
@@ -29,6 +29,14 @@ SKIP: {
 	my $home = eval {File::HomeDir->users_home($user)};
 	$@ and skip("Unable to execute File::HomeDir->users_home('$user')");
 	ok (!defined $home, "Home of non-existent user should be undef");
+}
+
+{
+    # reality check:
+    like( File::HomeDir->my_music, qr/Music/ );
+    like( File::HomeDir->my_videos, qr/Movies/ );
+    like( File::HomeDir->my_pictures, qr/Pictures/ );
+    like( File::HomeDir->my_data, qr/Application Support/ );
 }
 
 SKIP: {
