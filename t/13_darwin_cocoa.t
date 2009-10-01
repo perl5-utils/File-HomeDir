@@ -9,10 +9,13 @@ BEGIN {
 use Test::More;
 use File::HomeDir;
 
-if ( $File::HomeDir::IMPLEMENTED_BY eq 'File::HomeDir::Darwin' ) {
+if ( $File::HomeDir::IMPLEMENTED_BY =~ /Darwin/ && eval "require Mac::SystemDirectory; 1" ) {
+        # force Cocoa if you have Mac::SystemDirectory
+        require File::HomeDir::DarwinCocoa;
+        $File::HomeDir::IMPLEMENTED_BY = 'File::HomeDir::DarwinCocoa';
 	plan( tests => 2 );
 } else {
-	plan( skip_all => "Not running on 32-bit Darwin" );
+	plan( skip_all => "Not running on Darwin with Cocoa API using Mac::SystemDirectory" );
 	exit(0);
 }
 
@@ -27,7 +30,7 @@ SKIP: {
 	$user or skip("Unable to find non-existent user", 1);
 	$@ = undef;
 	my $home = eval {File::HomeDir->users_home($user)};
-	$@ and skip("Unable to execute File::HomeDir->users_home('$user')");
+	$@ and skip("Unable to execute File::HomeDir->users_home('$user')", 1);
 	ok (!defined $home, "Home of non-existent user should be undef");
 }
 

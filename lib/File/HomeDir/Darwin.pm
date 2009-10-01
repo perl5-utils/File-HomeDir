@@ -168,14 +168,14 @@ This module provides Darwin-specific implementations for determining
 common user directories.  In normal usage this module will always be
 used via L<File::HomeDir>.
 
-Note -- since this module requires Mac::Carbon and Mac::Carbon does not
-work with 64-bit perls, on such systems, File::HomeDir will fall back
-to File::HomeDir::Unix instead.
+Note -- since this module requires Mac::Carbon and Mac::Carbon does
+not work with 64-bit perls, on such systems, File::HomeDir will try
+File::HomeDir::DarwinCocoa and then fall back to File::HomeDir::DarwinPerl.
 
 =head1 SYNOPSIS
 
   use File::HomeDir;
-  
+
   # Find directories for the current user
   $home    = File::HomeDir->my_home;      # /Users/mylogin
   $desktop = File::HomeDir->my_desktop;   # /Users/mylogin/Desktop
@@ -188,8 +188,6 @@ to File::HomeDir::Unix instead.
 =head1 TODO
 
 =over 4
-
-=item * Fallback to Unix if no Mac::Carbon available
 
 =item * Test with Mac OS (versions 7, 8, 9)
 
