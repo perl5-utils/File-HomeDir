@@ -12,12 +12,14 @@ use File::HomeDir::Unix ();
 use vars qw{$VERSION @ISA};
 BEGIN {
 	$VERSION = '0.86';
-	@ISA     = 'File::HomeDir::Unix';
-}
 
-# Load early if in a forking environment and we have
-# prefork, or at run-time if not.
-SCOPE: {
+	# This is only a child class of the pure Perl darwin
+	# class so that we can do homedir detection of all three
+	# drivers at one via ->isa.
+	@ISA = 'File::HomeDir::Darwin';
+
+	# Load early if in a forking environment and we have
+	# prefork, or at run-time if not.
 	local $@;
 	eval "use prefork 'Mac::Files'";
 }
@@ -30,7 +32,7 @@ SCOPE: {
 # Current User Methods
 
 sub my_home {
-	my ($class) = @_;
+	my $class = shift;
 
 	# A lot of unix people and unix-derived tools rely on
 	# the ability to overload HOME. We will support it too
@@ -38,75 +40,85 @@ sub my_home {
 	if ( exists $ENV{HOME} and defined $ENV{HOME} ) {
 		return $ENV{HOME};
 	}
-	
-  require Mac::Files;
+
+	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kCurrentUserFolderType(),
-		);
+	);
 }
 
 sub my_desktop {
-	my ($class) = @_;
+	my $class = shift;
+
 	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kDesktopFolderType(),
-		);
+	);
 }
 
 sub my_documents {
-	my ($class) = @_;
+	my $class = shift;
+
 	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kDocumentsFolderType(),
-		);
+	);
 }
 
 sub my_data {
-	my ($class) = @_;
+	my $class = shift;
+
 	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kApplicationSupportFolderType(),
-		);
+	);
 }
 
 sub my_music {
-	my ($class) = @_;
+	my $class = shift;
+
 	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kMusicDocumentsFolderType(),
-		);
+	);
 }
 
 sub my_pictures {
-	my ($class) = @_;
+	my $class = shift;
+
 	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kPictureDocumentsFolderType(),
-		);
+	);
 }
 
 sub my_videos {
-	my ($class) = @_;
+	my $class = shift;
+
 	require Mac::Files;
 	$class->_find_folder(
 		Mac::Files::kMovieDocumentsFolderType(),
-		);
+	);
 }
 
 sub _find_folder {
-	my ($class, $name) = @_;
+	my $class = shift;
+	my $name  = shift;
+
 	require Mac::Files;
 	my $folder = Mac::Files::FindFolder(
 		Mac::Files::kUserDomain(),
 		$name,
-		);
+	);
 	return unless defined $folder;
+
 	unless ( -d $folder ) {
 		# Make sure that symlinks resolve to directories.
 		return unless -l $folder;
 		my $dir = readlink $folder or return;
 		return unless -d $dir;
 	}
+
 	return Cwd::abs_path($folder);
 }
 
@@ -140,7 +152,8 @@ sub users_documents {
 sub users_data {
 	my ($class, $name) = @_;
 	$class->_to_user( $class->my_data, $name )
-		|| $class->users_home($name);
+	||
+	$class->users_home($name);
 }
 
 # cheap hack ... not entirely reliable, perhaps, but ... c'est la vie, since
@@ -160,7 +173,7 @@ sub _to_user {
 
 =head1 NAME
 
-File::HomeDir::Darwin - find your home and other directories, on Darwin (OS X)
+File::HomeDir::Darwin - Find your home and other directories, on Darwin (OS X)
 
 =head1 DESCRIPTION
 
@@ -170,7 +183,8 @@ used via L<File::HomeDir>.
 
 Note -- since this module requires Mac::Carbon and Mac::Carbon does
 not work with 64-bit perls, on such systems, File::HomeDir will try
-File::HomeDir::DarwinCocoa and then fall back to File::HomeDir::DarwinPerl.
+L<File::HomeDir::Darwin::Cocoa> and then fall back to the (pure Perl)
+L<File::HomeDir::Darwin>.
 
 =head1 SYNOPSIS
 

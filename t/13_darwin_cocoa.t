@@ -9,10 +9,14 @@ BEGIN {
 use Test::More;
 use File::HomeDir;
 
-if ( $File::HomeDir::IMPLEMENTED_BY =~ /Darwin/ && eval "require Mac::SystemDirectory; 1" ) {
-        # force Cocoa if you have Mac::SystemDirectory
-        require File::HomeDir::DarwinCocoa;
-        $File::HomeDir::IMPLEMENTED_BY = 'File::HomeDir::DarwinCocoa';
+if (
+	$File::HomeDir::IMPLEMENTED_BY->isa('File::HomeDir::Darwin')
+	and
+	eval "require Mac::SystemDirectory; 1"
+ ) {
+        # Force Cocoa if you have Mac::SystemDirectory
+        require File::HomeDir::Darwin::Cocoa;
+        $File::HomeDir::IMPLEMENTED_BY = 'File::HomeDir::Darwin::Cocoa';
 	plan( tests => 6 );
 } else {
 	plan( skip_all => "Not running on Darwin with Cocoa API using Mac::SystemDirectory" );

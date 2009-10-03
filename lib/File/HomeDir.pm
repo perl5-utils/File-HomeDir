@@ -55,22 +55,23 @@ if ( $IMPLEMENTED_BY ) {
 	# All versions of Windows
 	$IMPLEMENTED_BY = 'File::HomeDir::Windows';
 } elsif ( $^O eq 'darwin') {
- TRY: {
-        if ($Config::Config{ptrsize} == 8) {
-            # 64bit: try Mac::SystemDirectory by chansen
-            if (eval { require Mac::SystemDirectory; 1 }) {
-                $IMPLEMENTED_BY = 'File::HomeDir::DarwinCocoa';
-                last TRY;
-            }
-        } elsif (eval { require Mac::Files; 1 }) {
-            # 32bit and has Mac::Files: Carbon
-            $IMPLEMENTED_BY = 'File::HomeDir::Darwin';
-            last TRY;
-        }
+	TRY: {
+		if ( $Config::Config{ptrsize} == 8 ) {
+			# 64bit: try Mac::SystemDirectory by chansen
+			if ( eval { require Mac::SystemDirectory; 1 } ) {
+				$IMPLEMENTED_BY = 'File::HomeDir::Darwin::Cocoa';
+				last TRY;
+			}
 
-        # fallback: pure perl
-        $IMPLEMENTED_BY = 'File::HomeDir::DarwinPerl';
-    }
+		} elsif (eval { require Mac::Files; 1 }) {
+			# 32bit and has Mac::Files: Carbon
+			$IMPLEMENTED_BY = 'File::HomeDir::Darwin::Carbon';
+			last TRY;
+		}
+
+		# fallback: pure perl
+		$IMPLEMENTED_BY = 'File::HomeDir::DarwinPerl';
+	}
 } elsif ( $^O eq 'MacOS' ) {
 	# Legacy Mac OS
 	$IMPLEMENTED_BY = 'File::HomeDir::MacOS9';

@@ -9,10 +9,9 @@ BEGIN {
 use Test::More;
 use File::HomeDir;
 
-if ( $File::HomeDir::IMPLEMENTED_BY =~ /^File::HomeDir::Darwin/ ) {
-        # force pure perl since it should work everywhere
-        require File::HomeDir::DarwinPerl;
-        $File::HomeDir::IMPLEMENTED_BY = 'File::HomeDir::DarwinPerl';
+if ( $File::HomeDir::IMPLEMENTED_BY->isa('File::HomeDir::Darwin') ) {
+        # Force pure perl since it should work everywhere
+        $File::HomeDir::IMPLEMENTED_BY = 'File::HomeDir::Darwin';
 	plan( tests => 6 );
 } else {
 	plan( skip_all => "Not running on Darwin" );

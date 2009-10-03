@@ -9,7 +9,7 @@ BEGIN {
 use Test::More;
 use File::HomeDir;
 
-if ( $File::HomeDir::IMPLEMENTED_BY eq 'File::HomeDir::Darwin' ) {
+if ( $File::HomeDir::IMPLEMENTED_BY->isa('File::HomeDir::Darwin::Carbon') ) {
 	plan( tests => 6 );
 } else {
 	plan( skip_all => "Not running on 32-bit Darwin" );

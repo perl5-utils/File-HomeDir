@@ -12,11 +12,15 @@ BEGIN {
 	@ISA     = 'File::HomeDir::Unix';
 }
 
+
+
+
+
 #####################################################################
 # Current User Methods
 
 sub my_home {
-    my ($class) = @_;
+    my $class = shift;
 
     if ( exists $ENV{HOME} and defined $ENV{HOME} ) {
         return $ENV{HOME};
@@ -45,34 +49,38 @@ sub _my_home {
 }
 
 sub my_desktop {
-    my ($class) = @_;
+    my $class = shift;
     $class->_my_home('Desktop');
 }
 
 sub my_documents {
-    my ($class) = @_;
+    my $class = shift;
     $class->_my_home('Documents');
 }
 
 sub my_data {
-    my ($class) = @_;
+    my $class = shift;
     $class->_my_home('Library/Application Support');
 }
 
 sub my_music {
-    my ($class) = @_;
+    my $class = shift;
     $class->_my_home('Music');
 }
 
 sub my_pictures {
-    my ($class) = @_;
+    my $class = shift;
     $class->_my_home('Pictures');
 }
 
 sub my_videos {
-    my ($class) = @_;
+    my $class = shift;
     $class->_my_home('Movies');
 }
+
+
+
+
 
 #####################################################################
 # Arbitrary User Methods
@@ -98,7 +106,8 @@ sub users_documents {
 sub users_data {
     my ($class, $name) = @_;
     $class->_to_user( $class->my_data, $name )
-        || $class->users_home($name);
+    ||
+    $class->users_home($name);
 }
 
 # cheap hack ... not entirely reliable, perhaps, but ... c'est la vie, since
