@@ -11,7 +11,7 @@ use File::HomeDir::Unix ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.86';
+	$VERSION = '0.87_01';
 
 	# This is only a child class of the pure Perl darwin
 	# class so that we can do homedir detection of all three

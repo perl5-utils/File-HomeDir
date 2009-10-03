@@ -11,7 +11,7 @@ use File::Spec ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.86';
+	$VERSION = '0.87_01';
 
 	# Inherit manually
 	require Exporter;
