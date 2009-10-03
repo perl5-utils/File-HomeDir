@@ -9,12 +9,10 @@ BEGIN {
 use Test::More;
 use File::HomeDir;
 
-if ( $File::HomeDir::IMPLEMENTED_BY->isa('File::HomeDir::Darwin') ) {
-        # Force pure perl since it should work everywhere
-        $File::HomeDir::IMPLEMENTED_BY = 'File::HomeDir::Darwin';
+if ( $File::HomeDir::IMPLEMENTED_BY->isa('File::HomeDir::Darwin::Carbon') ) {
 	plan( tests => 6 );
 } else {
-	plan( skip_all => "Not running on Darwin" );
+	plan( skip_all => "Not running on 32-bit Darwin" );
 	exit(0);
 }
 
@@ -29,7 +27,7 @@ SKIP: {
 	$user or skip("Unable to find non-existent user", 1);
 	$@ = undef;
 	my $home = eval {File::HomeDir->users_home($user)};
-	$@ and skip("Unable to execute File::HomeDir->users_home('$user')", 1);
+	$@ and skip("Unable to execute File::HomeDir->users_home('$user')");
 	ok (!defined $home, "Home of non-existent user should be undef");
 }
 
