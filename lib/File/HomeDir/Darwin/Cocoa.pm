@@ -1,4 +1,4 @@
-package File::HomeDir::DarwinCocoa;
+package File::HomeDir::Darwin::Cocoa;
 
 use 5.00503;
 use strict;

@@ -1,4 +1,4 @@
-package File::HomeDir::Darwin;
+package File::HomeDir::Darwin::Carbon;
 
 # Basic implementation for the Dawin family of operating systems.
 # This includes (most prominently) Mac OS X.
