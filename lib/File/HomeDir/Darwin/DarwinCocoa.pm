@@ -27,7 +27,7 @@ sub my_home {
         return $ENV{HOME};
     }
 
-    return Mac::SystemDirectory::HomeDirectory();
+    $class->_find_folder(Mac::SystemDirectory::NSUserDirectory());
 }
 
 # from 10.4
