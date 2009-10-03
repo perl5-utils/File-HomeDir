@@ -5,9 +5,9 @@ package File::HomeDir::Darwin;
 
 use 5.00503;
 use strict;
-use Cwd                 ();
-use Carp                ();
-use File::HomeDir::Unix ();
+use Cwd                   ();
+use Carp                  ();
+use File::HomeDir::Darwin ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
