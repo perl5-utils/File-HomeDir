@@ -127,7 +127,7 @@ sub _to_user {
 
 =head1 NAME
 
-File::HomeDir::DarwinPerl - find your home and other directories, on Darwin (OS X) without Carbon/Cocoa
+File::HomeDir::Darwin - Find your home and other directories, on Darwin (OS X) without Carbon/Cocoa
 
 =head1 DESCRIPTION
 

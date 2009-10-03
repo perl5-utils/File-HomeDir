@@ -70,7 +70,7 @@ if ( $IMPLEMENTED_BY ) {
 		}
 
 		# fallback: pure perl
-		$IMPLEMENTED_BY = 'File::HomeDir::DarwinPerl';
+		$IMPLEMENTED_BY = 'File::HomeDir::Darwin';
 	}
 } elsif ( $^O eq 'MacOS' ) {
 	# Legacy Mac OS
