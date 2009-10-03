@@ -149,4 +149,4 @@ always be used via L<File::HomeDir>.
   $videos  = File::HomeDir->my_videos;    # /Users/mylogin/Movies
   $data    = File::HomeDir->my_data;      # /Users/mylogin/Library/Application Support
 
-=back
+=cut
