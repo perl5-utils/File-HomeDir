@@ -1,5 +1,8 @@
 Changes for Perl extension File-HomeDir
 
+0.88 Tue 24 Nov 2009
+	- Switching to a production release
+
 0.87_01 Sat  3 Oct 2009
 	- First developer implementation of improved Mac support
 
