@@ -33,12 +33,12 @@ SKIP: {
 	ok (!defined $home, "Home of non-existent user should be undef");
 }
 
-{
-    # reality check:
-    like( File::HomeDir->my_music, qr/Music/ );
-    like( File::HomeDir->my_videos, qr/Movies/ );
-    like( File::HomeDir->my_pictures, qr/Pictures/ );
-    like( File::HomeDir->my_data, qr/Application Support/ );
+SCOPE: {
+	# reality check:
+	like( File::HomeDir->my_music,    qr/Music/               );
+	like( File::HomeDir->my_videos,   qr/Movies/              );
+	like( File::HomeDir->my_pictures, qr/Pictures/            );
+	like( File::HomeDir->my_data,     qr/Application Support/ );
 }
 
 SKIP: {

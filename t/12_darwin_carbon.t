@@ -31,17 +31,39 @@ SKIP: {
 	ok (!defined $home, "Home of non-existent user should be undef");
 }
 
-{
-    # reality check:
-    like( File::HomeDir->my_music, qr/Music/ );
-    like( File::HomeDir->my_videos, qr/Movies/ );
-    like( File::HomeDir->my_pictures, qr/Pictures/ );
-    like( File::HomeDir->my_data, qr/Application Support/ );
+# CPAN Testers results suggest we can't reasonably assume these directories
+# will always exist
+SKIP: {
+	my $dir = File::HomeDir->my_music;
+	unless ( defined $dir ) {
+		skip( "Testing user does not have a Music directory", 1 );
+	}
+	like( $dir, qr/Music/ );
 }
+SKIP: {
+	my $dir = File::HomeDir->my_videos;
+	unless ( defined $dir ) {
+		skip( "Testing user does not have a Movies directory", 1 );
+	}
+	like( $dir, qr/Movies/ );
+}
+SKIP: {
+	my $dir = File::HomeDir->my_pictures;
+	unless ( defined $dir ) {
+		skip( "Testing user does not have a Pictures directory", 1 );
+	}
+	like( $dir, qr/Pictures/ );
+}
+
+# For now, lets continue to assume everyone has this one
+like(
+	File::HomeDir->my_data,
+	qr/Application Support/,
+);
 
 SKIP: {
 	my $user;
-	foreach my $uid (501 .. 540) {
+	foreach my $uid ( 501 .. 540 ) {
 		$uid == $< and next;
 		$user = getpwuid $uid or next;
 		last;
