@@ -1,7 +1,8 @@
 Changes for Perl extension File-HomeDir
 
 0.89 Sun  3 Jan 2010
-	- Loosen the testing intensity on Darwin Carbon backends
+	- Loosen the testing intensity on Darwin Carbon backends to prevent
+	  issues with consumer directories prevent installation entirely.
 
 0.88 Tue 24 Nov 2009
 	- Switching to a production release

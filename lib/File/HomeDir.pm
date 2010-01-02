@@ -616,7 +616,7 @@ L<File::ShareDir>, L<File::HomeDir::Win32> (legacy)
 
 =head1 COPYRIGHT
 
-Copyright 2005 - 2009 Adam Kennedy.
+Copyright 2005 - 2010 Adam Kennedy.
 
 Some parts copyright 2000 Sean M. Burke.
 
