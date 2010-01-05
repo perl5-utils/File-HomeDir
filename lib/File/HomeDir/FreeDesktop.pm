@@ -23,7 +23,8 @@ sub _my_thingy {
     my $home = $self->my_home;
     return if ! -d $home;
     my $conf = $home . '/.config/user-dirs.dirs';
-    return if ! -e $conf || ! -r _ || -d _;
+    return $self->_default_thingy($wanted)
+        if ! -e $conf || ! -r _ || -d _;
 
     # IO::File is safer if we're targeting 5.5.3 minimum.
     require IO::File;
@@ -45,6 +46,31 @@ sub _my_thingy {
     }
     $fh->close || die "Unable to close $conf: $!";
 }
+
+sub _default_thingy {
+    my ($self, $wanted) = @_;
+
+    my $conf = '/etc/xdg/user-dirs.defaults';
+    return if ! -e $conf || ! -r _ || -d _;
+
+    # IO::File is safer if we're targeting 5.5.3 minimum.
+    require IO::File;
+    my $fh = IO::File->new;
+    if ( ! $fh->open( $conf, '<' ) ) {
+        warn "Error opening $conf for reading: $!\n";
+        return;
+    }
+
+    while ( defined( my $line = <$fh> ) ) {
+        chomp $line;
+        next if $line =~ m{^#};
+        my($name, $value) = split m{=}, $line, 2;
+        next if lc $name ne $wanted;
+        return File::Spec->catdir( $self->my_home, $value );
+    }
+    $fh->close || die "Unable to close $conf: $!";
+}
+
 
 sub my_desktop   { shift->_my_thingy('desktop'); }
 sub my_documents { shift->_my_thingy('documents'); }
