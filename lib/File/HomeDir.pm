@@ -75,6 +75,9 @@ if ( $IMPLEMENTED_BY ) {
 } elsif ( $^O eq 'MacOS' ) {
 	# Legacy Mac OS
 	$IMPLEMENTED_BY = 'File::HomeDir::MacOS9';
+} elsif ( -d '/etc/xdg' ) {
+	# freedesktop unixes
+	$IMPLEMENTED_BY = 'File::HomeDir::FreeDesktop';
 } else {
 	# Default to Unix semantics
 	$IMPLEMENTED_BY = 'File::HomeDir::Unix';

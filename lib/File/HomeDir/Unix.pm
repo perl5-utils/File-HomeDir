@@ -153,15 +153,7 @@ used via L<File::HomeDir>.
 
   $desktop = File::HomeDir->my_desktop;     # All of these will... 
   $docs    = File::HomeDir->my_documents;   # ...default to home...
-  $music   = File::HomeDir->my_music;       # ...directory at the...
-  $pics    = File::HomeDir->my_pictures;    # ...moment.
+  $music   = File::HomeDir->my_music;       # ...directory
+  $pics    = File::HomeDir->my_pictures;    #
   $videos  = File::HomeDir->my_videos;      #
   $data    = File::HomeDir->my_data;        # 
-
-=head1 TODO
-
-=over 4
-
-=item * Add support for common unix desktop and data directories when using KDE / Gnome / ...
-
-=back
