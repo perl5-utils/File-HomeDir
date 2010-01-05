@@ -18,12 +18,14 @@ BEGIN {
 # xdg uses ~/.config/user-dirs.dirs to know where are the
 # various "my xxx" directories.
 sub _my_thingy {
-    my ($class, $wanted) = @_;
+    my ($class, $wanted, $user) = @_;
 
-    my $home = $class->my_home;
+    my $home = defined($user)
+        ? $class->users_home($user)
+        : $class->my_home;
     return if ! -d $home;
     my $conf = $home . '/.config/user-dirs.dirs';
-    return $class->_default_thingy($wanted)
+    return $class->_default_thingy($wanted, $user)
         if ! -e $conf || ! -r _ || -d _;
 
     # IO::File is safer if we're targeting 5.5.3 minimum.
@@ -48,7 +50,7 @@ sub _my_thingy {
 }
 
 sub _default_thingy {
-    my ($class, $wanted) = @_;
+    my ($class, $wanted, $user) = @_;
 
     my $conf = '/etc/xdg/user-dirs.defaults';
     return if ! -e $conf || ! -r _ || -d _;
@@ -61,12 +63,15 @@ sub _default_thingy {
         return;
     }
 
+    my $home = defined($user)
+        ? $class->users_home($user)
+        : $class->my_home;
     while ( defined( my $line = <$fh> ) ) {
         chomp $line;
         next if $line =~ m{^#};
         my($name, $value) = split m{=}, $line, 2;
         next if lc $name ne $wanted;
-        return File::Spec->catdir( $class->my_home, $value );
+        return File::Spec->catdir( $home, $value );
     }
     $fh->close || die "Unable to close $conf: $!";
 }
@@ -84,52 +89,20 @@ sub my_data {
 }
 
 
-
-
 #####################################################################
 # General User Methods
 
-sub users_home {
-	my ($class, $name) = @_;
-
-	# IF and only if we have getpwuid support, and the
-	# name of the user is our own, shortcut to my_home.
-	# This is needed to handle HOME environment settings.
-	if ( $name eq getpwuid($<) ) {
-		return $class->my_home;
-	}
-
-	SCOPE: {
-		my $home = (getpwnam($name))[7];
-		return $home if $home and -d $home;
-	}
-
-	return undef;
-}
-
-sub users_desktop {
-	shift->users_home(@_);
-}
-
-sub users_documents {
-	shift->users_home(@_);
-}
+sub users_desktop   { $_[0]->_my_thingy('desktop',   $_[1]); }
+sub users_documents { $_[0]->_my_thingy('documents', $_[1]); }
+sub users_music     { $_[0]->_my_thingy('music',     $_[1]); }
+sub users_pictures  { $_[0]->_my_thingy('pictures',  $_[1]); }
+sub users_videos    { $_[0]->_my_thingy('videos',    $_[1]); }
 
 sub users_data {
-	shift->users_home(@_);
+    my ($class, $user) = @_;
+    File::Spec->catdir($class->users_home($user), qw{ .local share });
 }
 
-sub users_music {
-	shift->users_home(@_);
-}
-
-sub users_pictures {
-	shift->users_home(@_);
-}
-
-sub users_videos {
-	shift->users_home(@_);
-}
 
 1;
 
