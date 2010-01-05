@@ -18,12 +18,12 @@ BEGIN {
 # xdg uses ~/.config/user-dirs.dirs to know where are the
 # various "my xxx" directories.
 sub _my_thingy {
-    my ($self, $wanted) = @_;
+    my ($class, $wanted) = @_;
 
-    my $home = $self->my_home;
+    my $home = $class->my_home;
     return if ! -d $home;
     my $conf = $home . '/.config/user-dirs.dirs';
-    return $self->_default_thingy($wanted)
+    return $class->_default_thingy($wanted)
         if ! -e $conf || ! -r _ || -d _;
 
     # IO::File is safer if we're targeting 5.5.3 minimum.
@@ -48,7 +48,7 @@ sub _my_thingy {
 }
 
 sub _default_thingy {
-    my ($self, $wanted) = @_;
+    my ($class, $wanted) = @_;
 
     my $conf = '/etc/xdg/user-dirs.defaults';
     return if ! -e $conf || ! -r _ || -d _;
@@ -66,7 +66,7 @@ sub _default_thingy {
         next if $line =~ m{^#};
         my($name, $value) = split m{=}, $line, 2;
         next if lc $name ne $wanted;
-        return File::Spec->catdir( $self->my_home, $value );
+        return File::Spec->catdir( $class->my_home, $value );
     }
     $fh->close || die "Unable to close $conf: $!";
 }
