@@ -110,7 +110,7 @@ sub users_data {
 
 =head1 NAME
 
-File::HomeDir::Unix - find your home and other directories, on Unix
+File::HomeDir::FreeDesktop - find your home and other directories, on unixes running free desktops
 
 =head1 DESCRIPTION
 
@@ -125,17 +125,10 @@ used via L<File::HomeDir>.
   # Find directories for the current user
   $home    = File::HomeDir->my_home;        # /home/mylogin
 
-  $desktop = File::HomeDir->my_desktop;     # All of these will... 
-  $docs    = File::HomeDir->my_documents;   # ...default to home...
-  $music   = File::HomeDir->my_music;       # ...directory at the...
-  $pics    = File::HomeDir->my_pictures;    # ...moment.
-  $videos  = File::HomeDir->my_videos;      #
-  $data    = File::HomeDir->my_data;        # 
+  $desktop = File::HomeDir->my_desktop;
+  $docs    = File::HomeDir->my_documents;
+  $music   = File::HomeDir->my_music;
+  $pics    = File::HomeDir->my_pictures;
+  $videos  = File::HomeDir->my_videos;
+  $data    = File::HomeDir->my_data;
 
-=head1 TODO
-
-=over 4
-
-=item * Add support for common unix desktop and data directories when using KDE / Gnome / ...
-
-=back
