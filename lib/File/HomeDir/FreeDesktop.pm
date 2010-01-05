@@ -5,6 +5,7 @@ package File::HomeDir::FreeDesktop;
 use 5.00503;
 use strict;
 use Carp                ();
+use File::Spec          ();
 use File::HomeDir::Unix ();
 
 use vars qw{$VERSION @ISA};
@@ -24,7 +25,8 @@ sub my_documents {
 }
 
 sub my_data {
-	shift->my_home;
+    $ENV{XDG_DATA_HOME}
+        || File::Spec->catdir(shift->my_home, qw{ .local share });
 }
 
 sub my_music {
