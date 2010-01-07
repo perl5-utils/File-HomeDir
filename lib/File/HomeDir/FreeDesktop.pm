@@ -10,70 +10,69 @@ use File::HomeDir::Unix ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.89';
+	$VERSION = '0.90_01';
 	@ISA     = 'File::HomeDir::Unix';
 }
-
 
 # xdg uses ~/.config/user-dirs.dirs to know where are the
 # various "my xxx" directories.
 sub _my_thingy {
-    my ($class, $wanted, $user) = @_;
+	my ($class, $wanted, $user) = @_;
 
-    my $home = defined($user)
-        ? $class->users_home($user)
-        : $class->my_home;
-    return if ! -d $home;
-    my $conf = $home . '/.config/user-dirs.dirs';
-    return $class->_default_thingy($wanted, $user)
-        if ! -e $conf || ! -r _ || -d _;
+	my $home = defined($user)
+		? $class->users_home($user)
+		: $class->my_home;
+	return if ! -d $home;
+	my $conf = $home . '/.config/user-dirs.dirs';
+	return $class->_default_thingy($wanted, $user)
+		if ! -e $conf || ! -r _ || -d _;
 
-    # IO::File is safer if we're targeting 5.5.3 minimum.
-    require IO::File;
-    my $fh = IO::File->new;
-    if ( ! $fh->open( $conf, '<' ) ) {
-        warn "Error opening $conf for reading: $!\n";
-        return;
-    }
+	# IO::File is safer if we're targeting 5.5.3 minimum.
+	require IO::File;
+	my $fh = IO::File->new;
+	if ( ! $fh->open( $conf, '<' ) ) {
+		warn "Error opening $conf for reading: $!\n";
+		return;
+	}
 
-    while ( defined( my $line = <$fh> ) ) {
-        chomp $line;
-        next if $line =~ m{^#};
-        my($name, $value) = split m{=}, $line, 2;
-        $name  =~ s{XDG_(.+?)_DIR}{$1};
-        next if lc $name ne $wanted;
-        $value =~ tr/"//d;
-        $value =~ s{\$HOME}{$home}g;
-        return $value;
-    }
-    $fh->close || die "Unable to close $conf: $!";
+	while ( defined( my $line = <$fh> ) ) {
+		chomp $line;
+		next if $line =~ m{^#};
+		my($name, $value) = split m{=}, $line, 2;
+		$name  =~ s{XDG_(.+?)_DIR}{$1};
+		next if lc $name ne $wanted;
+		$value =~ tr/"//d;
+		$value =~ s{\$HOME}{$home}g;
+		return $value;
+	}
+	$fh->close || die "Unable to close $conf: $!";
 }
 
 sub _default_thingy {
-    my ($class, $wanted, $user) = @_;
+	my ($class, $wanted, $user) = @_;
 
-    my $conf = '/etc/xdg/user-dirs.defaults';
-    return if ! -e $conf || ! -r _ || -d _;
+	my $conf = '/etc/xdg/user-dirs.defaults';
+	return if ! -e $conf || ! -r _ || -d _;
 
-    # IO::File is safer if we're targeting 5.5.3 minimum.
-    require IO::File;
-    my $fh = IO::File->new;
-    if ( ! $fh->open( $conf, '<' ) ) {
-        warn "Error opening $conf for reading: $!\n";
-        return;
-    }
+	# IO::File is safer if we're targeting 5.5.3 minimum.
+	require IO::File;
+	my $fh = IO::File->new;
+	if ( ! $fh->open( $conf, '<' ) ) {
+		warn "Error opening $conf for reading: $!\n";
+		return;
+	}
 
-    my $home = defined($user)
-        ? $class->users_home($user)
-        : $class->my_home;
-    while ( defined( my $line = <$fh> ) ) {
-        chomp $line;
-        next if $line =~ m{^#};
-        my($name, $value) = split m{=}, $line, 2;
-        next if lc $name ne $wanted;
-        return File::Spec->catdir( $home, $value );
-    }
-    $fh->close || die "Unable to close $conf: $!";
+	my $home = defined($user)
+		? $class->users_home($user)
+		: $class->my_home;
+	while ( defined( my $line = <$fh> ) ) {
+		chomp $line;
+		next if $line =~ m{^#};
+		my($name, $value) = split m{=}, $line, 2;
+		next if lc $name ne $wanted;
+		return File::Spec->catdir( $home, $value );
+	}
+	$fh->close || die "Unable to close $conf: $!";
 }
 
 
@@ -84,8 +83,8 @@ sub my_pictures  { shift->_my_thingy('pictures'); }
 sub my_videos    { shift->_my_thingy('videos'); }
 
 sub my_data {
-    $ENV{XDG_DATA_HOME}
-        || File::Spec->catdir(shift->my_home, qw{ .local share });
+	$ENV{XDG_DATA_HOME}
+		|| File::Spec->catdir(shift->my_home, qw{ .local share });
 }
 
 
@@ -99,8 +98,8 @@ sub users_pictures  { $_[0]->_my_thingy('pictures',  $_[1]); }
 sub users_videos    { $_[0]->_my_thingy('videos',    $_[1]); }
 
 sub users_data {
-    my ($class, $user) = @_;
-    File::Spec->catdir($class->users_home($user), qw{ .local share });
+	my ($class, $user) = @_;
+	File::Spec->catdir($class->users_home($user), qw{ .local share });
 }
 
 

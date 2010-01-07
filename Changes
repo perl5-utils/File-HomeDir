@@ -1,5 +1,11 @@
 Changes for Perl extension File-HomeDir
 
+0.90_01 Thu  7 Jan 2010
+	- WARNING: This release introduces a major backwards incompatibility
+	  for Unix users. The results returned by most methods may change.
+	- Added complete implementation of the FreeDesktop specification and
+	  auto-detection of the Unix hosts to which it applies (JQUELIN)
+
 0.89 Sun  3 Jan 2010
 	- Loosen the testing intensity on Darwin Carbon backends to prevent
 	  issues with consumer directories prevent installation entirely.
