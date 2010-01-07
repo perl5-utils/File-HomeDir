@@ -5,6 +5,8 @@ Changes for Perl extension File-HomeDir
 	  for Unix users. The results returned by most methods may change.
 	- Added complete implementation of the FreeDesktop specification and
 	  auto-detection of the Unix hosts to which it applies (JQUELIN)
+	- 01_compile.t now loads all backends (since on most platforms,
+	  most backends will never normally be loaded).
 
 0.89 Sun  3 Jan 2010
 	- Loosen the testing intensity on Darwin Carbon backends to prevent
