@@ -1,6 +1,7 @@
 package File::HomeDir::FreeDesktop;
 
 # specific functionality for unixes running free desktops
+# compatible with (but not using) File-BaseDir-0.03
 
 use 5.00503;
 use strict;
@@ -14,93 +15,28 @@ BEGIN {
 	@ISA     = 'File::HomeDir::Unix';
 }
 
-# xdg uses ~/.config/user-dirs.dirs to know where are the
-# various "my xxx" directories.
+# xdg uses $ENV{XDG_CONFIG_HOME}/user-dirs.dirs to know where are the
+# various "my xxx" directories. That is a shell file. The official API
+# is the xdg-user-dir executable. It has no provision for assessing
+# the directories of a user that is different than the one we are
+# running under; the standard substitute user mechanisms are needed to
+# overcome this.
+
 sub _my_thingy {
-	my ($class, $wanted, $user) = @_;
+    my ($class, $wanted) = @_;
 
-	# Find the user's config file
-	my $home = defined($user)
-		? $class->users_home($user)
-		: $class->my_home;
-	return unless -d $home;
-	my $conf = $home . '/.config/user-dirs.dirs';
-	unless ( -e $conf and -r _ and ! -d _ ) {
-		return $class->_default_thingy($wanted, $user);
-	}
-
-	# Slurp in the file.
-	# This involves reading a little more of the file than we might
-	# need, but keeps the handle open for less total time (I think)
-	# NOTE: Since the file path is not provided by the user,
-	# the two argument open is safe in this case.
-	local *FILE;
-	unless ( open(FILE, "<$conf") ) {
-		warn "Error opening $conf for reading: $!\n";
-		return;
-	}
-	my @buffer = <FILE>;
-	close FILE or die "Unable to close $conf: $!";
-
-	foreach my $line ( @buffer ) {
-		# A chomp that is more resistant to accidental newline
-		# problems caused by editing the file remotely from windows.
-		$line =~ s/[\015\012]+\z//g;
-
-		next if $line =~ m{^#};
-		my($name, $value) = split m{=}, $line, 2;
-		$name  =~ s/XDG_(.+?)_DIR/$1/;
-		next if lc $name ne $wanted;
-		$value =~ tr/"//d;
-		$value =~ s/\$HOME/$home/g;
-		return $value;
-	}
-
-	# Failed to find a value
-	return undef;
+    # no quoting because input is hard-coded and only comes from this module
+    my $thingy = qx(xdg-user-dir $wanted);
+    chomp $thingy;
+    return $thingy;
 }
 
-sub _default_thingy {
-	my ($class, $wanted, $user) = @_;
 
-	my $conf = '/etc/xdg/user-dirs.defaults';
-	return if ! -e $conf || ! -r _ || -d _;
-
-	# Slurp in the file.
-	# This involves reading a little more of the file than we might
-	# need, but keeps the handle open for less total time (I think)
-	# NOTE: Since the file path is not provided by the user,
-	# the two argument open is safe in this case.
-	local *FILE;
-	unless ( open(FILE, "<$conf") ) {
-		warn "Error opening $conf for reading: $!\n";
-		return;
-	}
-	my @buffer = <FILE>;
-	close FILE or die "Unable to close $conf: $!";
-
-	my $home = defined($user)
-		? $class->users_home($user)
-		: $class->my_home;
-	foreach my $line ( @buffer ) {
-		# A chomp that is more resistant to accidental newline
-		# problems caused by editing the file remotely from windows.
-		$line =~ s/[\015\012]+\z//g;
-
-		next if $line =~ m{^#};
-		my($name, $value) = split m{=}, $line, 2;
-		next if lc $name ne $wanted;
-		return File::Spec->catdir( $home, $value );
-	}
-
-	return undef;
-}
-
-sub my_desktop   { shift->_my_thingy('desktop');   }
-sub my_documents { shift->_my_thingy('documents'); }
-sub my_music     { shift->_my_thingy('music');     }
-sub my_pictures  { shift->_my_thingy('pictures');  }
-sub my_videos    { shift->_my_thingy('videos');    }
+sub my_desktop   { shift->_my_thingy('DESKTOP');   }
+sub my_documents { shift->_my_thingy('DOCUMENTS'); }
+sub my_music     { shift->_my_thingy('MUSIC');     }
+sub my_pictures  { shift->_my_thingy('PICTURES');  }
+sub my_videos    { shift->_my_thingy('VIDEOS');    }
 
 sub my_data {
 	$ENV{XDG_DATA_HOME}
@@ -108,24 +44,15 @@ sub my_data {
 	File::Spec->catdir(shift->my_home, qw{ .local share });
 }
 
-
-
-
-
 #####################################################################
 # General User Methods
 
-sub users_desktop   { $_[0]->_my_thingy('desktop',   $_[1]); }
-sub users_documents { $_[0]->_my_thingy('documents', $_[1]); }
-sub users_music     { $_[0]->_my_thingy('music',     $_[1]); }
-sub users_pictures  { $_[0]->_my_thingy('pictures',  $_[1]); }
-sub users_videos    { $_[0]->_my_thingy('videos',    $_[1]); }
-
-sub users_data {
-	my ($class, $user) = @_;
-	File::Spec->catdir($class->users_home($user), qw{ .local share });
-}
-
+sub users_desktop   { Carp::croak('The users_desktop method is not available on an XDG based system.');   }
+sub users_documents { Carp::croak('The users_documents method is not available on an XDG based system.'); }
+sub users_music     { Carp::croak('The users_music method is not available on an XDG based system.');     }
+sub users_pictures  { Carp::croak('The users_pictures method is not available on an XDG based system.');  }
+sub users_videos    { Carp::croak('The users_videos method is not available on an XDG based system.');    }
+sub users_data      { Carp::croak('The users_data method is not available on an XDG based system.');      }
 
 1;
 
