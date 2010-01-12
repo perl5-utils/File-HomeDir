@@ -44,6 +44,16 @@ sub my_data {
 	File::Spec->catdir(shift->my_home, qw{ .local share });
 }
 
+sub my_download    { shift->_my_thingy('DOWNLOAD');    }
+sub my_publicshare { shift->_my_thingy('PUBLICSHARE'); }
+sub my_templates   { shift->_my_thingy('TEMPLATES');   }
+
+sub my_cache       {
+    $ENV{XDG_CACHE_HOME}
+    ||
+    File::Spec->catdir(shift->my_home, qw{ .cache });
+}
+
 #####################################################################
 # General User Methods
 
