@@ -4,9 +4,10 @@ package File::HomeDir;
 
 use 5.00503;
 use strict;
-use Carp       ();
-use Config     ();
-use File::Spec ();
+use Carp        ();
+use Config      ();
+use File::Spec  ();
+use File::Which ();
 
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
@@ -75,7 +76,7 @@ if ( $IMPLEMENTED_BY ) {
 } elsif ( $^O eq 'MacOS' ) {
 	# Legacy Mac OS
 	$IMPLEMENTED_BY = 'File::HomeDir::MacOS9';
-} elsif ( -d '/etc/xdg' || -d '/usr/local/etc/xdg' ) {
+} elsif ( File::Which::which('xdg-user-dir') ) {
 	# freedesktop unixes
 	$IMPLEMENTED_BY = 'File::HomeDir::FreeDesktop';
 } else {
