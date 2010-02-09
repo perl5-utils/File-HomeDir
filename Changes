@@ -1,5 +1,10 @@
 Changes for Perl extension File-HomeDir
 
+0.90_03
+        - Using FreeDesktop implementation only if xdg-user-script is
+          present, since it's now what's been used internally. This
+          should prevent test failures seen in _02. (JQUELIN)
+	
 0.90_02 Thu 14 Jan 2010
 	- Adding support for the alternate FreeBSD xdg directory (JQUELIN)
 	- Improved specification compliance (DAXIM)
