@@ -12,7 +12,7 @@ use File::Which         ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.90_02';
+	$VERSION = '0.90_03';
 	@ISA     = 'File::HomeDir::Unix';
 }
 
