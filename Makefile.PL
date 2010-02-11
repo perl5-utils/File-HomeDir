@@ -2,10 +2,11 @@ use inc::Module::Install 0.91;
 use Config;
 
 all_from      'lib/File/HomeDir.pm';
-requires      'Carp'       => 0;
-requires      'Cwd'        => $^O eq 'darwin' ? '3' : '3.12';
-requires      'File::Spec' => $^O eq 'darwin' ? '3' : '3.12';
-test_requires 'Test::More' => '0.47';
+requires      'Carp'        => 0;
+requires      'Cwd'         => $^O eq 'darwin' ? '3' : '3.12';
+requires      'File::Spec'  => $^O eq 'darwin' ? '3' : '3.12';
+requires      'File::Which' => 0;
+test_requires 'Test::More'  => '0.47';
 
 # Dependencies for specific platforms
 ### Use variable twice to avoid a warning
