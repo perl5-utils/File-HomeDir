@@ -9,7 +9,7 @@ use File::HomeDir::Driver ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.90_04';
+	$VERSION = '0.90_05';
 	@ISA     = 'File::HomeDir::Driver';
 }
 
@@ -138,12 +138,6 @@ sub users_videos {
 
 File::HomeDir::Unix - find your home and other directories, on Unix
 
-=head1 DESCRIPTION
-
-This module provides implementations for determining common user
-directories.  In normal usage this module will always be
-used via L<File::HomeDir>.
-
 =head1 SYNOPSIS
 
   use File::HomeDir;
@@ -157,3 +151,11 @@ used via L<File::HomeDir>.
   $pics    = File::HomeDir->my_pictures;    #
   $videos  = File::HomeDir->my_videos;      #
   $data    = File::HomeDir->my_data;        # 
+
+=head1 DESCRIPTION
+
+This module provides implementations for determining common user
+directories.  In normal usage this module will always be
+used via L<File::HomeDir>.
+
+=cut

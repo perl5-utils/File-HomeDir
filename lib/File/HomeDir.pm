@@ -12,7 +12,7 @@ use File::Which ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.90_04';
+	$VERSION = '0.90_05';
 
 	# Inherit manually
 	require Exporter;

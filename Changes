@@ -1,12 +1,16 @@
 Changes for Perl extension File-HomeDir
 
+0.91 Sun 23 May 2010
+	- Moving the FreeDesktop driver to prod
+	- Adding File::HomeDir::Test driver
+
 0.90_04 Fri 12 Feb 2010
-    - adding missing prereq
+	- Adding missing prereq
 
 0.90_03 Tue  9 Feb 2010
-    - Using FreeDesktop implementation only if xdg-user-script is
-      present, since it's now what's been used internally. This should
-      prevent test failures seen in _02. (JQUELIN)
+	- Using FreeDesktop implementation only if xdg-user-script is
+	  present, since it's now what's been used internally. This should
+	  prevent test failures seen in _02. (JQUELIN)
 	
 0.90_02 Thu 14 Jan 2010
 	- Adding support for the alternate FreeBSD xdg directory (JQUELIN)

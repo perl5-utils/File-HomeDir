@@ -11,7 +11,7 @@ use File::HomeDir::Driver ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.90_04';
+	$VERSION = '0.90_05';
 	@ISA     = 'File::HomeDir::Driver';
 }
 
@@ -43,7 +43,7 @@ sub my_home {
 	if ( exists $ENV{HOMEDRIVE} and exists $ENV{HOMEPATH} and $ENV{HOMEDRIVE} and $ENV{HOMEPATH} ) {
 		return File::Spec->catpath(
 			$ENV{HOMEDRIVE}, $ENV{HOMEPATH}, '',
-			);
+		);
 	}
 
 	return undef;
@@ -156,12 +156,6 @@ sub my_videos {
 
 File::HomeDir::Windows - find your home and other directories, on Windows
 
-=head1 DESCRIPTION
-
-This module provides Windows-specific implementations for determining
-common user directories.  In normal usage this module will always be
-used via L<File::HomeDir>.
-
 =head1 SYNOPSIS
 
   use File::HomeDir;
@@ -174,3 +168,11 @@ used via L<File::HomeDir>.
   $pics    = File::HomeDir->my_pictures;    # C:\Documents and Settings\mylogin\My Documents\My Pictures
   $videos  = File::HomeDir->my_videos;      # C:\Documents and Settings\mylogin\My Documents\My Video
   $data    = File::HomeDir->my_data;        # C:\Documents and Settings\mylogin\Local Settings\Application Data
+
+=head1 DESCRIPTION
+
+This module provides Windows-specific implementations for determining
+common user directories.  In normal usage this module will always be
+used via L<File::HomeDir>.
+
+=cut
