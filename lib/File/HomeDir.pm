@@ -27,6 +27,7 @@ BEGIN {
 		my_pictures
 		my_videos
 		my_data
+		my_dist_data
 		users_home
 		users_desktop
 		users_documents
@@ -135,6 +136,13 @@ sub my_data {
 }
 
 
+sub my_dist_data {
+	my $dist = shift;
+	$dist = shift if ref($dist);
+	my $datadir = my_data();
+	my $subdir  =  $datadir eq home() ? '.perl' : 'perl';
+	return File::Spec->catdir( $datadir, $subdir, 'dist', $dist );
+}
 
 
 
