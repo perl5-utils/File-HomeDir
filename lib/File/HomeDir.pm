@@ -293,13 +293,14 @@ File::HomeDir - Find your home and other directories, on any platform
   use File::HomeDir;
   
   # Modern Interface (Current User)
-  $home    = File::HomeDir->my_home;
-  $desktop = File::HomeDir->my_desktop;
-  $docs    = File::HomeDir->my_documents;
-  $music   = File::HomeDir->my_music;
-  $pics    = File::HomeDir->my_pictures;
-  $videos  = File::HomeDir->my_videos;
-  $data    = File::HomeDir->my_data;
+  $home     = File::HomeDir->my_home;
+  $desktop  = File::HomeDir->my_desktop;
+  $docs     = File::HomeDir->my_documents;
+  $music    = File::HomeDir->my_music;
+  $pics     = File::HomeDir->my_pictures;
+  $videos   = File::HomeDir->my_videos;
+  $data     = File::HomeDir->my_data;
+  $distdata = File::HomeDir->my_data;
   
   # Modern Interface (Other Users)
   $home    = File::HomeDir->users_home('foo');
@@ -472,13 +473,26 @@ user.
 Generally an application would create a subdirectory such as C<.foo>,
 beneath this directory, and store its data there. By creating your
 directory this way, you get an accurate result on the maximum number
-of platforms.
+of platforms. But see the documentation about C<my_dist_data()> below.
 
 For example, on Unix you get C<~/.foo> and on Win32 you get
 C<~/Local Settings/Application Data/.foo>
 
 Returns the directory path as a string, C<undef> if the current user
 does not have a data directory, or dies on error.
+
+
+=head2 my_dist_data
+
+The C<my_dist_data> method takes a distribution name as argument and
+returns an application-specific directory where they should store their
+internal data.
+
+This directory will be of course a subdirectory of C<my_data>. If this
+directory is the user's homedir, it will be in C<~/.perl/dist/Dist-Name>
+(and thus be hidden on all Unixes). Platforms supporting data-specific
+directories will use C<DATA_DIR/perl/dist/Dist-Name>.
+
 
 =head2 users_home
 
