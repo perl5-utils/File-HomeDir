@@ -138,7 +138,8 @@ sub my_data {
 
 sub my_dist_data {
 	my $dist = shift;
-	$dist = shift if ref($dist);
+	$dist = shift if $dist eq __PACKAGE__;
+	Carp::croak("The my_dist_data method requires an argument") if !$dist;
 	my $datadir = my_data();
 	my $subdir  =  $datadir eq home() ? '.perl' : 'perl';
 	return File::Spec->catdir( $datadir, $subdir, 'dist', $dist );
