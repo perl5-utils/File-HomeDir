@@ -1,7 +1,8 @@
 Changes for Perl extension File-HomeDir
 
-0.92_01
-	- adding support for my_dist_data() (JQUELIN)
+0.92_01 Fri 11 Jun 2010
+	- Updating to Module::Install 0.99 (ADAMK)
+	- Adding experimental support for my_dist_data() (JQUELIN)
 
 0.91 Sun 23 May 2010
 	- Moving the FreeDesktop driver to prod

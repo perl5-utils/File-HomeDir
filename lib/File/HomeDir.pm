@@ -137,34 +137,34 @@ sub my_data {
 
 
 sub my_dist_data {
-	my $dist = shift;
-	$dist = shift if $dist eq __PACKAGE__;
-	Carp::croak("The my_dist_data method requires an argument") if !$dist;
-	my $params  = shift || {};
-	my $datadir = my_data();	# my_dist_data will be inside my_data
+	my $params = ref $_[-1] eq 'HASH' ? pop : {};
+	my $dist   = pop or Carp::croak("The my_dist_data method requires an argument");
+	my $data   = my_data();
 
-        # if datadir is not defined, there's nothing we can do: bail out
+        # If datadir is not defined, there's nothing we can do: bail out
         # and return nothing...	
-	return unless defined $datadir;
+	return undef unless defined $data;
 
-        # on traditional unixes, data and config will be resolved as
-        # $HOME. therefore, we're adding a trailing var/ to prevent dist
+        # On traditional unixes, data and config will be resolved as
+        # $HOME. Therefore, we're adding a trailing var/ to prevent dist
         # config and dist data to conflate.
-	my $dist_data_dir = $datadir eq home()
-		? File::Spec->catdir( $datadir, '.perl', 'dist', $dist, 'var' )
-		: File::Spec->catdir( $datadir, 'Perl',  'dist', $dist );
+	my $var = $data eq home()
+		? File::Spec->catdir( $data, '.perl', 'dist', $dist, 'var' )
+		: File::Spec->catdir( $data, 'Perl',  'dist', $dist );
 
 	# directory exists: return it
-	return $dist_data_dir if -d $dist_data_dir;
+	return $var if -d $var;
 
 	# directory doesn't exist: check if we need to create it...
-	return unless exists $params->{create} && $params->{create};
+	return undef unless $params->{create};
 
 	# user requested directory creation
 	require File::Path;
-	File::Path::make_path( $dist_data_dir );
-	return $dist_data_dir;
+	File::Path::mkpath( $var );
+	return $var;
 }
+
+
 
 
 
@@ -212,7 +212,6 @@ sub users_data {
 		? $IMPLEMENTED_BY->users_data( $_[-1] )
 		: Carp::croak("The users_data method is not implemented on this platform");
 }
-
 
 
 
@@ -322,7 +321,7 @@ File::HomeDir - Find your home and other directories, on any platform
   $pics     = File::HomeDir->my_pictures;
   $videos   = File::HomeDir->my_videos;
   $data     = File::HomeDir->my_data;
-  $distdata = File::HomeDir->my_dist_data('File-HomeDir');
+  $dist     = File::HomeDir->my_dist_data('File-HomeDir');
   
   # Modern Interface (Other Users)
   $home    = File::HomeDir->users_home('foo');
@@ -337,7 +336,7 @@ File::HomeDir - Find your home and other directories, on any platform
   print "My dir is ", home(), " and root's is ", home('root'), "\n";
   print "My dir is $~{''} and root's is $~{root}\n";
   # These both print the same thing, something like:
-  #  "My dir is /home/user/mojo and root's is /"
+  # "My dir is /home/user/mojo and root's is /"
 
 =head1 DESCRIPTION
 
@@ -503,16 +502,14 @@ C<~/Local Settings/Application Data/.foo>
 Returns the directory path as a string, C<undef> if the current user
 does not have a data directory, or dies on error.
 
-
 =head2 my_dist_data
 
-	File::HomeDir->my_dist_data( $dist [, \%params] );
-	
-eg:
-
-	File::HomeDir->my_dist_data( 'File-HomeDir' );
-	File::HomeDir->my_dist_data( 'File-HomeDir', { create => 1 } );
-	
+  File::HomeDir->my_dist_data( $dist [, \%params] );
+  
+  # For example...
+  
+  File::HomeDir->my_dist_data( 'File-HomeDir' );
+  File::HomeDir->my_dist_data( 'File-HomeDir', { create => 1 } );
 
 The C<my_dist_data> method takes a distribution name as argument and
 returns an application-specific directory where they should store their
@@ -538,8 +535,6 @@ is to return C<undef> if the directory doesn't exist).
 Defaults to false, meaning no automatic creation of directory.
 
 =back
-
-
 
 =head2 users_home
 

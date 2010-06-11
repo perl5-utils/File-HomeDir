@@ -1,12 +1,13 @@
-use inc::Module::Install 0.97;
+use inc::Module::Install 0.99;
 use Config;
 
 all_from      'lib/File/HomeDir.pm';
 requires      'Carp'        => 0;
 requires      'Cwd'         => $^O eq 'darwin' ? '3' : '3.12';
 requires      'File::Spec'  => $^O eq 'darwin' ? '3' : '3.12';
+requires      'File::Path'  => '2.01';
 requires      'File::Temp'  => '0.19';
-requires      'File::Which' => 0;
+requires      'File::Which' => '0.05';
 test_requires 'Test::More'  => '0.47';
 
 # Dependencies for specific platforms
