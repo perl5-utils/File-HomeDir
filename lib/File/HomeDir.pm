@@ -140,14 +140,26 @@ sub my_dist_data {
 	my $dist = shift;
 	$dist = shift if $dist eq __PACKAGE__;
 	Carp::croak("The my_dist_data method requires an argument") if !$dist;
+	my $params = shift || {};
 
         # on traditional unixes, data and config will be resolved as
         # $HOME. therefore, we're adding a trailing var/ to prevent dist
         # config and dist data to conflate.
 	my $datadir = my_data();
-	return $datadir eq home()
+	my $dist_data_dir = $datadir eq home()
 		? File::Spec->catdir( $datadir, '.perl', 'dist', $dist, 'var' )
 		: File::Spec->catdir( $datadir, 'Perl',  'dist', $dist );
+
+	# directory exists: return it
+	return $dist_data_dir if -d $dist_data_dir;
+
+	# directory doesn't exist: check if we need to create it...
+	return unless exists $params->{create} && $params->{create};
+
+	# user requested directory creation
+	require File::Path;
+	File::Path::make_path( $dist_data_dir );
+	return $dist_data_dir;
 }
 
 
@@ -490,14 +502,39 @@ does not have a data directory, or dies on error.
 
 =head2 my_dist_data
 
+	File::HomeDir->my_dist_data( $dist [, \%params] );
+	
+eg:
+
+	File::HomeDir->my_dist_data( 'File-HomeDir' );
+	File::HomeDir->my_dist_data( 'File-HomeDir', { create => 1 } );
+	
+
 The C<my_dist_data> method takes a distribution name as argument and
 returns an application-specific directory where they should store their
 internal data.
 
-This directory will be of course a subdirectory of C<my_data>. If this
-directory is the user's homedir, it will be in C<~/.perl/dist/Dist-Name>
-(and thus be hidden on all Unixes). Platforms supporting data-specific
-directories will use C<DATA_DIR/perl/dist/Dist-Name>.
+This directory will be of course a subdirectory of C<my_data>. Platforms
+supporting data-specific directories will use C<DATA_DIR/perl/dist/Dist-Name>,
+following the traditional DATA / vendor / application split. If the C<my_data>
+directory is the user's homedir, C<my_dist_data> will be in
+C<~/.perl/dist/Dist-Name/var> (and thus be hidden on all Unixes).
+
+The optional last argument is a hash reference to tweak the method
+behaviour. The following hash keys are recognized:
+
+=over 4
+
+=item * create
+
+Passing a true value to this key will force the creation of the
+directory if it doesn't exist (remember that C<File::HomeDir>'s policy
+is to return C<undef> if the directory doesn't exist).
+
+Defaults to false, meaning no automatic creation of directory.
+
+=back
+
 
 
 =head2 users_home
