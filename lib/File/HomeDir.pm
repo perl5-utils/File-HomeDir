@@ -140,9 +140,14 @@ sub my_dist_data {
 	my $dist = shift;
 	$dist = shift if $dist eq __PACKAGE__;
 	Carp::croak("The my_dist_data method requires an argument") if !$dist;
+
+        # on traditional unixes, data and config will be resolved as
+        # $HOME. therefore, we're adding a trailing var/ to prevent dist
+        # config and dist data to conflate.
 	my $datadir = my_data();
-	my $subdir  =  $datadir eq home() ? '.perl' : 'perl';
-	return File::Spec->catdir( $datadir, $subdir, 'dist', $dist );
+	return $datadir eq home()
+		? File::Spec->catdir( $datadir, '.perl', 'dist', $dist, 'var' )
+		: File::Spec->catdir( $datadir, 'Perl',  'dist', $dist );
 }
 
 
