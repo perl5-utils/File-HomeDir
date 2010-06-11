@@ -140,12 +140,16 @@ sub my_dist_data {
 	my $dist = shift;
 	$dist = shift if $dist eq __PACKAGE__;
 	Carp::croak("The my_dist_data method requires an argument") if !$dist;
-	my $params = shift || {};
+	my $params  = shift || {};
+	my $datadir = my_data();	# my_dist_data will be inside my_data
+
+        # if datadir is not defined, there's nothing we can do: bail out
+        # and return nothing...	
+	return unless defined $datadir;
 
         # on traditional unixes, data and config will be resolved as
         # $HOME. therefore, we're adding a trailing var/ to prevent dist
         # config and dist data to conflate.
-	my $datadir = my_data();
 	my $dist_data_dir = $datadir eq home()
 		? File::Spec->catdir( $datadir, '.perl', 'dist', $dist, 'var' )
 		: File::Spec->catdir( $datadir, 'Perl',  'dist', $dist );
