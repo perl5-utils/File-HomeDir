@@ -301,7 +301,7 @@ File::HomeDir - Find your home and other directories, on any platform
   $pics     = File::HomeDir->my_pictures;
   $videos   = File::HomeDir->my_videos;
   $data     = File::HomeDir->my_data;
-  $distdata = File::HomeDir->my_data;
+  $distdata = File::HomeDir->my_dist_data('File-HomeDir');
   
   # Modern Interface (Other Users)
   $home    = File::HomeDir->users_home('foo');
