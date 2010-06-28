@@ -8,7 +8,7 @@ use File::HomeDir::Unix ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.92_01';
+	$VERSION = '0.92_02';
 	@ISA     = 'File::HomeDir::Unix';
 }
 
@@ -20,62 +20,62 @@ BEGIN {
 # Current User Methods
 
 sub my_home {
-    my $class = shift;
+	my $class = shift;
 
-    if ( exists $ENV{HOME} and defined $ENV{HOME} ) {
-        return $ENV{HOME};
-    }
+	if ( exists $ENV{HOME} and defined $ENV{HOME} ) {
+		return $ENV{HOME};
+	}
 
-    my $home = (getpwuid($<))[7];
-    return $home if $home && -d $home;
+	my $home = (getpwuid($<))[7];
+	return $home if $home && -d $home;
 
-    return undef;
+	return undef;
 }
 
 sub _my_home {
-    my($class, $path) = @_;
-    my $home = $class->my_home;
-    return undef unless defined $home;
+	my($class, $path) = @_;
+	my $home = $class->my_home;
+	return undef unless defined $home;
 
-    my $folder = "$home/$path";
-    unless ( -d $folder ) {
-        # Make sure that symlinks resolve to directories.
-        return unless -l $folder;
-        my $dir = readlink $folder or return;
-        return unless -d $dir;
-    }
+	my $folder = "$home/$path";
+	unless ( -d $folder ) {
+		# Make sure that symlinks resolve to directories.
+		return unless -l $folder;
+		my $dir = readlink $folder or return;
+		return unless -d $dir;
+	}
 
-    return Cwd::abs_path($folder);
+	return Cwd::abs_path($folder);
 }
 
 sub my_desktop {
-    my $class = shift;
-    $class->_my_home('Desktop');
+	my $class = shift;
+	$class->_my_home('Desktop');
 }
 
 sub my_documents {
-    my $class = shift;
-    $class->_my_home('Documents');
+	my $class = shift;
+	$class->_my_home('Documents');
 }
 
 sub my_data {
-    my $class = shift;
-    $class->_my_home('Library/Application Support');
+	my $class = shift;
+	$class->_my_home('Library/Application Support');
 }
 
 sub my_music {
-    my $class = shift;
-    $class->_my_home('Music');
+	my $class = shift;
+	$class->_my_home('Music');
 }
 
 sub my_pictures {
-    my $class = shift;
-    $class->_my_home('Pictures');
+	my $class = shift;
+	$class->_my_home('Pictures');
 }
 
 sub my_videos {
-    my $class = shift;
-    $class->_my_home('Movies');
+	my $class = shift;
+	$class->_my_home('Movies');
 }
 
 
@@ -86,39 +86,39 @@ sub my_videos {
 # Arbitrary User Methods
 
 sub users_home {
-    my $class = shift;
-    my $home  = $class->SUPER::users_home(@_);
-    return defined $home ? Cwd::abs_path($home) : undef;
+	my $class = shift;
+	my $home  = $class->SUPER::users_home(@_);
+	return defined $home ? Cwd::abs_path($home) : undef;
 }
 
 sub users_desktop {
-    my ($class, $name) = @_;
-    return undef if $name eq 'root';
-    $class->_to_user( $class->my_desktop, $name );
+	my ($class, $name) = @_;
+	return undef if $name eq 'root';
+	$class->_to_user( $class->my_desktop, $name );
 }
 
 sub users_documents {
-    my ($class, $name) = @_;
-    return undef if $name eq 'root';
-    $class->_to_user( $class->my_documents, $name );
+	my ($class, $name) = @_;
+	return undef if $name eq 'root';
+	$class->_to_user( $class->my_documents, $name );
 }
 
 sub users_data {
-    my ($class, $name) = @_;
-    $class->_to_user( $class->my_data, $name )
-    ||
-    $class->users_home($name);
+	my ($class, $name) = @_;
+	$class->_to_user( $class->my_data, $name )
+	||
+	$class->users_home($name);
 }
 
 # cheap hack ... not entirely reliable, perhaps, but ... c'est la vie, since
 # there's really no other good way to do it at this time, that i know of -- pudge
 sub _to_user {
-    my ($class, $path, $name) = @_;
-    my $my_home    = $class->my_home;
-    my $users_home = $class->users_home($name);
-    defined $users_home or return undef;
-    $path =~ s/^\Q$my_home/$users_home/;
-    return $path;
+	my ($class, $path, $name) = @_;
+	my $my_home    = $class->my_home;
+	my $users_home = $class->users_home($name);
+	defined $users_home or return undef;
+	$path =~ s/^\Q$my_home/$users_home/;
+	return $path;
 }
 
 1;
@@ -127,7 +127,7 @@ sub _to_user {
 
 =head1 NAME
 
-File::HomeDir::Darwin - Find your home and other directories, on Darwin (OS X) without Carbon/Cocoa
+File::HomeDir::Darwin - Find your home and other directories on Darwin (OS X)
 
 =head1 DESCRIPTION
 

@@ -12,7 +12,7 @@ use File::Which ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.92_01';
+	$VERSION = '0.92_02';
 
 	# Inherit manually
 	require Exporter;
@@ -307,7 +307,7 @@ __END__
 
 =head1 NAME
 
-File::HomeDir - Find your home and other directories, on any platform
+File::HomeDir - Find your home and other directories on any platform
 
 =head1 SYNOPSIS
 
@@ -340,13 +340,13 @@ File::HomeDir - Find your home and other directories, on any platform
 
 =head1 DESCRIPTION
 
-B<File::HomeDir> is a module for dealing with issues relating to the
-location of directories that are "owned" by a user, primarily your user,
-and to solve these issues consistently across a wide variety of
-platforms.
+B<File::HomeDir> is a module for locating the directories that are "owned"
+by a user (typicaly your user) and to solve the various issues that arise
+trying to find them consistently across a wide variety of platforms.
 
-Thus, a single API is presented that can find your resources on any
-platform.
+The end result is a single API that can find your resources on any platform,
+making it relatively trivial to create Perl software that works elegantly
+and correctly no matter where you run it.
 
 This module provides two main interfaces.
 
@@ -360,10 +360,10 @@ that exported a C<home()> function by default and tied the C<%~> variable.
 It is generally not recommended that you use this interface, but due to
 back-compatibility reasons they will remain supported until at least 2010.
 
-After this date, the home() function will remain, but we will consider
-deprecating the (namespace-polluting) C<%~> tied hash, to be removed by
-2015 (maintaining the general Perl convention of a 10 year support period
-for legacy APIs potentially or actually in common use).
+The C<%~> interface has been deprecated and is no longer documented. Any
+usage will issue warnings from 2013 and be removed in 2015 (in line with
+the general Perl convention of a 10 year support period for legacy APIs
+potentially or actually in common use).
 
 =head2 Platform Neutrality
 
@@ -516,10 +516,11 @@ returns an application-specific directory where they should store their
 internal data.
 
 This directory will be of course a subdirectory of C<my_data>. Platforms
-supporting data-specific directories will use C<DATA_DIR/perl/dist/Dist-Name>,
-following the traditional DATA / vendor / application split. If the C<my_data>
-directory is the user's homedir, C<my_dist_data> will be in
-C<~/.perl/dist/Dist-Name/var> (and thus be hidden on all Unixes).
+supporting data-specific directories will use
+C<DATA_DIR/perl/dist/Dist-Name> following the common
+"DATA/vendor/application" pattern. If the C<my_data> directory is the
+user's homedir, C<my_dist_data> will be in C<~/.perl/dist/Dist-Name/var>
+(and thus be hidden on all Unixes).
 
 The optional last argument is a hash reference to tweak the method
 behaviour. The following hash keys are recognized:
@@ -582,42 +583,6 @@ Returns the directory path to a named user's home/profile directory.
 
 If provided no param, returns the directory path to the current user's
 home/profile directory.
-
-=head1 TIED INTERFACE
-
-=head2 %~
-
-  $home = $~{""};
-  $home = $~{undef};
-  $home = $~{$user};
-  $home = $~{username};
-  print "... $~{''} ...";
-  print "... $~{$user} ...";
-  print "... $~{username} ...";
-
-This calls C<home($user)> or C<home('username')> -- except that if you
-ask for C<$~{some_user}> and there is no such user, it will die.
-
-Note that this is especially useful in double-quotish strings, like:
-
-     print "Jojo's .newsrc is ", -s "$~{jojo}/.newsrc", "b long!\n";
-      # (helpfully dies if there is no user 'jojo')
-
-If you want to avoid the fatal errors, first test the value of
-C<home('jojo')>, which will return undef (instead of dying) in case of
-there being no such user.
-
-Note, however, that if the hash key is "" or undef (whether thru being
-a literal "", or a scalar whose value is empty-string or undef), then
-this returns zero-argument C<home()>, i.e., your home directory:
-
-Further, please note that because the C<%~> hash compulsorily modifies
-a hash outside of it's namespace, and presents an overly simplistic
-approach to home directories, it is likely to ultimately be removed.
-
-The interface is currently expected to be formally deprecated from 2010
-(but no earlier) and removed from 2015 (but no earlier). If very heavy
-use is found in the wild, these plans may be pushed back.
 
 =head1 TO DO
 

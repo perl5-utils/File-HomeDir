@@ -1,18 +1,20 @@
 package File::HomeDir::FreeDesktop;
 
-# specific functionality for unixes running free desktops
+# Specific functionality for unixes running free desktops
 # compatible with (but not using) File-BaseDir-0.03
+
+# See POD at the end of the file for more documentation.
 
 use 5.00503;
 use strict;
 use Carp                ();
 use File::Spec          ();
-use File::HomeDir::Unix ();
 use File::Which         ();
+use File::HomeDir::Unix ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.92_01';
+	$VERSION = '0.92_02';
 	@ISA     = 'File::HomeDir::Unix';
 }
 
@@ -23,40 +25,45 @@ BEGIN {
 # running under; the standard substitute user mechanisms are needed to
 # overcome this.
 
-{
-    my $xdgprog = File::Which::which('xdg-user-dir');
-    sub _my_thingy {
-        my ($class, $wanted) = @_;
+my $xdgprog = File::Which::which('xdg-user-dir');
 
-        # no quoting because input is hard-coded and only comes from this module
-        my $thingy = qx($xdgprog $wanted);
-        chomp $thingy;
-        return $thingy;
-    }
+sub _my {
+	# No quoting because input is hard-coded and only comes from this module
+	my $thingy = qx($xdgprog $_[1]);
+	chomp $thingy;
+	return $thingy;
 }
 
-
-sub my_desktop   { shift->_my_thingy('DESKTOP');   }
-sub my_documents { shift->_my_thingy('DOCUMENTS'); }
-sub my_music     { shift->_my_thingy('MUSIC');     }
-sub my_pictures  { shift->_my_thingy('PICTURES');  }
-sub my_videos    { shift->_my_thingy('VIDEOS');    }
+# Simple stuff
+sub my_desktop   { shift->_my('DESKTOP')   }
+sub my_documents { shift->_my('DOCUMENTS') }
+sub my_music     { shift->_my('MUSIC')     }
+sub my_pictures  { shift->_my('PICTURES')  }
+sub my_videos    { shift->_my('VIDEOS')    }
 
 sub my_data {
 	$ENV{XDG_DATA_HOME}
-	||
-	File::Spec->catdir(shift->my_home, qw{ .local share });
+	or
+	File::Spec->catdir(
+		shift->my_home,
+		qw{ .local share }
+	);
 }
 
-sub my_download    { shift->_my_thingy('DOWNLOAD');    }
-sub my_publicshare { shift->_my_thingy('PUBLICSHARE'); }
-sub my_templates   { shift->_my_thingy('TEMPLATES');   }
+# Custom locations (currently undocumented)
+sub my_download    { shift->_my('DOWNLOAD')    }
+sub my_publicshare { shift->_my('PUBLICSHARE') }
+sub my_templates   { shift->_my('TEMPLATES')   }
 
-sub my_cache       {
+sub my_cache {
     $ENV{XDG_CACHE_HOME}
     ||
     File::Spec->catdir(shift->my_home, qw{ .cache });
 }
+
+
+
+
 
 #####################################################################
 # General User Methods
@@ -74,7 +81,7 @@ sub users_data      { Carp::croak('The users_data method is not available on an 
 
 =head1 NAME
 
-File::HomeDir::FreeDesktop - find your home and other directories, on unixes running free desktops
+File::HomeDir::FreeDesktop - Find your home and other directories on FreeDesktop.org Unix
 
 =head1 DESCRIPTION
 
@@ -88,7 +95,6 @@ used via L<File::HomeDir>.
   
   # Find directories for the current user
   $home    = File::HomeDir->my_home;        # /home/mylogin
-
   $desktop = File::HomeDir->my_desktop;
   $docs    = File::HomeDir->my_documents;
   $music   = File::HomeDir->my_music;
@@ -96,3 +102,26 @@ used via L<File::HomeDir>.
   $videos  = File::HomeDir->my_videos;
   $data    = File::HomeDir->my_data;
 
+=head1 AUTHORS
+
+Jerome Quelin E<lt>jquellin@cpan.org<gt>
+
+Adam Kennedy E<lt>adamk@cpan.orgE<gt>
+
+=head1 SEE ALSO
+
+L<File::HomeDir>, L<File::HomeDir::Win32> (legacy)
+
+=head1 COPYRIGHT
+
+Copyright 2009 - 2010 Jerome Quelin.
+
+Some parts copyright 2010 Adam Kennedy.
+
+This program is free software; you can redistribute
+it and/or modify it under the same terms as Perl itself.
+
+The full text of the license can be found in the
+LICENSE file included with this module.
+
+=cut

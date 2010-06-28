@@ -29,6 +29,8 @@ sub is_dir($) {
 
 
 
+
+
 #####################################################################
 # Environment Detection and Plan
 
@@ -73,8 +75,12 @@ if ( $^O eq 'MSWin32' ) {
 	$HAVEVIDEOS  = 0;
 	$HAVEOTHERS  = 0;
 
-} elsif ( $^O eq 'darwin' ) {
-	# Darwin special cases
+} elsif (
+	$^O eq 'darwin'
+	or
+	$File::HomeDir::ISA[0] eq 'File::HomeDir::FreeDesktop'
+) {
+	# "Unixes with proper desktops" special cases
 	if ( $< ) {
 		# Normal user
 		$HAVEHOME    = 1;
@@ -83,7 +89,7 @@ if ( $^O eq 'MSWin32' ) {
 		$HAVEVIDEOS  = 1;
 		$HAVEOTHERS  = 1;
 	} else {
-		# Darwin root only has a home, nothing else
+		# Root can only be relied on to have a home
 		$HAVEHOME    = 1;
 		$HAVEDESKTOP = 0;
 		$HAVEMUSIC   = 0;

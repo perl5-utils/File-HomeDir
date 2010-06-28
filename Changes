@@ -1,5 +1,15 @@
 Changes for Perl extension File-HomeDir
 
+0.92_02 Mon 28 Jun 2010
+	- Updating to Module::Install 1.00 (ADAMK)
+	- Add a bit more docs, and tweak the existing stuff a bit (ADAMK)
+	- Deprecated the %~ interface. It will continue to exist as an
+	  undocumented legacy interface until 2015, warnings will be
+	  issued from 2013 (ADAMK)
+	- On FreeDesktop.org systems, root often does not have the relevant
+	  directories. Skip tests for them in the same way as we do for the
+	  Mac root users on darwin (GARU)
+
 0.92_01 Fri 11 Jun 2010
 	- Updating to Module::Install 0.99 (ADAMK)
 	- Adding experimental support for my_dist_data() (JQUELIN)

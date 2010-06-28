@@ -8,7 +8,7 @@ use File::HomeDir::Darwin ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.92_01';
+	$VERSION = '0.92_02';
 	@ISA     = 'File::HomeDir::Darwin';
 
 	# Load early if in a forking environment and we have
@@ -134,7 +134,7 @@ sub _find_folder {
 
 =head1 NAME
 
-File::HomeDir::Darwin::Cocoa - Find your home and other directories, on Darwin (OS X)
+File::HomeDir::Darwin::Cocoa - Find your home and other directories on Darwin (OS X)
 
 =head1 DESCRIPTION
 

@@ -11,7 +11,7 @@ use File::HomeDir::Darwin ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.92_01';
+	$VERSION = '0.92_02';
 
 	# This is only a child class of the pure Perl darwin
 	# class so that we can do homedir detection of all three
@@ -173,7 +173,7 @@ sub _to_user {
 
 =head1 NAME
 
-File::HomeDir::Darwin - Find your home and other directories, on Darwin (OS X)
+File::HomeDir::Darwin - Find your home and other directories on Darwin (OS X)
 
 =head1 DESCRIPTION
 

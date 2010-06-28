@@ -1,7 +1,6 @@
 package File::HomeDir::Windows;
 
-# Generalised implementation for the entire Windows family of operating
-# systems.
+# See POD at the end of the file for documentation
 
 use 5.00503;
 use strict;
@@ -11,7 +10,7 @@ use File::HomeDir::Driver ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.92_01';
+	$VERSION = '0.92_02';
 	@ISA     = 'File::HomeDir::Driver';
 }
 
@@ -154,7 +153,7 @@ sub my_videos {
 
 =head1 NAME
 
-File::HomeDir::Windows - find your home and other directories, on Windows
+File::HomeDir::Windows - Find your home and other directories on Windows
 
 =head1 SYNOPSIS
 
@@ -174,5 +173,31 @@ File::HomeDir::Windows - find your home and other directories, on Windows
 This module provides Windows-specific implementations for determining
 common user directories.  In normal usage this module will always be
 used via L<File::HomeDir>.
+
+=head1 SUPPORT
+
+See the support section the main L<File::HomeDir> module.
+
+=head1 AUTHORS
+
+Adam Kennedy E<lt>adamk@cpan.orgE<gt>
+
+Sean M. Burke E<lt>sburke@cpan.orgE<gt>
+
+=head1 SEE ALSO
+
+L<File::HomeDir>, L<File::HomeDir::Win32> (legacy)
+
+=head1 COPYRIGHT
+
+Copyright 2005 - 2010 Adam Kennedy.
+
+Some parts copyright 2000 Sean M. Burke.
+
+This program is free software; you can redistribute
+it and/or modify it under the same terms as Perl itself.
+
+The full text of the license can be found in the
+LICENSE file included with this module.
 
 =cut

@@ -11,7 +11,7 @@ use File::HomeDir::Driver ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.92_01';
+	$VERSION = '0.92_02';
 	@ISA     = 'File::HomeDir::Driver';
 }
 
@@ -95,3 +95,56 @@ sub users_home {
 }
 
 1;
+
+=pod
+
+=head1 NAME
+
+File::HomeDir::MacOS9 - Find your home and other directories on legacy Macs
+
+=head1 SYNOPSIS
+
+  use File::HomeDir;
+  
+  # Find directories for the current user
+  $home    = File::HomeDir->my_home;
+  $desktop = File::HomeDir->my_desktop;
+
+=head1 DESCRIPTION
+
+This module provides implementations for determining common user
+directories on legacy Mac hosts. In normal usage this module will always be
+used via L<File::HomeDir>.
+
+This module is no longer actively maintained, and is included only for
+extreme back-compatibility.
+
+Only the C<my_home> and C<my_desktop> methods are supported.
+
+=head1 SUPPORT
+
+See the support section the main L<File::HomeDir> module.
+
+=head1 AUTHORS
+
+Adam Kennedy E<lt>adamk@cpan.orgE<gt>
+
+Sean M. Burke E<lt>sburke@cpan.orgE<gt>
+
+=head1 SEE ALSO
+
+L<File::HomeDir>
+
+=head1 COPYRIGHT
+
+Copyright 2005 - 2010 Adam Kennedy.
+
+Some parts copyright 2000 Sean M. Burke.
+
+This program is free software; you can redistribute
+it and/or modify it under the same terms as Perl itself.
+
+The full text of the license can be found in the
+LICENSE file included with this module.
+
+=cut
