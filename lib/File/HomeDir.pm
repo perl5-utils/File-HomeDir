@@ -27,6 +27,7 @@ BEGIN {
 		my_pictures
 		my_videos
 		my_data
+		my_dist_config
 		my_dist_data
 		users_home
 		users_desktop
@@ -164,6 +165,35 @@ sub my_dist_data {
 	return $var;
 }
 
+sub my_dist_config {
+	my $params = ref $_[-1] eq 'HASH' ? pop : {};
+	my $dist   = pop or Carp::croak("The my_dist_config method requires an argument");
+	
+	# not all platforms support a specific my_config() method
+	my $config = $IMPLEMENTED_BY->can('my_config')
+		? $IMPLEMENTED_BY->my_config
+		: $IMPLEMENTED_BY->my_documents;
+
+    # If neither configdir nor my_documents is defined, there's
+    # nothing we can do: bail out and return nothing...	
+	return undef unless defined $config;
+
+    # On traditional unixes, hide the top-level dir
+	my $etc = $config eq home()
+		? File::Spec->catdir( $config, '.perl', $dist )
+		: File::Spec->catdir( $config, 'Perl',  $dist );
+
+	# directory exists: return it
+	return $etc if -d $etc;
+
+	# directory doesn't exist: check if we need to create it...
+	return undef unless $params->{create};
+
+	# user requested directory creation
+	require File::Path;
+	File::Path::mkpath( $etc );
+	return $etc;
+}
 
 
 
@@ -322,6 +352,7 @@ File::HomeDir - Find your home and other directories on any platform
   $videos   = File::HomeDir->my_videos;
   $data     = File::HomeDir->my_data;
   $dist     = File::HomeDir->my_dist_data('File-HomeDir');
+  $dist     = File::HomeDir->my_dist_config('File-HomeDir');
   
   # Modern Interface (Other Users)
   $home    = File::HomeDir->users_home('foo');
@@ -493,14 +524,51 @@ user.
 
 Generally an application would create a subdirectory such as C<.foo>,
 beneath this directory, and store its data there. By creating your
-directory this way, you get an accurate result on the maximum number
-of platforms. But see the documentation about C<my_dist_data()> below.
+directory this way, you get an accurate result on the maximum number of
+platforms. But see the documentation about C<my_dist_config()> or
+C<my_dist_data()> below.
 
 For example, on Unix you get C<~/.foo> and on Win32 you get
 C<~/Local Settings/Application Data/.foo>
 
 Returns the directory path as a string, C<undef> if the current user
 does not have a data directory, or dies on error.
+
+
+=head2 my_dist_config
+
+  File::HomeDir->my_dist_config( $dist [, \%params] );
+  
+  # For example...
+  
+  File::HomeDir->my_dist_config( 'File-HomeDir' );
+  File::HomeDir->my_dist_config( 'File-HomeDir', { create => 1 } );
+
+The C<my_dist_config> method takes a distribution name as argument and
+returns an application-specific directory where they should store their
+internal configuration.
+
+The base directory will be either C<my_config> if the platform supports
+it, or C<my_documents> otherwise. The subdirectory itself will be 
+C<BASE/Perl/Dist-Name>. If the base directory is the user's homedir,
+C<my_dist_config> will be in C<~/.perl/Dist-Name> (and thus be hidden on
+all Unixes).
+
+The optional last argument is a hash reference to tweak the method
+behaviour. The following hash keys are recognized:
+
+=over 4
+
+=item * create
+
+Passing a true value to this key will force the creation of the
+directory if it doesn't exist (remember that C<File::HomeDir>'s policy
+is to return C<undef> if the directory doesn't exist).
+
+Defaults to false, meaning no automatic creation of directory.
+
+=back
+
 
 =head2 my_dist_data
 
