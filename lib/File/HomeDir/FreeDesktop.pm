@@ -50,6 +50,15 @@ sub my_data {
 	);
 }
 
+sub my_config {
+	$ENV{XDG_CONFIG_HOME}
+	or
+	File::Spec->catdir(
+		shift->my_home,
+		qw{ .config }
+	);
+}
+
 # Custom locations (currently undocumented)
 sub my_download    { shift->_my('DOWNLOAD')    }
 sub my_publicshare { shift->_my('PUBLICSHARE') }
