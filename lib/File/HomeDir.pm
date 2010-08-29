@@ -146,11 +146,9 @@ sub my_dist_data {
         # and return nothing...	
 	return undef unless defined $data;
 
-        # On traditional unixes, data and config will be resolved as
-        # $HOME. Therefore, we're adding a trailing var/ to prevent dist
-        # config and dist data to conflate.
+        # On traditional unixes, hide the top-level directory
 	my $var = $data eq home()
-		? File::Spec->catdir( $data, '.perl', 'dist', $dist, 'var' )
+		? File::Spec->catdir( $data, '.perl', 'dist', $dist )
 		: File::Spec->catdir( $data, 'Perl',  'dist', $dist );
 
 	# directory exists: return it
@@ -587,7 +585,7 @@ This directory will be of course a subdirectory of C<my_data>. Platforms
 supporting data-specific directories will use
 C<DATA_DIR/perl/dist/Dist-Name> following the common
 "DATA/vendor/application" pattern. If the C<my_data> directory is the
-user's homedir, C<my_dist_data> will be in C<~/.perl/dist/Dist-Name/var>
+user's homedir, C<my_dist_data> will be in C<~/.perl/dist/Dist-Name>
 (and thus be hidden on all Unixes).
 
 The optional last argument is a hash reference to tweak the method
@@ -724,6 +722,8 @@ Some parts copyright 2000 Sean M. Burke.
 Some parts copyright 2006 Chris Nandor.
 
 Some parts copyright 2006 Stephen Steneker.
+
+Some parts copyright 2009-2010 Jérôme Quelin.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.
