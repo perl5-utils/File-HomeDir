@@ -8,7 +8,7 @@ use File::HomeDir::Darwin ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.92_02';
+	$VERSION = '0.92_03';
 	@ISA     = 'File::HomeDir::Darwin';
 
 	# Load early if in a forking environment and we have
