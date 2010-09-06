@@ -1,7 +1,8 @@
 Changes for Perl extension File-HomeDir
 
-0.92_03
-	- adding experimental support for my_dist_config() (JQUELIN)
+0.92_03 Mon  6 Sep 2010
+	- Adding experimental support for my_dist_config() (JQUELIN)
+	- Adding diag comment on which drivers gets used (ADAMK)
 
 0.92_02 Mon 28 Jun 2010
 	- Updating to Module::Install 1.00 (ADAMK)

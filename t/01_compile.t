@@ -28,3 +28,7 @@ use_ok( 'File::HomeDir::MacOS9'         );
 use_ok( 'File::HomeDir'                 );
 
 ok( defined &home, 'Using File::HomeDir exports home()' );
+
+# Note the driver we are using for the purposes of
+# understanding CPAN Testers failure reports.
+diag( "Implemented by: $File::HomeDir::IMPLEMENTED_BY" );
