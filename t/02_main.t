@@ -15,8 +15,6 @@ use File::Spec::Functions ':ALL';
 use Test::More;
 use File::HomeDir;
 
-diag($File::HomeDir::IMPLEMENTED_BY);
-
 # This module is destined for the core.
 # Please do NOT use convenience modules
 # use English; <-- don't do this
