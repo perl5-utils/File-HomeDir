@@ -77,7 +77,6 @@ if ( $^O eq 'MSWin32' ) {
 
 } elsif (
 	$^O eq 'darwin'
-	# $File::HomeDir::IMPLEMENTED_BY eq 'File::HomeDir::FreeDesktop'
 ) {
 	# "Unixes with proper desktops" special cases
 	if ( $< ) {
@@ -95,6 +94,14 @@ if ( $^O eq 'MSWin32' ) {
 		$HAVEVIDEOS  = 0;
 		$HAVEOTHERS  = 0;
 	}
+
+} elsif ( $File::HomeDir::IMPLEMENTED_BY eq 'File::HomeDir::FreeDesktop' ) {
+	# On FreeDesktop we can't trust people to have a desktop (annoyingly)
+	$HAVEHOME    = 1;
+	$HAVEDESKTOP = 0;
+	$HAVEMUSIC   = 1;
+	$HAVEVIDEOS  = 1;
+	$HAVEOTHERS  = 0;
 
 } else {
 	# Default to traditional Unix
