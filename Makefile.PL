@@ -16,10 +16,9 @@ if ( $MacPerl::Version and $MacPerl::Version ) {
 	# Old Mac OS 9
 	requires 'Mac::Files'  => 0;
 
-} elsif ( $^O eq 'darwin' && $Config{ptrsize} != 8 ) {
-	# Modern Max OS X but only for 32-bit bit
-	requires 'Mac::Carbon' => '0.77';
-	requires 'Mac::Files'  => '1.09';
+} elsif ( $^O eq 'darwin' ) {
+	# Modern Max OS X and Darwin OSS releases for 32bit and 64bit
+	requires 'Mac::SystemDirectory' => '0.04';
 
 } elsif ( $^O eq 'MSWin32' ) {
 	requires  'Win32'      => '0.31';

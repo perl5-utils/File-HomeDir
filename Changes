@@ -1,5 +1,8 @@
 Changes for Perl extension File-HomeDir
 
+0.92_05
+	- use Mac::SystemDirectory for each Darwin based MacOS. (REHSACK)
+
 0.92_04 Fri 10 Sep 2010
 	- Be less strict about desktop and others on FreeDesktop (ADAMK)
 
