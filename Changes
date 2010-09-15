@@ -1,5 +1,8 @@
 Changes for Perl extension File-HomeDir
 
+0.93 Wed 13 Sep 2010
+	- Production release, no changes from 0.92_05
+
 0.92_05 Mon 13 Sep 2010
 	- use Mac::SystemDirectory for each Darwin based MacOS. (REHSACK)
 
