@@ -12,8 +12,9 @@ test_requires 'Test::More'  => '0.47';
 
 # Dependencies for specific platforms
 ### Use variable twice to avoid a warning
-if ( $MacPerl::Version and $MacPerl::Version ) {
-	# Old Mac OS 9
+if ( $MacPerl::Version and $MacPerl::Version
+	or $^O eq 'darwin' and _check_old_mac_os_x() ) {
+	# Old Mac OS 9, or Mac OS X before Mac::SystemDirectory is supported.
 	requires 'Mac::Files'  => 0;
 
 } elsif ( $^O eq 'darwin' ) {
@@ -25,3 +26,14 @@ if ( $MacPerl::Version and $MacPerl::Version ) {
 }
 
 WriteAll;
+
+sub _check_old_mac_os_x {
+    local $@;
+    $Config{ptrsize} == 8 and return;
+    return eval {
+	require POSIX;
+	my $release = ( POSIX::uname() )[2];
+	my ( $major ) = split qr{ [.] }smx, $release;
+	$major < 8;	# 'old' means before darwin 8 = Mac OS 10.4 = Tiger
+    };
+}
