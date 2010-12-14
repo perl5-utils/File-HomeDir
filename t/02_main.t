@@ -35,21 +35,23 @@ sub is_dir($) {
 # Environment Detection and Plan
 
 # For what scenarios can we be sure that we have desktop/documents
-my $NO_GETPWUID = 0;
-my $HAVEHOME    = 0;
-my $HAVEDESKTOP = 0;
-my $HAVEMUSIC   = 0;
-my $HAVEVIDEOS  = 0;
-my $HAVEOTHERS  = 0;
+my $NO_GETPWUID  = 0;
+my $HAVEHOME     = 0;
+my $HAVEDESKTOP  = 0;
+my $HAVEMUSIC    = 0;
+my $HAVEPICTURES = 0;
+my $HAVEVIDEOS   = 0;
+my $HAVEOTHERS   = 0;
 
 # Various cases of things we should try to test for
 # Top level is entire classes of operating system.
 # Below that are more general things.
 if ( $^O eq 'MSWin32' ) {
-	$NO_GETPWUID = 1;
-	$HAVEHOME    = 1;
-	$HAVEDESKTOP = 1;
-	$HAVEOTHERS  = 1;
+	$NO_GETPWUID  = 1;
+	$HAVEHOME     = 1;
+	$HAVEDESKTOP  = 1;
+	$HAVEPICTURES = 1;
+	$HAVEOTHERS   = 1;
 
 	# My Music does not exist on Win2000
 	require Win32;
@@ -69,47 +71,61 @@ if ( $^O eq 'MSWin32' ) {
 
 # Nobody users on all unix systems generally don't have home directories
 } elsif ( getpwuid($<) eq 'nobody' ) {
-	$HAVEHOME    = 0;
-	$HAVEDESKTOP = 0;
-	$HAVEMUSIC   = 0;
-	$HAVEVIDEOS  = 0;
-	$HAVEOTHERS  = 0;
+	$HAVEHOME     = 0;
+	$HAVEDESKTOP  = 0;
+	$HAVEMUSIC    = 0;
+	$HAVEPICTURES = 0;
+	$HAVEVIDEOS   = 0;
+	$HAVEOTHERS   = 0;
 
 } elsif (
 	$^O eq 'darwin'
 ) {
 	# "Unixes with proper desktops" special cases
-	if ( $< ) {
+	if ( $ENV{AUTOMATED_TESTING} ) {
+		# Automated testers on Mac (notably BINGOS) will often have
+		# super stripped down testing users.
+		$HAVEHOME     = 1;
+		$HAVEDESKTOP  = 1;
+		$HAVEMUSIC    = 0;
+		$HAVEPICTURES = 0;
+		$HAVEVIDEOS   = 0;
+		$HAVEOTHERS   = 1;
+	} elsif ( $< ) {
 		# Normal user
-		$HAVEHOME    = 1;
-		$HAVEDESKTOP = 1;
-		$HAVEMUSIC   = 1;
-		$HAVEVIDEOS  = 1;
-		$HAVEOTHERS  = 1;
+		$HAVEHOME     = 1;
+		$HAVEDESKTOP  = 1;
+		$HAVEMUSIC    = 1;
+		$HAVEPICTURES = 1;
+		$HAVEVIDEOS   = 1;
+		$HAVEOTHERS   = 1;
 	} else {
 		# Root can only be relied on to have a home
-		$HAVEHOME    = 1;
-		$HAVEDESKTOP = 0;
-		$HAVEMUSIC   = 0;
-		$HAVEVIDEOS  = 0;
-		$HAVEOTHERS  = 0;
+		$HAVEHOME     = 1;
+		$HAVEDESKTOP  = 0;
+		$HAVEMUSIC    = 0;
+		$HAVEPICTURES = 0;
+		$HAVEVIDEOS   = 0;
+		$HAVEOTHERS   = 0;
 	}
 
 } elsif ( $File::HomeDir::IMPLEMENTED_BY eq 'File::HomeDir::FreeDesktop' ) {
 	# On FreeDesktop we can't trust people to have a desktop (annoyingly)
-	$HAVEHOME    = 1;
-	$HAVEDESKTOP = 0;
-	$HAVEMUSIC   = 1;
-	$HAVEVIDEOS  = 1;
-	$HAVEOTHERS  = 0;
+	$HAVEHOME     = 1;
+	$HAVEDESKTOP  = 0;
+	$HAVEMUSIC    = 1;
+	$HAVEVIDEOS   = 1;
+	$HAVEPICTURES = 0;
+	$HAVEOTHERS   = 0;
 
 } else {
 	# Default to traditional Unix
-	$HAVEHOME    = 1;
-	$HAVEDESKTOP = 1;
-	$HAVEMUSIC   = 1;
-	$HAVEVIDEOS  = 1;
-	$HAVEOTHERS  = 1;
+	$HAVEHOME     = 1;
+	$HAVEDESKTOP  = 1;
+	$HAVEMUSIC    = 1;
+	$HAVEPICTURES = 1;
+	$HAVEVIDEOS   = 1;
+	$HAVEOTHERS   = 1;
 }
 
 plan tests => 51;
@@ -272,7 +288,7 @@ SKIP: {
 
 # Find this user's pictures directory
 SKIP: {
-	skip("Cannot assume existance of pictures", 3) unless $HAVEOTHERS;
+	skip("Cannot assume existance of pictures", 3) unless $HAVEPICTURES;
 	my $my_pictures  = File::HomeDir->my_pictures;
 	my $my_pictures2 = File::HomeDir::my_pictures();
 	is( $my_pictures, $my_pictures2, 'Different APIs give the same results' );

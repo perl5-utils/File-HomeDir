@@ -20,7 +20,7 @@ if ( $File::HomeDir::IMPLEMENTED_BY->isa('File::HomeDir::Darwin') ) {
 
 SKIP: {
 	my $user;
-	foreach (0 .. 9) {
+	foreach ( 0 .. 9 ) {
 		my $temp = sprintf 'fubar%04d', rand(10000);
 		getpwnam $temp and next;
 		$user = $temp;
@@ -34,16 +34,30 @@ SKIP: {
 }
 
 SCOPE: {
-	# reality check:
-	like( File::HomeDir->my_music,    qr/Music/               );
-	like( File::HomeDir->my_videos,   qr/Movies/              );
-	like( File::HomeDir->my_pictures, qr/Pictures/            );
-	like( File::HomeDir->my_data,     qr/Application Support/ );
+	# Reality Check
+	my $music    = File::HomeDir->my_music;
+	my $video    = File::HomeDir->my_videos;
+	my $pictures = File::HomeDir->my_pictures;
+	SKIP: {
+		skip( "No music directory", 1 ) unless defined $music;
+		like( File::HomeDir->my_music, qr/Music/ );
+	}
+	SKIP: {
+		skip( "No videos directory", 1 ) unless defined $video;
+		like( File::HomeDir->my_videos, qr/Movies/ );
+	}
+	SKIP: {
+		skip( "No pictures directory", 1 ) unless defined $pictures;
+		like( File::HomeDir->my_pictures, qr/Pictures/ );
+	}
+
+	# This one, on the other hand, we probably should always have???
+	like( File::HomeDir->my_data, qr/Application Support/ );
 }
 
 SKIP: {
 	my $user;
-	foreach my $uid (501 .. 540) {
+	foreach my $uid ( 501 .. 540 ) {
 		$uid == $< and next;
 		$user = getpwuid $uid or next;
 		last;

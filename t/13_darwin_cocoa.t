@@ -25,7 +25,7 @@ if (
 
 SKIP: {
 	my $user;
-	foreach (0 .. 9) {
+	foreach ( 0 .. 9 ) {
 		my $temp = sprintf 'fubar%04d', rand(10000);
 		getpwnam $temp and next;
 		$user = $temp;
@@ -33,17 +33,31 @@ SKIP: {
 	}
 	$user or skip("Unable to find non-existent user", 1);
 	$@ = undef;
-	my $home = eval {File::HomeDir->users_home($user)};
+	my $home = eval { File::HomeDir->users_home($user) };
 	$@ and skip("Unable to execute File::HomeDir->users_home('$user')", 1);
 	ok (!defined $home, "Home of non-existent user should be undef");
 }
 
 SCOPE: {
-	# reality check:
-	like( File::HomeDir->my_music,    qr/Music/               );
-	like( File::HomeDir->my_videos,   qr/Movies/              );
-	like( File::HomeDir->my_pictures, qr/Pictures/            );
-	like( File::HomeDir->my_data,     qr/Application Support/ );
+	# Reality Check
+	my $music    = File::HomeDir->my_music;
+	my $video    = File::HomeDir->my_videos;
+	my $pictures = File::HomeDir->my_pictures;
+	SKIP: {
+		skip( "No music directory", 1 ) unless defined $music;
+		like( File::HomeDir->my_music, qr/Music/ );
+	}
+	SKIP: {
+		skip( "No videos directory", 1 ) unless defined $video;
+		like( File::HomeDir->my_videos, qr/Movies/ );
+	}
+	SKIP: {
+		skip( "No pictures directory", 1 ) unless defined $pictures;
+		like( File::HomeDir->my_pictures, qr/Pictures/ );
+	}
+
+	# This one, on the other hand, we probably should always have???
+	like( File::HomeDir->my_data, qr/Application Support/ );
 }
 
 SKIP: {
