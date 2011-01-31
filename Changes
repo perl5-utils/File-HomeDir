@@ -1,5 +1,8 @@
 Changes for Perl extension File-HomeDir
 
+0.96_04 Tue 1 Feb 2011
+	- Typo in 11_darwin.t
+
 0.96_03 Mon 31 Jan 2011
 	- Return undef in list context on Mac as per the documentation
 

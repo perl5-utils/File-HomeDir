@@ -44,7 +44,7 @@ SCOPE: {
 		like( $music, qr/Music/ );
 	}
 	SKIP: {
-		skip( "Have music directory", 1 ) if defied $music;
+		skip( "Have music directory", 1 ) if defined $music;
 		is_deeply(
 			[ File::HomeDir->my_music ], [ undef ],
 			"Returns undef in list context",
@@ -55,7 +55,7 @@ SCOPE: {
 		like( $videos, qr/Movies/ );
 	}
 	SKIP: {
-		skip( "Have videos directory", 1 ) if defied $videos;
+		skip( "Have videos directory", 1 ) if defined $videos;
 		is_deeply(
 			[ File::HomeDir->my_videos ], [ undef ],
 			"Returns undef in list context",
@@ -66,7 +66,7 @@ SCOPE: {
 		like( $pictures, qr/Pictures/ );
 	}
 	SKIP: {
-		skip( "Have pictures directory", 1 ) if defied $pictures;
+		skip( "Have pictures directory", 1 ) if defined $pictures;
 		is_deeply(
 			[ File::HomeDir->my_pictures ], [ undef ],
 			"Returns undef in list context",
@@ -77,7 +77,7 @@ SCOPE: {
 		like( $data, qr/Application Support/ );
 	}
 	SKIP: {
-		skip( "Have data directory", 1 ) if defied $data;
+		skip( "Have data directory", 1 ) if defined $data;
 		is_deeply(
 			[ File::HomeDir->my_data ], [ undef ],
 			"Returns undef in list context",
