@@ -452,8 +452,8 @@ The C<my_desktop> method takes no arguments and returns the "desktop"
 directory for the current user.
 
 Due to the diversity and complexity of implementions required to deal with
-implementing the required functionality fully and completely, for the moment
-C<my_desktop> is B<not> going to be implemented.
+implementing the required functionality fully and completely, the
+C<my_desktop> method may or may not be implemented on each platform.
 
 That said, I am extremely interested in code to implement C<my_desktop> on
 Unix, as long as it is capable of dealing (as the Windows implementation
