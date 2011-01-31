@@ -14,7 +14,7 @@ use File::HomeDir::Unix ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.94_01';
+	$VERSION = '0.95';
 	@ISA     = 'File::HomeDir::Unix';
 }
 
@@ -123,7 +123,7 @@ L<File::HomeDir>, L<File::HomeDir::Win32> (legacy)
 
 =head1 COPYRIGHT
 
-Copyright 2009 - 2010 Jerome Quelin.
+Copyright 2009 - 2011 Jerome Quelin.
 
 Some parts copyright 2010 Adam Kennedy.
 

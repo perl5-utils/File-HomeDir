@@ -12,7 +12,7 @@ use File::Which ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.94_01';
+	$VERSION = '0.95';
 
 	# Inherit manually
 	require Exporter;
@@ -708,7 +708,7 @@ L<File::ShareDir>, L<File::HomeDir::Win32> (legacy)
 
 =head1 COPYRIGHT
 
-Copyright 2005 - 2010 Adam Kennedy.
+Copyright 2005 - 2011 Adam Kennedy.
 
 Some parts copyright 2000 Sean M. Burke.
 
@@ -716,7 +716,7 @@ Some parts copyright 2006 Chris Nandor.
 
 Some parts copyright 2006 Stephen Steneker.
 
-Some parts copyright 2009-2010 Jérôme Quelin.
+Some parts copyright 2009-2011 Jérôme Quelin.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

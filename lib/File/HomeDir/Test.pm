@@ -9,7 +9,7 @@ use File::HomeDir::Driver ();
 
 use vars qw{$VERSION @ISA %DIR $ENABLED};
 BEGIN {
-	$VERSION = '0.94_01';
+	$VERSION = '0.95';
 	@ISA     = 'File::HomeDir::Driver';
 	%DIR     = ();
 	$ENABLED = 0;
@@ -126,7 +126,7 @@ Adam Kennedy E<lt>adamk@cpan.orgE<gt>
 
 =head1 COPYRIGHT
 
-Copyright 2005 - 2010 Adam Kennedy.
+Copyright 2005 - 2011 Adam Kennedy.
 
 This program is free software; you can redistribute
 it and/or modify it under the same terms as Perl itself.

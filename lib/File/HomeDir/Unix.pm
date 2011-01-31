@@ -9,7 +9,7 @@ use File::HomeDir::Driver ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.94_01';
+	$VERSION = '0.95';
 	@ISA     = 'File::HomeDir::Driver';
 }
 
@@ -173,7 +173,7 @@ L<File::HomeDir>, L<File::HomeDir::Win32> (legacy)
 
 =head1 COPYRIGHT
 
-Copyright 2005 - 2010 Adam Kennedy.
+Copyright 2005 - 2011 Adam Kennedy.
 
 Some parts copyright 2000 Sean M. Burke.
 
