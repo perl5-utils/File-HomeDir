@@ -55,8 +55,8 @@ SKIP: {
 	like( $dir, qr/Pictures/ );
 }
 
-# For now, lets continue to assume everyone has this one
-like(
-	File::HomeDir->my_data,
-	qr/Application Support/,
-);
+SKIP: {
+	my $data = File::HomeDir->my_data;
+	skip( "No application support directory", 1 ) unless defined $data;
+	like( $data, qr/Application Support/ );
+}

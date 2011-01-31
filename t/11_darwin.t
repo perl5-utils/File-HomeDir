@@ -52,5 +52,10 @@ SCOPE: {
 	}
 
 	# This one, on the other hand, we probably should always have???
-	like( File::HomeDir->my_data, qr/Application Support/ );
+	# NOTE: Nope, BinGOs breaks this assumption
+	SKIP: {
+		my $data = File::HomeDir->my_data;
+		skip( "No application support directory", 1 ) unless defined $data;
+		like( $data, qr/Application Support/ );
+	}
 }
