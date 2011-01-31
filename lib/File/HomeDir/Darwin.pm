@@ -8,7 +8,7 @@ use File::HomeDir::Unix ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.96_02';
+	$VERSION = '0.96_03';
 	@ISA     = 'File::HomeDir::Unix';
 }
 
@@ -40,9 +40,9 @@ sub _my_home {
 	my $folder = "$home/$path";
 	unless ( -d $folder ) {
 		# Make sure that symlinks resolve to directories.
-		return unless -l $folder;
+		return undef unless -l $folder;
 		my $dir = readlink $folder or return;
-		return unless -d $dir;
+		return undef unless -d $dir;
 	}
 
 	return Cwd::abs_path($folder);

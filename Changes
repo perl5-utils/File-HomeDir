@@ -1,6 +1,9 @@
 Changes for Perl extension File-HomeDir
 
-0.96_02 Mon 21 Jan 2011
+0.96_03 Mon 31 Jan 2011
+	- Return undef in list context on Mac as per the documentation
+
+0.96_02 Mon 31 Jan 2011
 	- No longer assume we have Application Support, sigh
 
 0.96_01 Mon 31 Jan 2011

@@ -11,7 +11,7 @@ use File::HomeDir::Darwin ();
 
 use vars qw{$VERSION @ISA};
 BEGIN {
-	$VERSION = '0.96_02';
+	$VERSION = '0.96_03';
 
 	# This is only a child class of the pure Perl darwin
 	# class so that we can do homedir detection of all three
@@ -110,13 +110,13 @@ sub _find_folder {
 		Mac::Files::kUserDomain(),
 		$name,
 	);
-	return unless defined $folder;
+	return undef unless defined $folder;
 
 	unless ( -d $folder ) {
 		# Make sure that symlinks resolve to directories.
-		return unless -l $folder;
+		return undef unless -l $folder;
 		my $dir = readlink $folder or return;
-		return unless -d $dir;
+		return undef unless -d $dir;
 	}
 
 	return Cwd::abs_path($folder);
