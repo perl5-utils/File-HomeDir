@@ -394,7 +394,7 @@ In the Unix world, many different types of data can be mixed together
 in your home directory (although on some Unix platforms this is no longer
 the case, particularly for "desktop"-oriented platforms).
 
-On some non-Unix platforms, seperate directories are allocated for
+On some non-Unix platforms, separate directories are allocated for
 different types of data and have been for a long time.
 
 When writing applications on top of B<File::HomeDir>, you should thus
@@ -413,7 +413,7 @@ Two types of methods are provided. The C<my_method> series of methods for
 finding resources for the current user, and the C<users_method> (read as
 "user's method") series for finding resources for arbitrary users.
 
-This split is necesary, as on most platforms it is B<much> easier to find
+This split is necessary, as on most platforms it is B<much> easier to find
 information about the current user compared to other users, and indeed
 on a number you cannot find out information such as C<users_desktop> at
 all, due to security restrictions.
