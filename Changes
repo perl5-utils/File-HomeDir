@@ -1,5 +1,9 @@
 Changes for Perl extension File-HomeDir
 
+0.96_01 Mon 31 Jan 2011
+	- Removed a dubious "different users have different data" test on Macs
+	- Removed tests for legacy %~ interface
+
 0.95 Mon 31 Jan 2011
 	- Switch to prod version
 

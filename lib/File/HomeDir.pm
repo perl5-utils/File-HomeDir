@@ -12,7 +12,7 @@ use File::Which ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.95';
+	$VERSION = '0.96_01';
 
 	# Inherit manually
 	require Exporter;
@@ -382,10 +382,11 @@ that exported a C<home()> function by default and tied the C<%~> variable.
 It is generally not recommended that you use this interface, but due to
 back-compatibility reasons they will remain supported until at least 2010.
 
-The C<%~> interface has been deprecated and is no longer documented. Any
-usage will issue warnings from 2013 and be removed in 2015 (in line with
-the general Perl convention of a 10 year support period for legacy APIs
-potentially or actually in common use).
+The C<%~> interface has been deprecated. Documentation was removed in 2009,
+Unit test were removed in 2011, usage will issue warnings from 2013, and the
+interface will be removed entirely in 2015  (in line with the general Perl
+toolchain convention of a 10 year support period for legacy APIs that
+are potentially or actually in common use).
 
 =head2 Platform Neutrality
 

@@ -9,7 +9,7 @@ use Carp ();
 
 use vars qw{$VERSION};
 BEGIN {
-	$VERSION = '0.95';
+	$VERSION = '0.96_01';
 }
 
 sub my_home {

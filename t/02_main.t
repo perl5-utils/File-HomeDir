@@ -128,7 +128,7 @@ if ( $^O eq 'MSWin32' ) {
 	$HAVEOTHERS   = 1;
 }
 
-plan tests => 51;
+plan tests => 39;
 
 
 
@@ -141,69 +141,6 @@ eval {
 	home(undef);
 };
 like( $@, qr{Can\'t use undef as a username}, 'home(undef)' );
-
-# Warning is not reliably thrown on older Perls,
-# as well as on some old 5.9 series releases (5.9.0)
-SKIP: {
-	skip("Skipping unreliable warning test", 2) if $] < 5.008007;
-	skip("Skipping unreliable warning test", 2) if $] == 5.009;
-	my @warned = ();
-	eval {
-		local $SIG{__WARN__} = sub {
-			push @warned, $_[0];
-		};
-		my $h = $~{undef()};
-	};
-	is( scalar(@warned), 1, 'Emitted a single warning' );
-	unless ( scalar(@warned) ) {
-		foreach ( @warned ) {
-			diag( $_ );
-		}
-	}
-	like( $@, qr{Can't use undef as a username}, '%~(undef())' );
-}
-
-# Check error messages for unavailable tie constructs
-SKIP: {
-	skip("getpwuid not available", 3) if $NO_GETPWUID;
-
-	eval {
-    	$~{getpwuid($<)} = "new_dir";
-	};
-	like( $@, qr{You can't STORE with the %~ hash}, 'Cannot store in %~ hash' );
-
-	eval {
-	    exists $~{getpwuid($<)};
-	};
-	like( $@, qr{You can't EXISTS with the %~ hash}, 'Cannot store in %~ hash' );
-
-	eval {
-	    delete $~{getpwuid($<)};
-	};
-	like( $@, qr{You can't DELETE with the %~ hash}, 'Cannot store in %~ hash' );
-}
-
-eval {
-	%~ = ();
-};
-like( $@, qr{You can't CLEAR with the %~ hash}, 'Cannot store in %~ hash' );
-
-eval {
-	my ($k, $v) = each(%~);
-};
-like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
-
-# right now if you call keys in void context
-# keys(%~);
-# it does not throw an exception while if you call it in list context it
-# throws an exception.
-my @usernames;
-eval {
-	@usernames = keys(%~);
-};
-like( $@, qr{You can't FIRSTKEY with the %~ hash}, 'Cannot store in %~ hash' );
-
-# How to test NEXTKEY error if FIRSTKEY already throws an exception?
 
 
 
@@ -248,12 +185,6 @@ if ( $HAVEHOME ) {
 {
   local $ENV{HOME} = rel2abs('.');
   is( File::HomeDir->my_home(), $ENV{HOME}, "my_home() returns $ENV{HOME}" );
-}
-
-is( $~{""}, $home, 'Legacy %~ tied interface' );
-SKIP: {
-	skip("getpwuid not available", 1) if $NO_GETPWUID;
-	is( $~{getpwuid($<)}, $home, 'Legacy %~ tied interface' );
 }
 
 my $my_home2 = File::HomeDir::my_home();
@@ -334,23 +265,16 @@ SKIP: {
 # On platforms other than windows, find root's homedir
 SKIP: {
 	if ( $^O eq 'MSWin32' or $^O eq 'darwin') {
-		skip("Skipping root test on $^O", 3 );
+		skip("Skipping root test on $^O", 1 );
 	}
 
 	# Determine root
 	my $root = getpwuid(0);
 	unless ( $root ) {
-		skip("Skipping, can't determine root", 3 );
+		skip("Skipping, can't determine root", 1 );
 	}
 
 	# Get root's homedir
 	my $root_home1 = home($root);
 	ok( !!($root_home1 and is_dir $root_home1), "Found root's home directory" );
-
-	# Confirm against %~ hash
-	my $root_home2 = $~{$root};
-	ok( !!($root_home2 and is_dir $root_home2), "Found root's home directory" );
-
-	# Root account via different methods match
-	is( $root_home1, $root_home2, 'Home dirs match' );
 }
