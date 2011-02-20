@@ -1,5 +1,9 @@
 Changes for Perl extension File-HomeDir
 
+0.97 Sun 20 Feb 2011
+	- Looks good, moving to production release
+	- This should finally pass on ActivePerl Mac
+
 0.96_04 Tue 1 Feb 2011
 	- Typo in 11_darwin.t
 
