@@ -1,5 +1,10 @@
 Changes for Perl extension File-HomeDir
 
+0.98 Thu 7 Jul 2011
+	- Updating to Module::Install 1.01
+	- If Win32::GetFolderPath returns a \\UNC type path do not do the
+	  normal -d sanity check, as strange and unusual bugs may occur.
+
 0.97 Sun 20 Feb 2011
 	- Looks good, moving to production release
 	- This should finally pass on ActivePerl Mac
