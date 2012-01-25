@@ -12,7 +12,7 @@ use File::Which ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.98';
+	$VERSION = '0.99';
 
 	# Inherit manually
 	require Exporter;
@@ -159,17 +159,17 @@ sub my_dist_data {
 sub my_dist_config {
 	my $params = ref $_[-1] eq 'HASH' ? pop : {};
 	my $dist   = pop or Carp::croak("The my_dist_config method requires an argument");
-	
+
 	# not all platforms support a specific my_config() method
 	my $config = $IMPLEMENTED_BY->can('my_config')
 		? $IMPLEMENTED_BY->my_config
 		: $IMPLEMENTED_BY->my_documents;
 
-    # If neither configdir nor my_documents is defined, there's
-    # nothing we can do: bail out and return nothing...	
+	# If neither configdir nor my_documents is defined, there's
+	# nothing we can do: bail out and return nothing...	
 	return undef unless defined $config;
 
-    # On traditional unixes, hide the top-level dir
+	# On traditional unixes, hide the top-level dir
 	my $etc = $config eq home()
 		? File::Spec->catdir( $config, '.perl', $dist )
 		: File::Spec->catdir( $config, 'Perl',  $dist );
@@ -302,6 +302,7 @@ CLASS: {
 		}
 
 		# Get a named user's homedir
+		Carp::carp("The tied %~ hash has been deprecated");
 		return File::HomeDir::home($_[1]);
 	}
 
@@ -353,12 +354,6 @@ File::HomeDir - Find your home and other directories on any platform
   $pics    = File::HomeDir->users_pictures('foo');
   $video   = File::HomeDir->users_videos('foo');
   $data    = File::HomeDir->users_data('foo');
-  
-  # Legacy Interfaces
-  print "My dir is ", home(), " and root's is ", home('root'), "\n";
-  print "My dir is $~{''} and root's is $~{root}\n";
-  # These both print the same thing, something like:
-  # "My dir is /home/user/mojo and root's is /"
 
 =head1 DESCRIPTION
 
@@ -709,7 +704,7 @@ L<File::ShareDir>, L<File::HomeDir::Win32> (legacy)
 
 =head1 COPYRIGHT
 
-Copyright 2005 - 2011 Adam Kennedy.
+Copyright 2005 - 2012 Adam Kennedy.
 
 Some parts copyright 2000 Sean M. Burke.
 

@@ -1,5 +1,11 @@
 Changes for Perl extension File-HomeDir
 
+0.99 Thu 26 Jan 2012
+	- Updating to Module::Install 1.04
+	- Removed deprecated interfaces from the documentation
+	- Don't require music and video directories in FreeDesktop tests
+	- The use of deprecated %~ now emits a warning
+
 0.98 Thu 7 Jul 2011
 	- Updating to Module::Install 1.01
 	- If Win32::GetFolderPath returns a \\UNC type path do not do the
