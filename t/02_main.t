@@ -113,8 +113,8 @@ if ( $^O eq 'MSWin32' ) {
 	# On FreeDesktop we can't trust people to have a desktop (annoyingly)
 	$HAVEHOME     = 1;
 	$HAVEDESKTOP  = 0;
-	$HAVEMUSIC    = 1;
-	$HAVEVIDEOS   = 1;
+	$HAVEMUSIC    = 0;
+	$HAVEVIDEOS   = 0;
 	$HAVEPICTURES = 0;
 	$HAVEOTHERS   = 0;
 
@@ -207,16 +207,6 @@ SKIP: {
 	ok( !!($my_documents2 and $my_documents2),   'Found our documents directory' );
 }
 
-# Find this user's music directory
-SKIP: {
-	skip("Cannot assume existance of music", 3) unless $HAVEMUSIC;
-	my $my_music  = File::HomeDir->my_music;
-	my $my_music2 = File::HomeDir::my_music();
-	is( $my_music, $my_music2, 'Different APIs give the same results' );
-	ok( !!($my_music  and is_dir $my_music),  'Our music directory exists' );
-	ok( !!($my_music2 and is_dir $my_music2), 'Our music directory exists' );
-}
-
 # Find this user's pictures directory
 SKIP: {
 	skip("Cannot assume existance of pictures", 3) unless $HAVEPICTURES;
@@ -225,6 +215,16 @@ SKIP: {
 	is( $my_pictures, $my_pictures2, 'Different APIs give the same results' );
 	ok( !!($my_pictures  and is_dir $my_pictures),  'Our pictures directory exists' );
 	ok( !!($my_pictures2 and is_dir $my_pictures2), 'Our pictures directory exists' );
+}
+
+# Find this user's music directory
+SKIP: {
+	skip("Cannot assume existance of music", 3) unless $HAVEMUSIC;
+	my $my_music  = File::HomeDir->my_music;
+	my $my_music2 = File::HomeDir::my_music();
+	is( $my_music, $my_music2, 'Different APIs give the same results' );
+	ok( !!($my_music  and is_dir $my_music),  'Our music directory exists' );
+	ok( !!($my_music2 and is_dir $my_music2), 'Our music directory exists' );
 }
 
 # Find this user's video directory
