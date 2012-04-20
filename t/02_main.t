@@ -147,7 +147,7 @@ else
     $HAVEOTHERS    = 1;
 }
 
-plan tests => 39;
+plan tests => 51;
 
 #####################################################################
 # Test invalid uses
@@ -268,6 +268,50 @@ SKIP:
     is($my_desktop, $my_desktop2, 'Different APIs give the same results');
     ok(!!($my_desktop  and is_dir $my_desktop),  'Our desktop directory exists');
     ok(!!($my_desktop2 and is_dir $my_desktop2), 'Our desktop directory exists');
+}
+
+# Find this user's cache
+SKIP:
+{
+    skip("Cannot assume existance of cache", 3) unless $HAVEOTHERS;
+    my $my_cache  = File::HomeDir->my_cache;
+    my $my_cache2 = File::HomeDir::my_cache();
+    is($my_cache, $my_cache2, 'Different APIs give the same results');
+    ok(!!($my_cache  and is_dir $my_cache),  'Our cache directory exists');
+    ok(!!($my_cache2 and is_dir $my_cache2), 'Our cache directory exists');
+}
+
+# Find this user's download dir
+SKIP:
+{
+    skip("Cannot assume existance of download dir", 3) unless $HAVEOTHERS;
+    my $my_dl  = File::HomeDir->my_download;
+    my $my_dl2 = File::HomeDir::my_download();
+    is($my_dl, $my_dl2, 'Different APIs give the same results');
+    ok(!!($my_dl  and is_dir $my_dl),  'Our download directory exists');
+    ok(!!($my_dl2 and is_dir $my_dl2), 'Our download directory exists');
+}
+
+# Find this user's public share dir
+SKIP:
+{
+    skip("Cannot assume existance of public share dir", 3) unless $HAVEOTHERS;
+    my $my_pbs  = File::HomeDir->my_publicshare;
+    my $my_pbs2 = File::HomeDir::my_publicshare();
+    is($my_pbs, $my_pbs2, 'Different APIs give the same results');
+    ok(!!($my_pbs  and is_dir $my_pbs),  'Our public share directory exists');
+    ok(!!($my_pbs2 and is_dir $my_pbs2), 'Our public share directory exists');
+}
+
+# Find this user's config dir
+SKIP:
+{
+    skip("Cannot assume existance of config dir", 3) unless $HAVEOTHERS;
+    my $my_config  = File::HomeDir->my_config;
+    my $my_config2 = File::HomeDir::my_config();
+    is($my_config, $my_config2, 'Different APIs give the same results');
+    ok(!!($my_config  and is_dir $my_config),  'Our config directory exists');
+    ok(!!($my_config2 and is_dir $my_config2), 'Our config directory exists');
 }
 
 # Find this user's local data

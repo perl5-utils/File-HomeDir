@@ -35,6 +35,22 @@ sub _guess_determined_home
 }
 
 # from 10.4
+sub my_cache
+{
+    my $class = shift;
+
+    require Mac::SystemDirectory;
+    eval { $class->_find_folder(Mac::SystemDirectory::NSCachesDirectory()) } || $class->SUPER::my_cache;
+}
+
+# same as my_data
+sub my_config
+{
+    my $class = shift;
+    $class->my_data;
+}
+
+# from 10.4
 sub my_desktop
 {
     my $class = shift;
@@ -64,6 +80,15 @@ sub my_data
       || $class->SUPER::my_data;
 }
 
+# from 10.5
+sub my_download
+{
+    my $class = shift;
+
+    require Mac::SystemDirectory;
+    eval { $class->_find_folder(Mac::System Directory::NSDownloadsDirectory()) } || $class->SUPER::my_download;
+}
+
 # from 10.6
 sub my_music
 {
@@ -82,6 +107,15 @@ sub my_pictures
     require Mac::SystemDirectory;
     eval { $class->_find_folder(Mac::SystemDirectory::NSPicturesDirectory()) }
       || $class->SUPER::my_pictures;
+}
+
+# from 10.6
+sub my_publicshare
+{
+    my $class = shift;
+
+    require Mac::SystemDirectory;
+    eval { $class->_find_folder(Mac::SystemDirectory::NSPublicDirectory()) } || $class->SUPER::my_publicshare;
 }
 
 # from 10.6
@@ -140,12 +174,16 @@ is not installed, L<File::HomeDir> will fall back to L<File::HomeDir::Darwin>.
   use File::HomeDir;
   
   # Find directories for the current user
-  $home    = File::HomeDir->my_home;      # /Users/mylogin
-  $desktop = File::HomeDir->my_desktop;   # /Users/mylogin/Desktop
-  $docs    = File::HomeDir->my_documents; # /Users/mylogin/Documents
-  $music   = File::HomeDir->my_music;     # /Users/mylogin/Music
-  $pics    = File::HomeDir->my_pictures;  # /Users/mylogin/Pictures
-  $videos  = File::HomeDir->my_videos;    # /Users/mylogin/Movies
-  $data    = File::HomeDir->my_data;      # /Users/mylogin/Library/Application Support
+  $home    = File::HomeDir->my_home;        # /Users/mylogin
+  $cache   = File::HomeDir->my_cache;       # /Users/mylogin/Library/Caches
+  $config  = File::HomeDir->my_config;      # /Users/mylogin/Library/Application Support
+  $desktop = File::HomeDir->my_desktop;     # /Users/mylogin/Desktop
+  $docs    = File::HomeDir->my_documents;   # /Users/mylogin/Documents
+  $dl      = File::HomeDir->my_download;    # /Users/mylogin/Downloads
+  $music   = File::HomeDir->my_music;       # /Users/mylogin/Music
+  $pics    = File::HomeDir->my_pictures;    # /Users/mylogin/Pictures
+  $public  = File::HomeDir->my_publicshare; # /Users/mylogin/Public
+  $videos  = File::HomeDir->my_videos;      # /Users/mylogin/Movies
+  $data    = File::HomeDir->my_data;        # /Users/mylogin/Library/Application Support
 
 =cut

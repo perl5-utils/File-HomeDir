@@ -24,10 +24,14 @@ BEGIN
     @EXPORT_OK = qw{
       home
       my_home
+      my_cache
+      my_config
       my_desktop
       my_documents
+      my_download
       my_music
       my_pictures
+      my_publicshare
       my_videos
       my_data
       my_dist_config
@@ -111,6 +115,20 @@ sub my_home
     $IMPLEMENTED_BY->my_home;
 }
 
+sub my_cache
+{
+    $IMPLEMENTED_BY->can('my_cache')
+      ? $IMPLEMENTED_BY->my_cache
+      : Carp::croak("The my_cache method is not implemented on this platform");
+}
+
+sub my_config
+{
+    $IMPLEMENTED_BY->can('my_config')
+      ? $IMPLEMENTED_BY->my_config
+      : Carp::croak("The my_config method is not implemented on this platform");
+}
+
 sub my_desktop
 {
     $IMPLEMENTED_BY->can('my_desktop')
@@ -123,6 +141,13 @@ sub my_documents
     $IMPLEMENTED_BY->can('my_documents')
       ? $IMPLEMENTED_BY->my_documents
       : Carp::croak("The my_documents method is not implemented on this platform");
+}
+
+sub my_download
+{
+    $IMPLEMENTED_BY->can('my_download')
+      ? $IMPLEMENTED_BY->my_download
+      : Carp::croak("The my_download method is not implemented on this platform");
 }
 
 sub my_music
@@ -414,6 +439,31 @@ This is also the case for all of the other "my" methods.
 Returns the directory path as a string, C<undef> if the current user
 does not have a home directory, or dies on error.
 
+=head2 my_cache
+
+The C<my_cache> method takes no arguments and returns the "cache"
+directory for the current user.
+
+This is the location of discardable/non-essential files.
+
+The C<my_cache> method may or may not be implemented on each platform.
+
+Returns the directory path as a string, C<undef> if the path does not exist for
+the current user, or dies on error.
+
+=head2 my_config
+
+The C<my_config> method takes no arguments and returns the "config"
+directory for the current user.
+
+This is the location where configuration files are stored and may be the same
+as returned by C<my_data>.
+
+The C<my_config> method may or may not be implemented on each platform.
+
+Returns the directory path as a string, C<undef> if the path does not exist for
+the current user, or dies on error.
+
 =head2 my_desktop
 
 The C<my_desktop> method takes no arguments and returns the "desktop"
@@ -440,6 +490,16 @@ the current user) where the user's documents are stored.
 Returns the directory path as a string, C<undef> if the current user
 does not have a documents directory, or dies on error.
 
+=head2 my_download
+
+The C<my_download> method takes no arguments and returns the "download"
+directory for the current user.
+
+The C<my_download> method may or may not be implemented on each platform.
+
+Returns the directory path as a string, C<undef> if the path does not exist for
+the current user, or dies on error.
+
 =head2 my_music
 
 The C<my_music> method takes no arguments and returns the directory
@@ -463,6 +523,16 @@ underlying operating system or (at least) desktop environment.
 
 Returns the directory path as a string, C<undef> if the current user
 does not have a suitable directory, or dies on error.
+
+=head2 my_publicshare
+
+The C<my_publicshare> method takes no arguments and returns the "Public shared"
+directory for the current user.
+
+The C<my_publicshare> method may or may not be implemented on each platform.
+
+Returns the directory path as a string, C<undef> if the path does not exist for
+the current user, or dies on error.
 
 =head2 my_videos
 
