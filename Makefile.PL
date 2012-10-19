@@ -1,4 +1,4 @@
-use inc::Module::Install 1.04;
+use inc::Module::Install 1.06;
 use Config;
 
 all_from      'lib/File/HomeDir.pm';

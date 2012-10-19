@@ -1,5 +1,10 @@
 Changes for Perl extension File-HomeDir
 
+1.00 Fri 19 Oct 2012
+	- No functional changes
+	- Updating to Module::Install 1.06
+	- Don't require documents directory on Mac under AUTOMATED_TESTING
+
 0.99 Thu 26 Jan 2012
 	- Updating to Module::Install 1.04
 	- Removed deprecated interfaces from the documentation

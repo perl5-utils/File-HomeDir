@@ -12,7 +12,7 @@ use File::Which ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '0.99';
+	$VERSION = '1.00';
 
 	# Inherit manually
 	require Exporter;
@@ -378,7 +378,7 @@ It is generally not recommended that you use this interface, but due to
 back-compatibility reasons they will remain supported until at least 2010.
 
 The C<%~> interface has been deprecated. Documentation was removed in 2009,
-Unit test were removed in 2011, usage will issue warnings from 2013, and the
+Unit test were removed in 2011, usage will issue warnings from 2012, and the
 interface will be removed entirely in 2015  (in line with the general Perl
 toolchain convention of a 10 year support period for legacy APIs that
 are potentially or actually in common use).
@@ -643,9 +643,6 @@ home/profile directory.
 
 =over 4
 
-=item * Become generally clearer on situations in which a user might not
-have a particular resource.
-
 =item * Add more granularity to Unix, and add support to VMS and other
 esoteric platforms, so we can consider going core.
 
@@ -683,7 +680,7 @@ address above.
 
 =head1 ACKNOWLEDGEMENTS
 
-The biggest acknowledgement must go to Chris Nandor, who wielded his
+The biggest acknowledgement goes to Chris Nandor, who wielded his
 legendary Mac-fu and turned my initial fairly ordinary Darwin
 implementation into something that actually worked properly everywhere,
 and then donated a Mac OS X license to allow it to be maintained properly.
