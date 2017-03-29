@@ -12,7 +12,7 @@ use File::Which ();
 # Globals
 use vars qw{$VERSION @ISA @EXPORT @EXPORT_OK $IMPLEMENTED_BY};
 BEGIN {
-	$VERSION = '1.00';
+	$VERSION = '1.001_001';
 
 	# Inherit manually
 	require Exporter;
@@ -326,6 +326,8 @@ tie %~, 'File::HomeDir::TIE';
 __END__
 
 =pod
+
+=encoding UTF-8
 
 =head1 NAME
 
