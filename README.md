@@ -372,11 +372,3 @@ it and/or modify it under the same terms as Perl itself.
 
 The full text of the license can be found in the
 LICENSE file included with this module.
-
-# POD ERRORS
-
-Hey! **The above document had some coding errors, which are explained below:**
-
-- Around line 712:
-
-    Non-ASCII character seen before =encoding in 'Jérôme'. Assuming UTF-8
