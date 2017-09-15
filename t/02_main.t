@@ -219,7 +219,7 @@ SKIP:
     my $my_documents2 = File::HomeDir::my_documents();
     is($my_documents, $my_documents2, 'Different APIs give the same results');
 
-    skip("Cannot assume existance of documents", 2) unless $HAVEDOCUMENTS;
+    skip("Cannot assume existence of documents", 2) unless $HAVEDOCUMENTS;
     ok(!!($my_documents  and is_dir $my_documents), 'Found our documents directory');
     ok(!!($my_documents2 and $my_documents2),       'Found our documents directory');
 }
@@ -227,7 +227,7 @@ SKIP:
 # Find this user's pictures directory
 SKIP:
 {
-    skip("Cannot assume existance of pictures", 3) unless $HAVEPICTURES;
+    skip("Cannot assume existence of pictures", 3) unless $HAVEPICTURES;
     my $my_pictures  = File::HomeDir->my_pictures;
     my $my_pictures2 = File::HomeDir::my_pictures();
     is($my_pictures, $my_pictures2, 'Different APIs give the same results');
@@ -238,7 +238,7 @@ SKIP:
 # Find this user's music directory
 SKIP:
 {
-    skip("Cannot assume existance of music", 3) unless $HAVEMUSIC;
+    skip("Cannot assume existence of music", 3) unless $HAVEMUSIC;
     my $my_music  = File::HomeDir->my_music;
     my $my_music2 = File::HomeDir::my_music();
     is($my_music, $my_music2, 'Different APIs give the same results');
@@ -249,7 +249,7 @@ SKIP:
 # Find this user's video directory
 SKIP:
 {
-    skip("Cannot assume existance of videos", 3) unless $HAVEVIDEOS;
+    skip("Cannot assume existence of videos", 3) unless $HAVEVIDEOS;
     my $my_videos  = File::HomeDir->my_videos;
     my $my_videos2 = File::HomeDir::my_videos();
     is($my_videos, $my_videos2, 'Different APIs give the same results');
@@ -260,7 +260,7 @@ SKIP:
 # Desktop cannot be assumed in all environments
 SKIP:
 {
-    skip("Cannot assume existance of desktop", 3) unless $HAVEDESKTOP;
+    skip("Cannot assume existence of desktop", 3) unless $HAVEDESKTOP;
 
     # Find this user's desktop data
     my $my_desktop  = File::HomeDir->my_desktop;
@@ -273,7 +273,7 @@ SKIP:
 # Find this user's local data
 SKIP:
 {
-    skip("Cannot assume existance of application data", 3) unless $HAVEOTHERS;
+    skip("Cannot assume existence of application data", 3) unless $HAVEOTHERS;
     my $my_data  = File::HomeDir->my_data;
     my $my_data2 = File::HomeDir::my_data();
     is($my_data, $my_data2, 'Different APIs give the same results');
