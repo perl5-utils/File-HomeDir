@@ -39,7 +39,7 @@ WriteMakefile1(
         resources   => {
             homepage   => 'https://metacpan.org/release/File-HomeDir',
             repository => {
-                url  => 'https://github.com:rehsack/File-HomeDir.git',
+                url  => 'https://github.com/rehsack/File-HomeDir.git',
                 web  => 'https://github.com/rehsack/File-HomeDir',
                 type => 'git',
             },
