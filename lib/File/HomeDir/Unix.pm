@@ -35,7 +35,7 @@ sub my_home {
 
 sub _my_home {
 	my $class = shift;
-	if ( exists $ENV{HOME} and defined $ENV{HOME} ) {
+	if ( exists $ENV{HOME} and length $ENV{HOME} ) {
 		return $ENV{HOME};
 	}
 
