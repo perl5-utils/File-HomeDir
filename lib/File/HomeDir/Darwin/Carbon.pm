@@ -30,20 +30,15 @@ BEGIN
 #####################################################################
 # Current User Methods
 
-sub my_home
+## no critic qw(UnusedPrivateSubroutines)
+sub _guess_determined_home
 {
     my $class = shift;
 
-    # A lot of unix people and unix-derived tools rely on
-    # the ability to overload HOME. We will support it too
-    # so that they can replace raw HOME calls with File::HomeDir.
-    if (exists $ENV{HOME} and defined $ENV{HOME})
-    {
-        return $ENV{HOME};
-    }
-
     require Mac::Files;
-    $class->_find_folder(Mac::Files::kCurrentUserFolderType(),);
+    my $home = $class->_find_folder(Mac::Files::kCurrentUserFolderType(),);
+    $home ||= $class->SUPER::_guess_determined_home($@);
+    return $home;
 }
 
 sub my_desktop

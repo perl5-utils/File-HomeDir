@@ -18,21 +18,6 @@ BEGIN
 #####################################################################
 # Current User Methods
 
-sub my_home
-{
-    my $class = shift;
-
-    if (exists $ENV{HOME} and defined $ENV{HOME})
-    {
-        return $ENV{HOME};
-    }
-
-    my $home = (getpwuid($<))[7];
-    return $home if $home && -d $home;
-
-    return undef;
-}
-
 sub _my_home
 {
     my ($class, $path) = @_;

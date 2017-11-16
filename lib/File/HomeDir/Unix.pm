@@ -22,7 +22,7 @@ BEGIN
 sub my_home
 {
     my $class = shift;
-    my $home  = $class->_my_home(@_);
+    my $home  = $class->_guess_home(@_);
 
     # On Unix in general, a non-existent home means "no home"
     # For example, "nobody"-like users might use /nonexistent
@@ -34,10 +34,10 @@ sub my_home
     return $home;
 }
 
-sub _my_home
+sub _guess_env_home
 {
     my $class = shift;
-    if (exists $ENV{HOME} and defined $ENV{HOME})
+    if (exists $ENV{HOME} and defined $ENV{HOME} and length $ENV{HOME})
     {
         return $ENV{HOME};
     }
@@ -49,7 +49,12 @@ sub _my_home
         return $ENV{LOGDIR};
     }
 
-    ### More-desperate methods
+    return;
+}
+
+sub _guess_determined_home
+{
+    my $class = shift;
 
     # Light desperation on any (Unixish) platform
   SCOPE:
@@ -58,7 +63,15 @@ sub _my_home
         return $home if $home and -d $home;
     }
 
-    return undef;
+    return;
+}
+
+sub _guess_home
+{
+    my $class = shift;
+    my $home  = $class->_guess_env_home($@);
+    $home ||= $class->_guess_determined_home($@);
+    return $home;
 }
 
 # On unix by default, everything is under the same folder

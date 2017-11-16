@@ -29,7 +29,7 @@ sub my_home
     # A lot of unix people and unix-derived tools rely on
     # the ability to overload HOME. We will support it too
     # so that they can replace raw HOME calls with File::HomeDir.
-    if (exists $ENV{HOME} and $ENV{HOME})
+    if (exists $ENV{HOME} and defined $ENV{HOME} and length $ENV{HOME})
     {
         return $ENV{HOME};
     }
