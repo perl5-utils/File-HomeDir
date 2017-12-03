@@ -40,9 +40,6 @@ BEGIN
       users_videos
       users_data
     };
-
-    # %~ doesn't need (and won't take) exporting, as it's a magic
-    # symbol name that's always looked for in package 'main'.
 }
 
 # Inlined Params::Util functions
@@ -306,59 +303,6 @@ sub home (;$)    ## no critic qw(SubroutinePrototypes)
     $IMPLEMENTED_BY->users_home($name);
 }
 
-#####################################################################
-# Tie-Based Interface
-
-# Okay, things below this point get scary
-
-CLASS:
-{
-    # Make the class for the %~ tied hash:
-    ## no critic qw(MultiplePackages)
-    package File::HomeDir::TIE;
-
-    # Make the singleton object.
-    # (We don't use the hash for anything, though)
-    ### THEN WHY MAKE IT???
-    my $SINGLETON = bless {}, "MultiplePackages";
-
-    sub TIEHASH { $SINGLETON }
-
-    sub FETCH
-    {
-        # Catch a bad username
-        unless (defined $_[1])
-        {
-            Carp::croak("Can't use undef as a username");
-        }
-
-        # Get our homedir
-        unless (length $_[1])
-        {
-            return File::HomeDir::my_home();
-        }
-
-        # Get a named user's homedir
-        Carp::carp("The tied %~ hash has been deprecated");
-        return File::HomeDir::home($_[1]);
-    }
-
-    sub STORE    { _bad('STORE') }
-    sub EXISTS   { _bad('EXISTS') }
-    sub DELETE   { _bad('DELETE') }
-    sub CLEAR    { _bad('CLEAR') }
-    sub FIRSTKEY { _bad('FIRSTKEY') }
-    sub NEXTKEY  { _bad('NEXTKEY') }
-
-    sub _bad
-    {
-        Carp::croak("You can't $_[0] with the %~ hash");
-    }
-}
-
-# Do the actual tie of the global %~ variable
-tie %~, 'File::HomeDir::TIE';
-
 1;
 
 __END__
@@ -404,24 +348,6 @@ trying to find them consistently across a wide variety of platforms.
 The end result is a single API that can find your resources on any platform,
 making it relatively trivial to create Perl software that works elegantly
 and correctly no matter where you run it.
-
-This module provides two main interfaces.
-
-The first is a modern L<File::Spec>-style interface with a consistent
-OO API and different implementation modules to support various
-platforms. You are B<strongly> recommended to use this interface.
-
-The second interface is for legacy support of the original 0.07 interface
-that exported a C<home()> function by default and tied the C<%~> variable.
-
-It is generally not recommended that you use this interface, but due to
-back-compatibility reasons they will remain supported until at least 2010.
-
-The C<%~> interface has been deprecated. Documentation was removed in 2009,
-Unit test were removed in 2011, usage will issue warnings from 2012, and the
-interface will be removed entirely in 2015  (in line with the general Perl
-toolchain convention of a 10 year support period for legacy APIs that
-are potentially or actually in common use).
 
 =head2 Platform Neutrality
 
