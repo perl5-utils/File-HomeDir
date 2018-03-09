@@ -68,7 +68,7 @@ sub my_desktop {
 	# As a last resort, try some hard-wired values
 	foreach my $fixed (
 		# The reason there are both types of slash here is because
-		# this set of paths has been kept from thethe original version
+		# this set of paths has been kept from the original version
 		# of File::HomeDir::Win32 (before it was rewritten).
 		# I can only assume this is Cygwin-related stuff.
 		"C:\\windows\\desktop",

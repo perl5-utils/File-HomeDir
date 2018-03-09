@@ -24,8 +24,8 @@ sub my_home {
 	my $class = shift;
 	my $home  = $class->_my_home(@_);
 
-	# On Unix in general, a non-existant home means "no home"
-	# For example, "nobody"-like users might use /nonexistant
+	# On Unix in general, a non-existent home means "no home"
+	# For example, "nobody"-like users might use /nonexistent
 	if ( defined $home and ! -d $home ) {
 		$home = undef;
 	}

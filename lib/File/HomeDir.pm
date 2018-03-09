@@ -360,7 +360,7 @@ File::HomeDir - Find your home and other directories on any platform
 =head1 DESCRIPTION
 
 B<File::HomeDir> is a module for locating the directories that are "owned"
-by a user (typicaly your user) and to solve the various issues that arise
+by a user (typically your user) and to solve the various issues that arise
 trying to find them consistently across a wide variety of platforms.
 
 The end result is a single API that can find your resources on any platform,
@@ -448,7 +448,7 @@ does not have a home directory, or dies on error.
 The C<my_desktop> method takes no arguments and returns the "desktop"
 directory for the current user.
 
-Due to the diversity and complexity of implementions required to deal with
+Due to the diversity and complexity of implementations required to deal with
 implementing the required functionality fully and completely, the
 C<my_desktop> method may or may not be implemented on each platform.
 
