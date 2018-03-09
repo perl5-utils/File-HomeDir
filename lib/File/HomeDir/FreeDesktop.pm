@@ -103,13 +103,20 @@ used via L<File::HomeDir>.
   use File::HomeDir;
   
   # Find directories for the current user
-  $home    = File::HomeDir->my_home;        # /home/mylogin
-  $desktop = File::HomeDir->my_desktop;
-  $docs    = File::HomeDir->my_documents;
-  $music   = File::HomeDir->my_music;
-  $pics    = File::HomeDir->my_pictures;
-  $videos  = File::HomeDir->my_videos;
-  $data    = File::HomeDir->my_data;
+  $home     = File::HomeDir->my_home;        # /home/mylogin
+  $desktop  = File::HomeDir->my_desktop;
+  $docs     = File::HomeDir->my_documents;
+  $music    = File::HomeDir->my_music;
+  $pics     = File::HomeDir->my_pictures;
+  $videos   = File::HomeDir->my_videos;
+  $data     = File::HomeDir->my_data;
+  $config   = File::HomeDir->my_config;
+  
+  # Some undocumented ones, expect they don't work - use with caution
+  $download    = File::HomeDir->my_download;
+  $publicshare = File::HomeDir->my_publicshare;
+  $templates   = File::HomeDir->my_templates;
+  $cache       = File::HomeDir->my_cache;
 
 =head1 AUTHORS
 
