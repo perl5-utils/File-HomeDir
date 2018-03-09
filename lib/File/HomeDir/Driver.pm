@@ -3,7 +3,7 @@ package File::HomeDir::Driver;
 # Abstract base class that provides no functionality,
 # but confirms the class is a File::HomeDir driver class.
 
-use 5.00503;
+use 5.008003;
 use strict;
 use Carp ();
 

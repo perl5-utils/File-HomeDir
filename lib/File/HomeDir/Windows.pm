@@ -2,7 +2,7 @@ package File::HomeDir::Windows;
 
 # See POD at the end of the file for documentation
 
-use 5.00503;
+use 5.008003;
 use strict;
 use Carp                  ();
 use File::Spec            ();

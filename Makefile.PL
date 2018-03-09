@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use 5.00503;
+use 5.008003;
 
 use Config;
 use ExtUtils::MakeMaker;
@@ -33,7 +33,7 @@ my %TEST_DEPS = (
 );
 
 WriteMakefile1(
-    MIN_PERL_VERSION => '5.005003',
+    MIN_PERL_VERSION => '5.008003',
     META_ADD         => {
         'meta-spec' => {version => 2},
         resources   => {
@@ -56,6 +56,8 @@ WriteMakefile1(
                     'Test::CheckManifest'                 => 0,
                     'Module::CPANTS::Analyse'             => '0.96',
                     'Test::Kwalitee'                      => 0,
+                    'Test::Perl::Critic'                  => 0,
+                    'Test::PerlTidy'                      => 0,
                     'Test::Pod'                           => 0,
                     'Test::Pod::Coverage'                 => 0,
                     'Test::Pod::Spelling::CommonMistakes' => 0,
@@ -70,7 +72,7 @@ WriteMakefile1(
             runtime => {
                 requires => {
                     %RUN_DEPS,
-                    perl => '5.5.3',
+                    perl => '5.8.3',
                 },
             },
         },

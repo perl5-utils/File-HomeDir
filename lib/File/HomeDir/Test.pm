@@ -1,6 +1,6 @@
 package File::HomeDir::Test;
 
-use 5.00503;
+use 5.008003;
 use strict;
 use Carp                  ();
 use File::Spec            ();

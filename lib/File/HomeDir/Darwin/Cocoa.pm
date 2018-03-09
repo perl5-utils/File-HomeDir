@@ -1,6 +1,6 @@
 package File::HomeDir::Darwin::Cocoa;
 
-use 5.00503;
+use 5.008003;
 use strict;
 use Cwd                   ();
 use Carp                  ();

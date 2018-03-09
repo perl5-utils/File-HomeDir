@@ -2,7 +2,7 @@ package File::HomeDir;
 
 # See POD at end for documentation
 
-use 5.00503;
+use 5.008003;
 use strict;
 use Carp        ();
 use Config      ();

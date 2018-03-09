@@ -3,7 +3,7 @@ package File::HomeDir::Darwin::Carbon;
 # Basic implementation for the Dawin family of operating systems.
 # This includes (most prominently) Mac OS X.
 
-use 5.00503;
+use 5.008003;
 use strict;
 use Cwd                   ();
 use Carp                  ();
