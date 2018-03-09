@@ -4,14 +4,15 @@ use strict;
 use warnings;
 
 use Test::More;
+
+BEGIN
+{
+    $] >= 5.008 or plan skip_all => "Test::Pod::Coverage requires perl 5.8";
+}
 use Test::Pod::Coverage;
 use Pod::Coverage;
 
-all_pod_coverage_ok(
-    {
-        also_private => [
-            qr/^(?:my|users)_(?:cache|config|home|desktop|documents|data|music|pictures|videos|download|publicshare|templates)+$/,
-            qr/^[A-Z_]+$/
-        ]
-    }
-);
+#all_pod_coverage_ok({trustme => [qr/^new$/]});
+pod_coverage_ok("File::HomeDir");
+
+done_testing();

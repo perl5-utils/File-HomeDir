@@ -5,15 +5,19 @@ package File::HomeDir::Driver;
 
 use 5.008003;
 use strict;
+use warnings;
 use Carp ();
 
 use vars qw{$VERSION};
-BEGIN {
-	$VERSION = '1.002';
+
+BEGIN
+{
+    $VERSION = '1.002';
 }
 
-sub my_home {
-	Carp::croak("$_[0] does not implement compulsory method $_[1]");
+sub my_home
+{
+    Carp::croak("$_[0] does not implement compulsory method $_[1]");
 }
 
 1;

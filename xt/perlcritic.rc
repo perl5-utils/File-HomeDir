@@ -1,0 +1,17 @@
+severity        = 3
+verbose         = 6
+top             = 50
+theme           = pbp || core || bugs || security || maintenance
+criticism-fatal = 1
+color           = 1
+allow-unsafe    = 1
+
+[ControlStructures::ProhibitCascadingIfElse]
+max_elsif = 10
+[InputOutput::ProhibitBacktickOperators]
+only_in_void_context = 1
+[-BuiltinFunctions::ProhibitStringyEval]
+[-RegularExpressions::RequireExtendedFormatting]
+[-Subroutines::ProhibitExplicitReturnUndef]
+[-Subroutines::RequireArgUnpacking]
+[-Subroutines::RequireFinalReturn]
