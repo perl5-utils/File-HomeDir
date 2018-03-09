@@ -59,9 +59,9 @@ if ( $IMPLEMENTED_BY ) {
 	$IMPLEMENTED_BY = 'File::HomeDir::Windows';
 } elsif ( $^O eq 'darwin') {
 	# 1st: try Mac::SystemDirectory by chansen
-	if ( eval { require Mac::SystemDirectory; 1 } ) {
+	if ( eval "require Mac::SystemDirectory; 1" ) {
 		$IMPLEMENTED_BY = 'File::HomeDir::Darwin::Cocoa';
-	} elsif ( eval { require Mac::Files; 1 } ) {
+	} elsif ( eval "require Mac::Files; 1" ) {
 		# 2nd try Mac::Files: Carbon - unmaintained since 2006 except some 64bit fixes
 		$IMPLEMENTED_BY = 'File::HomeDir::Darwin::Carbon';
 	} else {
