@@ -272,7 +272,7 @@ SKIP: {
 
 # On platforms other than windows, find root's homedir
 SKIP: {
-	if ( $^O eq 'MSWin32' or $^O eq 'darwin') {
+	if ( $^O eq 'MSWin32' or $^O eq 'cygwin' or $^O eq 'darwin') {
 		skip("Skipping root test on $^O", 1 );
 	}
 
