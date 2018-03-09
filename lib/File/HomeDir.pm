@@ -508,7 +508,7 @@ does not have a suitable directory, or dies on error.
 =head2 my_data
 
 The C<my_data> method takes no arguments and returns the directory where
-local applications should stored their internal data for the current
+local applications should store their internal data for the current
 user.
 
 Generally an application would create a subdirectory such as C<.foo>,
