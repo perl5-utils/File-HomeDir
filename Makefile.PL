@@ -39,8 +39,8 @@ WriteMakefile1(
         resources   => {
             homepage   => 'https://metacpan.org/release/File-HomeDir',
             repository => {
-                url  => 'https://github.com:rehsack/File-HomeDir.git',
-                web  => 'https://github.com/rehsack/File-HomeDir',
+                url  => 'https://github.com/perl5-utils/File-HomeDir.git',
+                web  => 'https://github.com/perl5-utils/File-HomeDir',
                 type => 'git',
             },
             bugtracker => {
