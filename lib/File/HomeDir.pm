@@ -315,6 +315,13 @@ __END__
 
 File::HomeDir - Find your home and other directories on any platform
 
+=begin html
+
+<a href="https://travis-ci.org/perl5-utils/File-HomeDir"><img src="https://travis-ci.org/perl5-utils/File-HomeDir.svg?branch=master" alt="Travis CI"/></a>
+<a href='https://coveralls.io/github/perl5-utils/File-HomeDir?branch=master'><img src='https://coveralls.io/repos/github/perl5-utils/File-HomeDir/badge.svg?branch=master' alt='Coverage Status'/></a>
+
+=end html
+
 =head1 SYNOPSIS
 
   use File::HomeDir;
