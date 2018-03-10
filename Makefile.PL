@@ -19,7 +19,7 @@ my %RUN_DEPS = (
     (
              $MacPerl::Version and $MacPerl::Version
           or $^O eq 'darwin'   and _check_old_mac_os_x()
-      ) ? ('Mac::Files' => 0) : ($^O eq 'darwin' ? ('Mac::SystemDirectory' => '0.04') : ()),
+    ) ? ('Mac::Files' => 0) : ($^O eq 'darwin' ? ('Mac::SystemDirectory' => '0.04') : ()),
     ($^O eq 'MSWin32') ? ('Win32' => '0.31') : (),
 );
 my %CONFIGURE_DEPS = (
