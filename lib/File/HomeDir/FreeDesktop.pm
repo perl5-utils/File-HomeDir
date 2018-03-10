@@ -18,7 +18,7 @@ use base "File::HomeDir::Unix";
 
 BEGIN
 {
-    $VERSION = '1.002';
+    $VERSION = '1.003_001';
 }
 
 # xdg uses $ENV{XDG_CONFIG_HOME}/user-dirs.dirs to know where are the

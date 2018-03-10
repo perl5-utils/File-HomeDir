@@ -1,5 +1,15 @@
 Changes for Perl extension File-HomeDir
 
+1.003_001	2018-03-10
+    - skip root homedir test for cygwin (RT#104661)
+    - document even undocumented fetchers for FreeDesktop implementation
+      (RT#103305) and status quo (RT#88681)
+    - Fix several typos (RT#86426, RT#67093, PR#1)
+    - play with https://coveralls.io/
+    - remove tie interface (PR#4, Thanks Yanick)
+    - determine ->my_home when $ENV{HOME} is empty (based on PR#3)
+    - relocate repository
+
 1.002	2017-04-06
     - regenerate README.md with correct encoding settings
 

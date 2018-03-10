@@ -15,7 +15,7 @@ use base "File::HomeDir::Driver";
 
 BEGIN
 {
-    $VERSION = '1.002';
+    $VERSION = '1.003_001';
 }
 
 # Load early if in a forking environment and we have
