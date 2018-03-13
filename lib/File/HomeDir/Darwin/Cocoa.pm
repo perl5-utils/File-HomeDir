@@ -12,7 +12,7 @@ use base "File::HomeDir::Darwin";
 
 BEGIN
 {
-    $VERSION = '1.003_001';
+    $VERSION = '1.003_002';
 
     # Load early if in a forking environment and we have
     # prefork, or at run-time if not.

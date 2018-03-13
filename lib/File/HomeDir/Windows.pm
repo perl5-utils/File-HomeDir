@@ -14,7 +14,7 @@ use base "File::HomeDir::Driver";
 
 BEGIN
 {
-    $VERSION = '1.003_001';
+    $VERSION = '1.003_002';
 }
 
 sub CREATE () { 1 }

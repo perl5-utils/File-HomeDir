@@ -1,5 +1,10 @@
 Changes for Perl extension File-HomeDir
 
+1.003_002	2018-03-13
+    - build distribution on Linux
+    - add debug message because of RT#65301
+    - run author tests with installed spell-checker
+
 1.003_001	2018-03-10
     - skip root homedir test for cygwin (RT#104661)
     - document even undocumented fetchers for FreeDesktop implementation
