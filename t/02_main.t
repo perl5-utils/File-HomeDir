@@ -87,6 +87,7 @@ elsif (getpwuid($<) eq 'nobody')
 elsif ($^O eq 'darwin')
 {
     # "Unixes with proper desktops" special cases
+    diag("\$<: $< -- \$(: $(");
     if ($ENV{AUTOMATED_TESTING})
     {
         # Automated testers on Mac (notably BINGOS) will often have
@@ -99,7 +100,7 @@ elsif ($^O eq 'darwin')
         $HAVEDOCUMENTS = 0;
         $HAVEOTHERS    = 1;
     }
-    elsif ($<)
+    elsif ($< > 500)
     {
         # Normal user
         $HAVEHOME      = 1;
