@@ -96,7 +96,7 @@ This module can operate only when the command C<xdg-user-dir> is available
 and executable, which is typically achieved by installed a package named
 C<xdg-user-dirs> or similar.
 
-One can find the lastest spec at L<https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html>.
+One can find the latest spec at L<https://specifications.freedesktop.org/basedir-spec/basedir-spec-latest.html>.
 
 =head1 SYNOPSIS
 

@@ -215,7 +215,7 @@ used via L<File::HomeDir>.
 
 Internally this module will use L<Win32>::GetFolderPath to fetch the location
 of your directories. As a result of this, in certain unusual situations
-(usually found inside large organisations) the methods may return UNC paths
+(usually found inside large organizations) the methods may return UNC paths
 such as C<\\cifs.local\home$>.
 
 If your application runs on Windows and you want to have it work comprehensively

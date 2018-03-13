@@ -425,7 +425,7 @@ C<my_desktop> method may or may not be implemented on each platform.
 
 That said, I am extremely interested in code to implement C<my_desktop> on
 Unix, as long as it is capable of dealing (as the Windows implementation
-does) with internationalisation. It should also avoid false positive
+does) with internationalization. It should also avoid false positive
 results by making sure it only returns the appropriate directories for the
 appropriate platforms.
 
@@ -510,7 +510,7 @@ internal configuration.
 
 The base directory will be either C<my_config> if the platform supports
 it, or C<my_documents> otherwise. The subdirectory itself will be 
-C<BASE/Perl/Dist-Name>. If the base directory is the user's homedir,
+C<BASE/Perl/Dist-Name>. If the base directory is the user's home directory,
 C<my_dist_config> will be in C<~/.perl/Dist-Name> (and thus be hidden on
 all Unixes).
 
@@ -547,7 +547,7 @@ This directory will be of course a subdirectory of C<my_data>. Platforms
 supporting data-specific directories will use
 C<DATA_DIR/perl/dist/Dist-Name> following the common
 "DATA/vendor/application" pattern. If the C<my_data> directory is the
-user's homedir, C<my_dist_data> will be in C<~/.perl/dist/Dist-Name>
+user's home directory, C<my_dist_data> will be in C<~/.perl/dist/Dist-Name>
 (and thus be hidden on all Unixes).
 
 The optional last argument is a hash reference to tweak the method
@@ -569,7 +569,7 @@ Defaults to false, meaning no automatic creation of directory.
 
   $home = File::HomeDir->users_home('foo');
 
-The C<users_home> method takes a single param and is used to locate the
+The C<users_home> method takes a single parameter and is used to locate the
 parent home/profile directory for an identified user on the system.
 
 While most of the time this identifier would be some form of user name,
@@ -637,7 +637,7 @@ use the newer method-based interface above.
 
 Returns the directory path to a named user's home/profile directory.
 
-If provided no param, returns the directory path to the current user's
+If provided no parameter, returns the directory path to the current user's
 home/profile directory.
 
 =head1 TO DO

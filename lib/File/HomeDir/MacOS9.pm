@@ -102,7 +102,7 @@ sub users_home
 
 =head1 NAME
 
-File::HomeDir::MacOS9 - Find your home and other directories on legacy Macs
+File::HomeDir::MacOS9 - Find your home and other directories on legacy Macintosh systems
 
 =head1 SYNOPSIS
 

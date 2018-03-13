@@ -16,6 +16,13 @@ add_stopwords(<DATA>);
 all_pod_files_spelling_ok();
 
 __END__
+CGI
+FreeDesktop
+GetFolderPath
+Quelin
+Steneker
+TODO
+UNC
 my_data
 my_desktop
 my_documents
@@ -23,6 +30,8 @@ my_home
 my_music
 my_pictures
 my_videos
+org
+stat
 users_data
 users_desktop
 users_documents
