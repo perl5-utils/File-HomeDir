@@ -12,7 +12,7 @@ use vars qw{$VERSION};
 
 BEGIN
 {
-    $VERSION = '1.003_002';
+    $VERSION = '1.004';
 }
 
 sub my_home

@@ -16,7 +16,7 @@ use base qw(Exporter);
 
 BEGIN
 {
-    $VERSION = '1.003_002';
+    $VERSION = '1.004';
 
     # Inherit manually
     require Exporter;

@@ -1,5 +1,8 @@
 Changes for Perl extension File-HomeDir
 
+1.004	2018-05-02
+    - release 1.003_002 without further changes
+
 1.003_002	2018-03-13
     - build distribution on Linux
     - add debug message because of RT#65301

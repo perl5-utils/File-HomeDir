@@ -13,7 +13,7 @@ use base "File::HomeDir::Driver";
 
 BEGIN
 {
-    $VERSION = '1.003_002';
+    $VERSION = '1.004';
     %DIR     = ();
     $ENABLED = 0;
 }
